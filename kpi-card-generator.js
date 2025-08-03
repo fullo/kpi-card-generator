@@ -71,10 +71,11 @@ async function generateCards() {
     const mainTemplatePath = path.resolve('assets/main-template.html');
     let finalHtml = await fs.readFile(mainTemplatePath, 'utf-8');
     
-    finalHtml = finalHtml.replace('{{TITOLO_ESERCIZIO}}', data.titolo);
-    finalHtml = finalHtml.replace('{{SOTTOTITOLO_ESERCIZIO}}', data.sottotitolo);
-    finalHtml = finalHtml.replace('{{FRONTE_CARTE}}', frontsHtml);
-    finalHtml = finalHtml.replace('{{RETRO_CARTE}}', backsHtml);
+    // FIX: Usa espressioni regolari globali per sostituire tutte le occorrenze
+    finalHtml = finalHtml.replace(/{{TITOLO_ESERCIZIO}}/g, data.titolo);
+    finalHtml = finalHtml.replace(/{{SOTTOTITOLO_ESERCIZIO}}/g, data.sottotitolo);
+    finalHtml = finalHtml.replace(/{{FRONTE_CARTE}}/g, frontsHtml);
+    finalHtml = finalHtml.replace(/{{RETRO_CARTE}}/g, backsHtml);
 
 
     // 5. Salva il file HTML se richiesto
@@ -107,3 +108,4 @@ async function generateCards() {
 }
 
 generateCards();
+

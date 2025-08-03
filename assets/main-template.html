@@ -2,15 +2,17 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="author" content="Francesco Fullone">
     <title>{{TITOLO_ESERCIZIO}}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #e5e7eb; }
         .page-container { max-width: 7xl; margin: auto; padding: 2rem; }
         .playing-card { font-family: 'Inter', sans-serif; background: #f3f4f6; border: 1px solid #9ca3af; border-radius: 1rem; width: 300px; height: 420px; padding: 0.75rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); display: flex; flex-direction: column; page-break-inside: avoid; position: relative; }
         .playing-card .inner-frame { border: 3px solid #d1d5db; border-radius: 0.75rem; height: 100%; display: flex; flex-direction: column; padding: 0.75rem; background-color: #ffffff; }
         .card-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; border-bottom: 2px solid #e5e7eb; }
-        .card-title { font-family: 'Roboto Slab', serif; font-size: 0.95rem; font-weight: 700; }
+        .card-title { font-family: 'Roboto Slab', serif; font-size: 0.95rem; font-weight: 700; border-radius: 0.25rem; padding: 0 0.25rem; }
         .card-icon-container { width: 32px; height: 32px; border-radius: 9999px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; }
         .card-image-area { height: 90px; background-color: #e5e7eb; margin-top: 0.75rem; border-radius: 0.5rem; display: flex; justify-content: center; align-items: center; font-size: 4rem; }
         .card-type-banner { margin-top: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: white; align-self: flex-start; }
@@ -24,12 +26,16 @@
         .section-title { font-size: 2.25rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #d1d5db; text-align: center; }
         .section-subtitle { font-size: 1.125rem; color: #4b5563; margin-bottom: 2.5rem; text-align: center; }
         .print-instructions { background-color: #fefce8; border: 2px dashed #facc15; padding: 1.5rem; margin: 3rem 0; text-align: center; font-weight: 600; color: #ca8a04; page-break-after: always; }
+        .spiegazione .card-image-area { display: none; }
+        .spiegazione .main-text { font-size: 0.75rem; line-height: 1.2; }
+        .spiegazione .card-type-banner { background-color: black; }
         .card-evento-tecnico .card-title, .card-evento-tecnico .card-type-banner { background-color: #3b82f6; color: white; } .card-evento-tecnico .card-icon-container { background-color: #dbeafe; color: #3b82f6; }
         .card-evento-marketing .card-title, .card-evento-marketing .card-type-banner { background-color: #ec4899; color: white; } .card-evento-marketing .card-icon-container { background-color: #fce7f3; color: #ec4899; }
         .card-evento-sales .card-title, .card-evento-sales .card-type-banner { background-color: #14b8a6; color: white; } .card-evento-sales .card-icon-container { background-color: #ccfbf1; color: #14b8a6; }
         .card-evento-aziendale .card-title, .card-evento-aziendale .card-type-banner { background-color: #d97706; color: white; } .card-evento-aziendale .card-icon-container { background-color: #fef3c7; color: #d97706; }
         .card-obiettivo .card-title, .card-obiettivo .card-type-banner { background-color: #10b981; color: white; } .card-obiettivo .card-icon-container { background-color: #d1fae5; color: #10b981; }
         .card-kpi .card-title, .card-kpi .card-type-banner { background-color: #8b5cf6; color: white; } .card-kpi .card-icon-container { background-color: #ede9fe; color: #8b5cf6; }
+        .spiegazione .card-title, .spiegazione .card-type-banner { background-color: #0891b2; color: white; } .spiegazione .card-icon-container { background-color: #cffafe; color: #0891b2; }
         @media print {
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background-color: white; }
             .no-print { display: none; }
@@ -53,3 +59,4 @@
     </div>
 </body>
 </html>
+
