@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 # Generated files
 demo.*
 package-lock.json
+.DS_Store
