@@ -36,12 +36,103 @@
         .card-obiettivo .card-title, .card-obiettivo .card-type-banner { background-color: #10b981; color: white; } .card-obiettivo .card-icon-container { background-color: #d1fae5; color: #10b981; }
         .card-kpi .card-title, .card-kpi .card-type-banner { background-color: #8b5cf6; color: white; } .card-kpi .card-icon-container { background-color: #ede9fe; color: #8b5cf6; }
         .spiegazione .card-title, .spiegazione .card-type-banner { background-color: #0891b2; color: white; } .spiegazione .card-icon-container { background-color: #cffafe; color: #0891b2; }
+        
+        /* PRINT STYLES */
         @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background-color: white; }
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: white;
+            }
+
             .no-print { display: none; }
             .page-container { padding: 0; }
-            .playing-card { box-shadow: none; border: 2px dashed #9ca3af; }
-            .card-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.5rem; }
+            .section-title, .section-subtitle { display: none; }
+            .print-instructions { display: none; }
+
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 5mm;
+                align-items: start;
+            }
+
+            .playing-card {
+                box-shadow: none;
+                border: 1px dashed #9ca3af;
+                width: 65mm;
+                height: 91mm;
+                padding: 0.25rem;
+            }
+
+            .playing-card .inner-frame {
+                padding: 0.3rem;
+                border-width: 2px;
+            }
+
+            .card-header {
+                padding-bottom: 0.25rem;
+            }
+
+            .card-title {
+                font-size: 0.7rem; /* Increased by 0.1rem */
+                padding: 0.1rem 0.2rem;
+            }
+            
+            .card-icon-container {
+                width: 20px;
+                height: 20px;
+                font-size: 0.9rem; /* Increased by 0.1rem */
+            }
+
+            .card-image-area {
+                height: 45px;
+                margin-top: 0.25rem;
+                font-size: 2rem;
+            }
+
+            .card-type-banner {
+                margin-top: 0.25rem;
+                font-size: 0.6rem; /* Increased by 0.1rem */
+                padding: 0.1rem 0.3rem;
+            }
+
+            .card-description-box {
+                margin-top: 0.25rem;
+                padding: 0.4rem;
+            }
+
+            .card-description-box .main-text {
+                font-size: 0.65rem; /* Increased by 0.1rem */
+                line-height: 1.3;
+            }
+
+            .card-flavor-text {
+                font-size: 0.6rem; /* Increased by 0.1rem */
+                margin-top: 0.25rem;
+                padding-top: 0.25rem;
+            }
+
+            .card-back .back-icon {
+                font-size: 4rem;
+                margin-top: 2rem;
+            }
+
+            .card-back .back-credit {
+                font-size: 0.5rem; /* Increased by 0.1rem */
+            }
+            
+            .spiegazione .card-image-area { display: none; }
+            .spiegazione .main-text { font-size: 0.7rem; line-height: 1.2; } /* Increased by 0.1rem */
+
+            .card-conflitto .card-description-box { padding: 0.4rem; }
+            .card-conflitto .card-description-box .main-text { font-size: 0.65rem; line-height: 1.3; } /* Increased by 0.1rem */
+            .card-conflitto .card-description-box h4 { font-size: 0.8rem; margin-bottom: 0.15rem; } /* Increased by 0.1rem */
         }
     </style>
 </head>
