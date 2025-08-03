@@ -16,7 +16,7 @@ Per utilizzare questo generatore, sono necessari i seguenti strumenti:
 ## **Installazione**
 
 1. **Clona il repository:**  
-   git clone \[https://github.com/TUO\_NOME\_UTENTE/kpi-card-generator.git\](https://github.com/TUO\_NOME\_UTENTE/kpi-card-generator.git)  
+   git clone \[https://github.com/fullo/kpi-card-generator.git\](https://github.com/fullo/kpi-card-generator.git)  
    cd kpi-card-generator
 
 2. Installa le dipendenze:  
