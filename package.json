@@ -5,7 +5,7 @@
   "main": "kpi-card-generator.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [
     "kpi",
@@ -13,9 +13,12 @@
     "generator"
   ],
   "author": "Francesco Fullone",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "commander": "^12.1.0",
     "puppeteer": "^22.10.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
