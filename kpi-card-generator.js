@@ -50,6 +50,7 @@ async function generateCards() {
     let backsHtml = '';
 
     // 3. Genera HTML per ogni carta
+    // Il fronte viene generato in ordine normale
     data.carte.forEach(card => {
       let front = frontTemplate;
       front = front.replace(/{{titolo}}/g, card.titolo || '');
@@ -60,12 +61,17 @@ async function generateCards() {
       front = front.replace(/{{flavor}}/g, card.flavor || '');
       front = front.replace(/{{classe}}/g, card.classe || '');
       frontsHtml += front;
-
-      let back = backTemplate;
-      back = back.replace(/{{icona_esercizio}}/g, data.icona_esercizio || '❓');
-      back = back.replace(/{{classe}}/g, card.classe || '');
-      backsHtml += back;
     });
+
+    // FIX: Il retro viene generato invertendo l'ordine delle carte
+    // per un corretto allineamento nella stampa fronte-retro.
+    [...data.carte].reverse().forEach(card => {
+        let back = backTemplate;
+        back = back.replace(/{{icona_esercizio}}/g, data.icona_esercizio || '❓');
+        back = back.replace(/{{classe}}/g, card.classe || '');
+        backsHtml += back;
+    });
+
 
     // 4. Leggi il template della pagina principale e popola i dati
     const mainTemplatePath = path.resolve('assets/main-template.html');
@@ -75,6 +81,7 @@ async function generateCards() {
     finalHtml = finalHtml.replace(/{{SOTTOTITOLO_ESERCIZIO}}/g, data.sottotitolo);
     finalHtml = finalHtml.replace(/{{FRONTE_CARTE}}/g, frontsHtml);
     finalHtml = finalHtml.replace(/{{RETRO_CARTE}}/g, backsHtml);
+
 
     // 5. Salva il file HTML se richiesto
     if (options.browser) {
@@ -106,4 +113,3 @@ async function generateCards() {
 }
 
 generateCards();
-

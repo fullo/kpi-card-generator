@@ -12,7 +12,7 @@
     {"titolo": "Obiettivo Business", "icona": "🎯", "emoji": "😊", "tipo": "Outcome Strategico", "testo": "Migliorare la soddisfazione utente.", "flavor": "\"Perché i clienti felici si lamentano di meno. E, a volte, pagano di più.\"", "classe": "card-obiettivo"},
     {"titolo": "Key Indicator", "icona": "📊", "emoji": "⭐", "tipo": "Misura di Performance", "testo": "Net Promoter Score (NPS)", "flavor": "\"L'unica metrica dove essere un 7/10 ti rende invisibile.\"", "classe": "card-kpi"},
     {"titolo": "Key Indicator", "icona": "📊", "emoji": "🛒", "tipo": "Misura di Performance", "testo": "Tasso di Conversione", "flavor": "\"La sottile linea rossa che separa 'Hmm, interessante...' dal 'Prendi subito i miei soldi!'\"", "classe": "card-kpi"},
-    {"titolo": "Key Indicator", "icona": "📊", "emoji": "👋", "tipo": "Misura di Performance", "testo": "Customer Churn Rate", "flavor": "\"Il numero che ti ricorda quanti 'Non sei tu, sono io' hai ricevuto questo mese.\"", "classe": "card-kpi"},
+    {"titolo": "Key Indicator", "icona": "📊", "emoji": "👋", "tipo": "Misura di Performance", "testo": "Customer Churn Rate", "flavor": "\"Il numero che ti ricorda quanti 'Non sei tu, sono io' hai ricevuto questo mese.\"", "classe": "card-kpi"}
   ]
 }
 
