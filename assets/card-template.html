@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Template Carte KPI</title>
+    <meta name="author" content="Francesco Fullone">
+    <!-- Questo file contiene solo i template, gli stili verranno iniettati dallo script principale -->
+</head>
+<body>
+    <!-- TEMPLATE PER IL FRONTE DELLA CARTA -->
+    <template id="card-front">
+        <div class="playing-card {{classe}}">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">{{titolo}}</h3>
+                    <div class="card-icon-container"><span>{{icona}}</span></div>
+                </div>
+                <div class="card-image-area">{{emoji}}</div>
+                <div class="card-type-banner">{{tipo}}</div>
+                <div class="card-description-box">
+                    <p class="main-text">{{testo}}</p>
+                    <div class="card-flavor-text">{{flavor}}</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- TEMPLATE PER IL RETRO DELLA CARTA -->
+    <template id="card-back">
+        <div class="playing-card {{classe}}">
+            <div class="inner-frame card-back">
+                <div class="back-icon">{{icona_esercizio}}</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    </template>
+</body>
+</html>
