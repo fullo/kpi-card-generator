@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>{{TITOLO_ESERCIZIO}}</title>
+    <title>Esercizio 1: Dall'Azione al Valore</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -262,22 +262,13 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                page-break-after: always;
                 page-break-inside: avoid;
             }
             
-            /* IMPORTANTE: Il fronte deve SEMPRE avere page break dopo */
-            .fronts-container {
-                page-break-after: always !important;
-            }
-            
-            /* Il retro NON deve avere page break dopo (tranne se c'è un altro foglio) */
-            .backs-container {
+            /* L'ultima pagina non deve avere page break */
+            .backs-container:last-child {
                 page-break-after: auto;
-            }
-            
-            /* Ma se c'è un altro foglio dopo, aggiungi page break */
-            .backs-container + .fronts-container {
-                page-break-before: always !important;
             }
 
             /* Griglia carte FISSA per stampa */
@@ -401,17 +392,237 @@
 <body>
     <div class="page-container">
         <div class="text-center mb-12 no-print">
-            <h1 class="text-4xl font-bold text-gray-800">{{TITOLO_ESERCIZIO}}</h1>
-            <p class="mt-4 text-lg text-gray-600">{{SOTTOTITOLO_ESERCIZIO}}</p>
+            <h1 class="text-4xl font-bold text-gray-800">Esercizio 1: Dall'Azione al Valore</h1>
+            <p class="mt-4 text-lg text-gray-600">Combina le carte per creare una "storia" che colleghi un'azione di un dipartimento a un obiettivo di business tramite un KPI.</p>
         </div>
         <div class="fronts-container">
             <h2 class="section-title">Fronte Carte</h2>
-            <div class="card-grid">{{FRONTE_CARTE}}</div>
+            <div class="card-grid">
+        <div class="playing-card spiegazione">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Spiegazione Esercizio</h3>
+                    <div class="card-icon-container"><span>📜</span></div>
+                </div>
+                <div class="card-image-area"></div>
+                <div class="card-type-banner">Istruzioni</div>
+                <div class="card-description-box">
+                    <p class="main-text"><strong>Obiettivo:</strong> Collegare azioni di dipartimento a risultati di business.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende 1 carta "Evento" (di qualsiasi tipo) e 1 "Obiettivo Business" 🎯.<br><br><strong>2. Collega:</strong> Trovate la carta "KPI" 📊 che meglio unisce le prime due. Se non c'è, createne una!<br><br><strong>3. Racconta:</strong> Preparate una "storia" di 1 minuto che spieghi la catena causa-effetto.</p>
+                    <div class="card-flavor-text"></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card spiegazione">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Esempio di Gioco</h3>
+                    <div class="card-icon-container"><span>💡</span></div>
+                </div>
+                <div class="card-image-area"></div>
+                <div class="card-type-banner">Esempio</div>
+                <div class="card-description-box">
+                    <p class="main-text"><strong>Carte Pesate:</strong><br>🤝 Ciclo di vendita ridotto di 5 giorni<br>🎯 Aumentare il revenue<br><br><strong>KPI Scelto:</strong><br>📊 Customer Lifetime Value (CLV)<br><br><strong>La nostra storia:</strong> "Un ciclo di vendita più breve significa che incassiamo prima e possiamo reinvestire più velocemente. Inoltre, un processo rapido migliora l'esperienza del cliente, che sarà più propenso a rimanere a lungo, aumentando il suo valore nel tempo (CLV)."</p>
+                    <div class="card-flavor-text"></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-evento-tecnico">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Evento Tecnico</h3>
+                    <div class="card-icon-container"><span>⚙️</span></div>
+                </div>
+                <div class="card-image-area">🌋</div>
+                <div class="card-type-banner">Input Tecnico</div>
+                <div class="card-description-box">
+                    <p class="main-text">Aumento del 15% degli errori 5xx.</p>
+                    <div class="card-flavor-text">"Houston, abbiamo un problema. E a quanto pare, si sta moltiplicando."</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-evento-marketing">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Evento Marketing</h3>
+                    <div class="card-icon-container"><span>📈</span></div>
+                </div>
+                <div class="card-image-area">📢</div>
+                <div class="card-type-banner">Azione Marketing</div>
+                <div class="card-description-box">
+                    <p class="main-text">Lancio di una nuova campagna social.</p>
+                    <div class="card-flavor-text">"Abbiamo liberato i meme. Che la viralità sia con noi."</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-evento-sales">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Evento Sales</h3>
+                    <div class="card-icon-container"><span>🤝</span></div>
+                </div>
+                <div class="card-image-area">🗓️</div>
+                <div class="card-type-banner">Azione Sales</div>
+                <div class="card-description-box">
+                    <p class="main-text">Ciclo di vendita medio ridotto di 5 giorni.</p>
+                    <div class="card-flavor-text">"Dal 'ciao' al 'sì' in tempo record."</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-evento-aziendale">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Evento Aziendale</h3>
+                    <div class="card-icon-container"><span>🏢</span></div>
+                </div>
+                <div class="card-image-area">⏱️</div>
+                <div class="card-type-banner">Azione Aziendale</div>
+                <div class="card-description-box">
+                    <p class="main-text">Tempo medio per assunzione ridotto a 30gg.</p>
+                    <div class="card-flavor-text">"Troviamo talenti più velocemente di quanto loro trovino parcheggio."</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-obiettivo">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Obiettivo Business</h3>
+                    <div class="card-icon-container"><span>🎯</span></div>
+                </div>
+                <div class="card-image-area">😊</div>
+                <div class="card-type-banner">Outcome Strategico</div>
+                <div class="card-description-box">
+                    <p class="main-text">Migliorare la soddisfazione utente.</p>
+                    <div class="card-flavor-text">"Perché i clienti felici si lamentano di meno. E, a volte, pagano di più."</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-kpi">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Key Indicator</h3>
+                    <div class="card-icon-container"><span>📊</span></div>
+                </div>
+                <div class="card-image-area">⭐</div>
+                <div class="card-type-banner">Misura di Performance</div>
+                <div class="card-description-box">
+                    <p class="main-text">Net Promoter Score (NPS)</p>
+                    <div class="card-flavor-text">"L'unica metrica dove essere un 7/10 ti rende invisibile."</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-kpi">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Key Indicator</h3>
+                    <div class="card-icon-container"><span>📊</span></div>
+                </div>
+                <div class="card-image-area">🛒</div>
+                <div class="card-type-banner">Misura di Performance</div>
+                <div class="card-description-box">
+                    <p class="main-text">Tasso di Conversione</p>
+                    <div class="card-flavor-text">"La sottile linea rossa che separa 'Hmm, interessante...' dal 'Prendi subito i miei soldi!'"</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-kpi">
+            <div class="inner-frame">
+                <div class="card-header">
+                    <h3 class="card-title">Key Indicator</h3>
+                    <div class="card-icon-container"><span>📊</span></div>
+                </div>
+                <div class="card-image-area">👋</div>
+                <div class="card-type-banner">Misura di Performance</div>
+                <div class="card-description-box">
+                    <p class="main-text">Customer Churn Rate</p>
+                    <div class="card-flavor-text">"Il numero che ti ricorda quanti 'Non sei tu, sono io' hai ricevuto questo mese."</div>
+                </div>
+            </div>
+        </div>
+    <div class="playing-card placeholder"></div><div class="playing-card placeholder"></div><div class="playing-card placeholder"></div><div class="playing-card placeholder"></div><div class="playing-card placeholder"></div><div class="playing-card placeholder"></div></div>
         </div>
         <div class="print-instructions no-print">ATTENZIONE: Stampa fino a questa pagina, poi reinserisci i fogli per stampare il retro.</div>
         <div class="backs-container">
             <h2 class="section-title">Retro Carte</h2>
-            <div class="card-grid">{{RETRO_CARTE}}</div>
+            <div class="card-grid">
+        <div class="playing-card card-evento-marketing">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-evento-tecnico">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card spiegazione">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card spiegazione">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-kpi">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-obiettivo">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-evento-aziendale">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-evento-sales">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    <div class="playing-card placeholder"></div><div class="playing-card placeholder"></div>
+        <div class="playing-card card-kpi">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    
+        <div class="playing-card card-kpi">
+            <div class="inner-frame card-back">
+                <div class="back-icon">🔗</div>
+                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+            </div>
+        </div>
+    <div class="playing-card placeholder"></div><div class="playing-card placeholder"></div><div class="playing-card placeholder"></div><div class="playing-card placeholder"></div></div>
         </div>
     </div>
 </body>
