@@ -44,7 +44,8 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
 
 /**
  * Crea l'ordinamento speculare del retro per una pagina.
- * Inverte l'ordine delle carte in ogni riga per l'allineamento fronte-retro.
+ * Inverte sia l'ordine delle carte in ogni riga che l'ordine delle righe stesse
+ * per l'allineamento perfetto fronte-retro quando si capovolge sul lato lungo.
  * 
  * @param {Array<Object>} fronts - Array delle carte del fronte.
  * @param {number} cardsPerRow - Numero di carte per riga.
@@ -53,15 +54,26 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
 function createMirroredBacks(fronts, cardsPerRow) {
     const backs = [];
     const rows = Math.ceil(fronts.length / cardsPerRow);
+    const allRows = [];
     
+    // Prima, dividi le carte in righe
     for (let row = 0; row < rows; row++) {
         const startIdx = row * cardsPerRow;
         const endIdx = Math.min(startIdx + cardsPerRow, fronts.length);
         const rowCards = fronts.slice(startIdx, endIdx);
         
-        // Inverti l'ordine delle carte nella riga
-        const mirroredRow = rowCards.reverse();
-        backs.push(...mirroredRow);
+        // Aggiungi placeholder se la riga non è completa
+        while (rowCards.length < cardsPerRow) {
+            rowCards.push({ isPlaceholder: true });
+        }
+        
+        allRows.push(rowCards);
+    }
+    
+    // Poi, inverti l'ordine delle righe E l'ordine delle carte in ogni riga
+    for (let i = allRows.length - 1; i >= 0; i--) {
+        const reversedRow = allRows[i].reverse();
+        backs.push(...reversedRow);
     }
     
     return backs;
@@ -79,14 +91,19 @@ export function calculateLayouts(cards, cardsPerRow = 4) {
     let allBacks = [];
     
     pages.forEach(page => {
-        allFronts.push(...page.fronts);
+        // Aggiungi i fronti (rimuovi placeholder finali non necessari)
+        let pageFronts = [...page.fronts];
+        if (allFronts.length === 0) {
+            // Prima pagina: rimuovi placeholder finali
+            while (pageFronts.length > 0 && pageFronts[pageFronts.length - 1].isPlaceholder) {
+                pageFronts.pop();
+            }
+        }
+        allFronts.push(...pageFronts.filter(c => !c.isPlaceholder));
+        
+        // Aggiungi tutti i retri (inclusi placeholder per mantenere layout)
         allBacks.push(...page.backs);
     });
-    
-    // Rimuovi placeholder finali non necessari dai fronti
-    while (allFronts.length > 0 && allFronts[allFronts.length - 1].isPlaceholder) {
-        allFronts.pop();
-    }
     
     return {
         fronts: allFronts,
