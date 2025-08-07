@@ -1,0 +1,88 @@
+{
+  "titolo": "Test Paginazione - 9 Carte",
+  "sottotitolo": "Verifica corretta generazione di 2 fogli separati",
+  "icona_esercizio": "🧪",
+  "carte": [
+    {
+      "titolo": "Carta 1",
+      "icona": "1️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Prima carta del primo foglio",
+      "flavor": "Dovrebbe apparire in alto a sinistra del foglio 1",
+      "classe": "card-evento-tecnico"
+    },
+    {
+      "titolo": "Carta 2",
+      "icona": "2️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Seconda carta del primo foglio",
+      "flavor": "Posizione: prima riga, seconda colonna",
+      "classe": "card-evento-marketing"
+    },
+    {
+      "titolo": "Carta 3",
+      "icona": "3️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Terza carta del primo foglio",
+      "flavor": "Posizione: prima riga, terza colonna",
+      "classe": "card-evento-sales"
+    },
+    {
+      "titolo": "Carta 4",
+      "icona": "4️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Quarta carta del primo foglio",
+      "flavor": "Posizione: prima riga, quarta colonna",
+      "classe": "card-evento-aziendale"
+    },
+    {
+      "titolo": "Carta 5",
+      "icona": "5️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Quinta carta del primo foglio",
+      "flavor": "Posizione: seconda riga, prima colonna",
+      "classe": "card-obiettivo"
+    },
+    {
+      "titolo": "Carta 6",
+      "icona": "6️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Sesta carta del primo foglio",
+      "flavor": "Posizione: seconda riga, seconda colonna",
+      "classe": "card-kpi"
+    },
+    {
+      "titolo": "Carta 7",
+      "icona": "7️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Settima carta del primo foglio",
+      "flavor": "Posizione: seconda riga, terza colonna",
+      "classe": "card-vanity"
+    },
+    {
+      "titolo": "Carta 8",
+      "icona": "8️⃣",
+      "emoji": "🎯",
+      "tipo": "Foglio 1",
+      "testo": "Ottava carta del primo foglio",
+      "flavor": "Posizione: seconda riga, quarta colonna - ULTIMA del foglio 1",
+      "classe": "card-conflitto"
+    },
+    {
+      "titolo": "Carta 9",
+      "icona": "9️⃣",
+      "emoji": "🌟",
+      "tipo": "Foglio 2",
+      "testo": "NONA CARTA - Dovrebbe essere nel SECONDO foglio",
+      "flavor": "⚠️ Se vedi questa carta nel primo foglio, c'è un problema!",
+      "classe": "card-evento-tecnico"
+    }
+  ]
+}

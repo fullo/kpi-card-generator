@@ -1,0 +1,30 @@
+# Output dei test
+output/*.pdf
+output/*.html
+
+# Coverage reports
+coverage/
+*.coverage
+.coverage
+
+# Temporary test files
+*.tmp
+*.temp
+.tmp/
+
+# Node modules locali (se presenti)
+node_modules/
+
+# Log dei test
+*.log
+test-results.xml
+junit.xml
+
+# File di sistema
+.DS_Store
+Thumbs.db
+
+# Mantieni la struttura delle cartelle
+!output/.gitignore
+!data/
+!scripts/

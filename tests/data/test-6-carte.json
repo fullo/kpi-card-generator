@@ -1,0 +1,61 @@
+{
+  "titolo": "Test Layout 6 Carte",
+  "sottotitolo": "Verifica allineamento fronte-retro per stampa",
+  "icona_esercizio": "🧪",
+  "carte": [
+    {
+      "titolo": "Carta 1",
+      "icona": "1️⃣",
+      "emoji": "🎯",
+      "tipo": "Test",
+      "testo": "Questa è la carta numero 1",
+      "flavor": "Prima carta del mazzo",
+      "classe": "card-evento-tecnico"
+    },
+    {
+      "titolo": "Carta 2",
+      "icona": "2️⃣",
+      "emoji": "🎯",
+      "tipo": "Test",
+      "testo": "Questa è la carta numero 2",
+      "flavor": "Seconda carta del mazzo",
+      "classe": "card-evento-marketing"
+    },
+    {
+      "titolo": "Carta 3",
+      "icona": "3️⃣",
+      "emoji": "🎯",
+      "tipo": "Test",
+      "testo": "Questa è la carta numero 3",
+      "flavor": "Terza carta del mazzo",
+      "classe": "card-evento-sales"
+    },
+    {
+      "titolo": "Carta 4",
+      "icona": "4️⃣",
+      "emoji": "🎯",
+      "tipo": "Test",
+      "testo": "Questa è la carta numero 4",
+      "flavor": "Quarta carta del mazzo",
+      "classe": "card-evento-aziendale"
+    },
+    {
+      "titolo": "Carta 5",
+      "icona": "5️⃣",
+      "emoji": "🎯",
+      "tipo": "Test",
+      "testo": "Questa è la carta numero 5",
+      "flavor": "Quinta carta del mazzo",
+      "classe": "card-obiettivo"
+    },
+    {
+      "titolo": "Carta 6",
+      "icona": "6️⃣",
+      "emoji": "🎯",
+      "tipo": "Test",
+      "testo": "Questa è la carta numero 6",
+      "flavor": "Sesta carta del mazzo",
+      "classe": "card-kpi"
+    }
+  ]
+}

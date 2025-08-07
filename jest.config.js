@@ -2,13 +2,14 @@ export default {
   testEnvironment: 'node',
   transform: {},
   testMatch: [
-    '**/*.test.js'
+    '**/tests/**/*.test.js'
   ],
   moduleFileExtensions: ['js'],
   collectCoverageFrom: [
     'kpi-card-generator.js',
     '!node_modules/**',
     '!coverage/**',
+    '!tests/**',
     '!*.config.js'
   ],
   coverageDirectory: 'coverage',

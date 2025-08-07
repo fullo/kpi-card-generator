@@ -1,0 +1,97 @@
+{
+  "titolo": "Test Modalità Stampa",
+  "sottotitolo": "Verifica landscape vs portrait con carte numerate",
+  "icona_esercizio": "🖨️",
+  "carte": [
+    {
+      "titolo": "Carta 1",
+      "icona": "1️⃣",
+      "emoji": "↖️",
+      "tipo": "Posizione",
+      "testo": "PRIMA CARTA - Alto Sinistra",
+      "flavor": "Se sono nel retro e vedi D1, verifica la posizione",
+      "classe": "card-evento-tecnico"
+    },
+    {
+      "titolo": "Carta 2",
+      "icona": "2️⃣",
+      "emoji": "⬆️",
+      "tipo": "Posizione",
+      "testo": "SECONDA CARTA - Alto Centro-Sinistra",
+      "flavor": "Nel retro dovrei essere D2",
+      "classe": "card-evento-marketing"
+    },
+    {
+      "titolo": "Carta 3",
+      "icona": "3️⃣",
+      "emoji": "⬆️",
+      "tipo": "Posizione",
+      "testo": "TERZA CARTA - Alto Centro-Destra",
+      "flavor": "Nel retro dovrei essere D3",
+      "classe": "card-evento-sales"
+    },
+    {
+      "titolo": "Carta 4",
+      "icona": "4️⃣",
+      "emoji": "↗️",
+      "tipo": "Posizione",
+      "testo": "QUARTA CARTA - Alto Destra",
+      "flavor": "Nel retro dovrei essere D4",
+      "classe": "card-evento-aziendale"
+    },
+    {
+      "titolo": "Carta 5",
+      "icona": "5️⃣",
+      "emoji": "↙️",
+      "tipo": "Posizione",
+      "testo": "QUINTA CARTA - Basso Sinistra",
+      "flavor": "Nel retro dovrei essere D5",
+      "classe": "card-obiettivo"
+    },
+    {
+      "titolo": "Carta 6",
+      "icona": "6️⃣",
+      "emoji": "⬇️",
+      "tipo": "Posizione",
+      "testo": "SESTA CARTA - Basso Centro-Sinistra",
+      "flavor": "Nel retro dovrei essere D6",
+      "classe": "card-kpi"
+    },
+    {
+      "titolo": "Carta 7",
+      "icona": "7️⃣",
+      "emoji": "⬇️",
+      "tipo": "Posizione",
+      "testo": "SETTIMA CARTA - Basso Centro-Destra",
+      "flavor": "Nel retro dovrei essere D7",
+      "classe": "card-vanity"
+    },
+    {
+      "titolo": "Carta 8",
+      "icona": "8️⃣",
+      "emoji": "↘️",
+      "tipo": "Posizione",
+      "testo": "OTTAVA CARTA - Basso Destra",
+      "flavor": "Nel retro dovrei essere D8",
+      "classe": "card-conflitto"
+    },
+    {
+      "titolo": "Carta 9",
+      "icona": "9️⃣",
+      "emoji": "🎯",
+      "tipo": "FOGLIO 2",
+      "testo": "⚠️ NONA CARTA - Foglio 2, Alto Sinistra",
+      "flavor": "LANDSCAPE: D9 in basso destra | PORTRAIT: D9 in alto destra",
+      "classe": "card-evento-tecnico"
+    },
+    {
+      "titolo": "Carta 10",
+      "icona": "🔟",
+      "emoji": "🎯",
+      "tipo": "FOGLIO 2",
+      "testo": "⚠️ DECIMA CARTA - Foglio 2, Alto Centro-Sinistra",
+      "flavor": "LANDSCAPE: D10 in basso centro-destra | PORTRAIT: D10 in alto centro-destra",
+      "classe": "card-evento-marketing"
+    }
+  ]
+}

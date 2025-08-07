@@ -8,13 +8,13 @@ import path from 'path';
 /**
  * Calcola la disposizione delle carte per la stampa fronte-retro con paginazione.
  * Gestisce la divisione in fogli da 8 carte (2x4) con ordinamento speculare corretto.
- * 
- * @param {Array<Object>} cards - L'array di oggetti carta.
+ * * @param {Array<Object>} cards - L'array di oggetti carta.
  * @param {number} cardsPerPage - Il numero di carte per pagina (default 8).
  * @param {number} cardsPerRow - Il numero di carte per riga (default 4).
+ * @param {string} sheetMode - La modalità di stampa: 'landscape' o 'portrait'.
  * @returns {Array<{fronts: Array, backs: Array}>} Array di pagine con fronti e retri ordinati.
  */
-export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4) {
+export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4, sheetMode = 'landscape') {
     const pages = [];
     const totalCards = cards.length;
     const totalPages = Math.ceil(totalCards / cardsPerPage);
@@ -30,8 +30,8 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
             pageFronts.push({ isPlaceholder: true });
         }
         
-        // Crea il retro con ordinamento speculare per righe
-        const pageBacks = createMirroredBacks(pageFronts, cardsPerRow);
+        // Crea il retro con l'ordinamento corretto in base alla modalità
+        const pageBacks = createMirroredBacks(pageFronts, cardsPerRow, sheetMode);
         
         pages.push({
             fronts: pageFronts,
@@ -43,67 +43,63 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
 }
 
 /**
- * Crea l'ordinamento speculare del retro per una pagina.
- * Inverte sia l'ordine delle carte in ogni riga che l'ordine delle righe stesse
- * per l'allineamento perfetto fronte-retro quando si capovolge sul lato lungo.
- * 
- * @param {Array<Object>} fronts - Array delle carte del fronte.
+ * Crea l'ordinamento speculare del retro per una pagina in base alla modalità.
+ * - 'landscape': Inverte solo l'ordine delle carte in ogni riga.
+ * - 'portrait': Inverte solo l'ordine delle righe.
+ * * @param {Array<Object>} fronts - Array delle carte del fronte.
  * @param {number} cardsPerRow - Numero di carte per riga.
- * @returns {Array<Object>} Array delle carte del retro ordinate specularmente.
+ * @param {string} sheetMode - La modalità di stampa ('landscape' o 'portrait').
+ * @returns {Array<Object>} Array delle carte del retro ordinate correttamente.
  */
-function createMirroredBacks(fronts, cardsPerRow) {
-    const backs = [];
-    const rows = Math.ceil(fronts.length / cardsPerRow);
+function createMirroredBacks(fronts, cardsPerRow, sheetMode) {
     const allRows = [];
+    const rows = Math.ceil(fronts.length / cardsPerRow);
     
-    // Prima, dividi le carte in righe
-    for (let row = 0; row < rows; row++) {
-        const startIdx = row * cardsPerRow;
-        const endIdx = Math.min(startIdx + cardsPerRow, fronts.length);
-        const rowCards = fronts.slice(startIdx, endIdx);
-        
-        // Aggiungi placeholder se la riga non è completa
-        while (rowCards.length < cardsPerRow) {
-            rowCards.push({ isPlaceholder: true });
-        }
-        
+    // 1. Dividi le carte in righe
+    for (let i = 0; i < rows; i++) {
+        const rowCards = fronts.slice(i * cardsPerRow, (i + 1) * cardsPerRow);
         allRows.push(rowCards);
     }
     
-    // Poi, inverti l'ordine delle righe E l'ordine delle carte in ogni riga
-    for (let i = allRows.length - 1; i >= 0; i--) {
-        const reversedRow = allRows[i].reverse();
-        backs.push(...reversedRow);
+    let processedRows;
+
+    // 2. Applica la logica in base alla modalità
+    if (sheetMode === 'portrait') {
+        // Modalità Portrait: Inverte l'ordine delle righe.
+        // ES: [Riga1, Riga2] -> [Riga2, Riga1]
+        processedRows = allRows.reverse();
+    } else {
+        // Modalità Landscape (default): Inverte le carte in ogni riga.
+        // ES: [ [C1, C2], [C3, C4] ] -> [ [C2, C1], [C4, C3] ]
+        processedRows = allRows.map(row => row.reverse());
     }
     
-    return backs;
+    // 3. Unisci le righe processate in un unico array
+    return processedRows.flat();
 }
 
 /**
  * Funzione di compatibilità per i test esistenti.
  * Mantiene la stessa interfaccia della vecchia funzione ma usa la nuova logica.
+ * NOTA: Per mantenere la compatibilità, questa vecchia funzione non può passare
+ * la modalità 'portrait'. Userà sempre il default 'landscape'.
  */
 export function calculateLayouts(cards, cardsPerRow = 4) {
-    const pages = calculatePaginatedLayouts(cards, 8, cardsPerRow);
+    // Chiama la nuova funzione con la modalità di default 'landscape'
+    const pages = calculatePaginatedLayouts(cards, 8, cardsPerRow, 'landscape');
     
-    // Combina tutte le pagine in un unico array (per compatibilità)
+    // Il resto della logica di compatibilità rimane invariato
     let allFronts = [];
     let allBacks = [];
     
     pages.forEach(page => {
-        // Aggiungi i fronti (rimuovi placeholder finali non necessari)
-        let pageFronts = [...page.fronts];
-        if (allFronts.length === 0) {
-            // Prima pagina: rimuovi placeholder finali
-            while (pageFronts.length > 0 && pageFronts[pageFronts.length - 1].isPlaceholder) {
-                pageFronts.pop();
-            }
-        }
-        allFronts.push(...pageFronts.filter(c => !c.isPlaceholder));
-        
-        // Aggiungi tutti i retri (inclusi placeholder per mantenere layout)
+        allFronts.push(...page.fronts.filter(c => !c.isPlaceholder));
         allBacks.push(...page.backs);
     });
+    
+    // Per una perfetta compatibilità con i vecchi test, potremmo dover
+    // riempire l'array 'allFronts' con placeholder fino alla dimensione di 'allBacks'
+    // ma per ora lo lasciamo così come richiesto dalla logica di rimozione dei placeholder.
     
     return {
         fronts: allFronts,
@@ -168,10 +164,19 @@ async function run() {
       .requiredOption('-i, --input <file>', 'File di input JSON con i dati delle carte')
       .option('-o, --output <file>', 'Genera il PDF delle carte nel file specificato')
       .option('-b, --browser <file>', 'Genera il file HTML delle carte per la visualizzazione nel browser')
-      .option('-t, --template <file>', 'Percorso del file template per le singole carte', 'assets/card-template.html');
+      .option('-t, --template <file>', 'Percorso del file template per le singole carte', 'assets/card-template.html')
+      .option('-s, --sheet <mode>', 'Modalità stampa fronte-retro: landscape (default) o portrait', 'landscape');
     program.helpOption('-h, --help', 'Mostra questo messaggio di aiuto');
     program.parse(process.argv);
     const options = program.opts();
+
+    // Valida la modalità sheet
+    const sheetMode = options.sheet.toLowerCase();
+    if (sheetMode !== 'landscape' && sheetMode !== 'portrait') {
+        console.error(`❌ Errore: Modalità sheet non valida '${options.sheet}'.`);
+        console.error('   Usa "landscape" (capovolgi sul lato lungo) o "portrait" (capovolgi sul lato corto).');
+        process.exit(1);
+    }
 
     if (!options.output && !options.browser) {
       console.error('Errore: Devi specificare almeno un formato di output (-o per PDF o -b per HTML). Usa -h per aiuto.');
@@ -195,8 +200,11 @@ async function run() {
         const frontTemplate = frontTemplateMatch[1];
         const backTemplate = backTemplateMatch[1];
 
-        // Calcola il layout paginato
-        const pages = calculatePaginatedLayouts(data.carte);
+        // Calcola il layout paginato con la modalità sheet specificata
+        const pages = calculatePaginatedLayouts(data.carte, 8, 4, sheetMode);
+
+        // Log della modalità utilizzata
+        console.log(`🖨️  Modalità stampa: ${sheetMode.toUpperCase()} (capovolgi sul lato ${sheetMode === 'landscape' ? 'lungo' : 'corto'})`);
 
         // Se ci sono più pagine, dobbiamo creare container separati per ogni foglio
         let fullHtml = '';
@@ -240,6 +248,48 @@ async function run() {
             // Carica il template principale dai file assets
             const mainTemplatePath = path.resolve('assets/main-template.html');
             fullHtml = await fs.readFile(mainTemplatePath, 'utf-8');
+            
+            // Aggiungi CSS per la modalità di stampa
+            const modeInfoCSS = `
+            <style>
+                @media screen {
+                    .print-mode-info {
+                        background-color: #fef3c7;
+                        border: 2px solid #f59e0b;
+                        padding: 1rem;
+                        margin: 1rem auto;
+                        border-radius: 0.5rem;
+                        text-align: center;
+                        max-width: 600px;
+                    }
+                    
+                    .print-mode-info strong {
+                        color: #d97706;
+                        text-transform: uppercase;
+                    }
+                }
+                
+                @media print {
+                    .print-mode-info {
+                        display: none !important;
+                    }
+                }
+            </style>
+            `;
+            
+            // Inserisci CSS prima di </head>
+            fullHtml = fullHtml.replace('</head>', modeInfoCSS + '</head>');
+            
+            // Aggiungi l'indicatore della modalità dopo il titolo
+            const modeInfoHTML = `
+            <div class="print-mode-info no-print">
+                <strong>Modalità stampa: ${sheetMode.toUpperCase()}</strong><br>
+                Stampa fronte-retro capovolgendo sul lato ${sheetMode === 'landscape' ? 'lungo (landscape)' : 'corto (portrait)'}
+            </div>`;
+            
+            // Inserisci dopo il sottotitolo
+            fullHtml = fullHtml.replace('{{SOTTOTITOLO_ESERCIZIO}}</p>', 
+                `{{SOTTOTITOLO_ESERCIZIO}}</p>${modeInfoHTML}`);
             
             // Sostituisci i placeholder nel template
             fullHtml = fullHtml.replace(/{{TITOLO_ESERCIZIO}}/g, data.titolo || '');
@@ -294,6 +344,27 @@ ${headContent}
         .backs-container:last-of-type {
             page-break-after: auto;
         }
+        
+        /* Nascondi info modalità in stampa */
+        .print-mode-info {
+            display: none !important;
+        }
+    }
+    
+    @media screen {
+        .print-mode-info {
+            background-color: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        
+        .print-mode-info strong {
+            color: #d97706;
+            text-transform: uppercase;
+        }
     }
 </style>
 </head>
@@ -302,6 +373,10 @@ ${headContent}
         <div class="text-center mb-12 no-print">
             <h1 class="text-4xl font-bold text-gray-800">${data.titolo || ''}</h1>
             <p class="mt-4 text-lg text-gray-600">${data.sottotitolo || ''}</p>
+        </div>
+        <div class="print-mode-info">
+            <strong>Modalità stampa: ${sheetMode.toUpperCase()}</strong><br>
+            Stampa fronte-retro capovolgendo sul lato ${sheetMode === 'landscape' ? 'lungo' : 'corto'}
         </div>`;
             
             // Genera HTML per ogni foglio

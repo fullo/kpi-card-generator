@@ -61,6 +61,110 @@ node kpi-card-generator.js \-i \<file\_input.json\> \[opzioni\]
 * **Generare l'HTML usando un template personalizzato:**  
   node kpi-card-generator.js \-i esercizio-5-cavalieri.json \-b Cavalieri.html \-t assets/template-alternativo.html
 
+## Modalità di Stampa Fronte-Retro
+
+### Parametro `--sheet` / `-s`
+
+Il generatore ora supporta due modalità di stampa fronte-retro per adattarsi a diversi tipi di stampanti:
+
+| Parametro | Alias | Descrizione | Default |
+| --- | --- | --- | --- |
+| `--sheet <mode>` | `-s` | Modalità stampa fronte-retro: `landscape` o `portrait` | `landscape` |
+
+### Modalità Disponibili
+
+#### **Landscape** (default)
+- Il foglio viene capovolto sul **lato lungo**
+- Tipico per stampanti da ufficio standard
+- L'ordinamento del retro inverte sia righe che colonne
+
+```bash
+node kpi-card-generator.js -i esercizio.json -o output.pdf -s landscape
+```
+
+Layout esempio per 10 carte:
+```
+FOGLIO 2:
+Fronte:              Retro (landscape):
+C9  C10  P   P       P   P   P   P
+P   P    P   P       P   P   D10 D9
+```
+
+#### **Portrait**
+- Il foglio viene capovolto sul **lato corto**
+- Comune in alcune stampanti domestiche
+- L'ordinamento del retro inverte solo le colonne
+
+```bash
+node kpi-card-generator.js -i esercizio.json -o output.pdf -s portrait
+```
+
+Layout esempio per 10 carte:
+```
+FOGLIO 2:
+Fronte:              Retro (portrait):
+C9  C10  P   P       P   P   D10 D9
+P   P    P   P       P   P   P   P
+```
+
+### Esempi di Utilizzo
+
+Il parametro è **case-insensitive**, tutti questi comandi sono validi:
+
+```bash
+# Modalità landscape (vari formati)
+node kpi-card-generator.js -i dati.json -o carte.pdf -s LANDSCAPE
+node kpi-card-generator.js -i dati.json -o carte.pdf -s landscape
+node kpi-card-generator.js -i dati.json -o carte.pdf --sheet LandScape
+
+# Modalità portrait (vari formati)
+node kpi-card-generator.js -i dati.json -o carte.pdf -s portrait
+node kpi-card-generator.js -i dati.json -o carte.pdf -s PORTRAIT
+node kpi-card-generator.js -i dati.json -o carte.pdf --sheet Portrait
+
+# Default (landscape) se non specificato
+node kpi-card-generator.js -i dati.json -o carte.pdf
+```
+
+### Come Scegliere la Modalità Corretta
+
+1. **Fai una stampa di prova** con poche carte
+2. **Verifica l'allineamento** tenendo il foglio contro una finestra
+3. Se le carte non si allineano:
+   - Se usi `landscape` e non funziona → prova `portrait`
+   - Se usi `portrait` e non funziona → prova `landscape`
+
+### Istruzioni di Stampa per Ogni Modalità
+
+#### Per Modalità Landscape:
+- Orientamento: Orizzontale (Landscape)
+- Fronte-retro: **Capovolgi sul lato lungo**
+- Nelle impostazioni della stampante cerca: "Flip on long edge" o "Rilegatura lato lungo"
+
+#### Per Modalità Portrait:
+- Orientamento: Orizzontale (Landscape) 
+- Fronte-retro: **Capovolgi sul lato corto**
+- Nelle impostazioni della stampante cerca: "Flip on short edge" o "Rilegatura lato corto"
+
+### Risoluzione Problemi
+
+| Problema | Soluzione |
+| --- | --- |
+| Le carte del retro sono capovolte | Cambia modalità da `landscape` a `portrait` o viceversa |
+| Le carte non si allineano | Verifica i margini di stampa (devono essere 0) |
+| Il PDF ha pagine vuote | Normale per mazzi con numero di carte non multiplo di 8 |
+
+### Visualizzazione nel Browser
+
+Quando generi l'HTML con `-b`, vedrai un indicatore giallo che mostra la modalità attiva:
+
+```
+MODALITÀ STAMPA: LANDSCAPE
+Stampa fronte-retro capovolgendo sul lato lungo (landscape)
+```
+
+
+
 ## **Licenza**
 
 Questo progetto ha una doppia licenza:

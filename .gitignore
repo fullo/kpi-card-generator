@@ -142,3 +142,13 @@ vite.config.ts.timestamp-*
 demo.*
 package-lock.json
 .DS_Store
+Thumbs.db
+tmp/
+temp/
+.tmp/
+pdf/
+
+# Keep important files
+!tests/data/*.json
+!tests/scripts/*.sh
+!tests/*.md

@@ -12,9 +12,12 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:modes": "cd tests/scripts && ./test-modalita.sh",
     "generate": "node kpi-card-generator.js",
     "clean": "rm -rf node_modules package-lock.json",
-    "reinstall": "npm run clean && npm install"
+    "clean:test": "rm -rf tests/output/*.pdf tests/output/*.html",
+    "reinstall": "npm run clean && npm install",
+    "organize": "bash organize-tests.sh"
   },
   "keywords": [
     "kpi",
