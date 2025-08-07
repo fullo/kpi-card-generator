@@ -4,33 +4,31 @@ Questo repository contiene un generatore basato su Node.js per creare mazzi di c
 
 Lo script prende i dati da file JSON, li unisce a un template HTML e genera un file HTML pronto per il browser e un PDF ottimizzato per la stampa fronte-retro.
 
-\<\!-- Sostituisci con uno screenshot reale delle tue carte \--\>
-
 ## **Requisiti**
 
 Per utilizzare questo generatore, sono necessari i seguenti strumenti:
 
-* **Node.js:** (Versione 16 o superiore) \- Per eseguire lo script.  
+* **Node.js:** (Versione 18 o superiore, come specificato in `package.json`) - Per eseguire lo script.  
 * **Git:** Per clonare il repository e gestire le versioni.
 
 ## **Installazione**
 
 1. **Clona il repository:**  
-   git clone https://github.com/fullo/kpi-card-generator.git  
-   cd kpi-card-generator
-
+   `git clone https://github.com/fullo/kpi-card-generator.git  `
+   `cd kpi-card-generator`
+ 
 2. Installa le dipendenze:  
    Questo comando installerà le librerie necessarie (commander per la gestione dei comandi e puppeteer per la generazione del PDF).  
-   npm install
+   `npm install`
 
 ## **Struttura del Progetto**
 
 Il generatore è progettato per essere modulare e facile da espandere:
 
-* kpi-card-generator.js: Il cuore dello script. Legge i dati e il template, e genera i file di output.  
-* package.json: Definisce le dipendenze e la configurazione del progetto.  
-* assets/card-template.html: Il template HTML che definisce l'aspetto di ogni carta (fronte e retro). Puoi modificare questo file per cambiare lo stile di tutte le carte.  
-* esercizio-\*.json: File di dati che contengono i testi, le icone e gli stili per le carte di ogni singolo esercizio. Per aggiungere nuove carte o esercizi, basta creare o modificare questi file.
+* `kpi-card-generator.js`: Il cuore dello script. Legge i dati e il template, e genera i file di output.  
+* `package.json`: Definisce le dipendenze e la configurazione del progetto.  
+* `assets/card-template.html`: Il template HTML che definisce l'aspetto di ogni carta (fronte e retro). Puoi modificare questo file per cambiare lo stile di tutte le carte.  
+* `esercizio-\*.json`: File di dati che contengono i testi, le icone e gli stili per le carte di ogni singolo esercizio. Per aggiungere nuove carte o esercizi, basta creare o modificare questi file.
 
 ## **Come Usare lo Script**
 
@@ -38,73 +36,64 @@ Lo script si esegue da riga di comando. Assicurati di essere nella cartella prin
 
 ### **Sintassi**
 
-node kpi-card-generator.js \-i \<file\_input.json\> \[opzioni\]
+`node kpi-card-generator.js -i <file_input.json> [opzioni]`
 
 ### **Parametri**
 
 | Parametro | Alias | Descrizione | Default |
 | :---- | :---- | :---- | :---- |
-| \--input \<file\> | \-i | **(Obbligatorio)** Specifica il file JSON di input per l'esercizio. | \- |
-| \--output \<file\> | \-o | Genera un file **PDF** pronto per la stampa. | \- |
-| \--browser \<file\> | \-b | Genera un file **HTML** per la visualizzazione nel browser. | \- |
-| \--template \<file\> | \-t | Specifica un percorso alternativo per il file del template HTML. | assets/card-template.html |
-| \--help | \-h | Mostra la guida completa dei comandi. | \- |
+| `--input <file>` | `-i` | **(Obbligatorio)** Specifica il file JSON di input per l'esercizio. | - |
+| `--output <file>` | `-o` | Genera un file **PDF** pronto per la stampa. | - |
+| `--browser <file>` | `-b` | Genera un file **HTML** per la visualizzazione nel browser. | - |
+| `--template <file>` | `-t` | Specifica un percorso alternativo per il file del template HTML. | `assets/card-template.html` |
+| `--flip <mode>` | `-f` | Modalità di stampa fronte-retro: `short` o `long`. | `short` |
+| `--help` | `-h` | Mostra la guida completa dei comandi. | - |
 
 ### **Esempi di Utilizzo**
 
-* **Generare PDF e HTML per l'Esercizio 1:**  
-  node kpi-card-generator.js \-i esercizio-1-azione.json \-o Esercizio1.pdf \-b Esercizio1.html
+* **Generare PDF e HTML per un esercizio (modalità default):**  
+  `node kpi-card-generator.js -i esercizio-1.json -o Esercizio1.pdf -b Esercizio1.html`
 
-* **Generare solo il PDF per l'Esercizio 3:**  
-  node kpi-card-generator.js \-i esercizio-3-cimitero.json \-o Esercizio3.pdf
+* **Generare solo il PDF usando la modalità `long`:**  
+  `node kpi-card-generator.js -i esercizio-2.json -o Esercizio2.pdf --flip long`
 
 * **Generare l'HTML usando un template personalizzato:**  
-  node kpi-card-generator.js \-i esercizio-5-cavalieri.json \-b Cavalieri.html \-t assets/template-alternativo.html
+  `node kpi-card-generator.js -i esercizio-3.json -b Esercizio3.html -t assets/template-alternativo.html`
 
 ## Modalità di Stampa Fronte-Retro
 
-### Parametro `--sheet` / `-s`
+### Parametro `--flip` / `-f`
 
-Il generatore ora supporta due modalità di stampa fronte-retro per adattarsi a diversi tipi di stampanti:
+Il generatore supporta due modalità di stampa fronte-retro per adattarsi a diversi tipi di stampanti, controllate dal parametro `--flip`.
 
 | Parametro | Alias | Descrizione | Default |
 | --- | --- | --- | --- |
-| `--sheet <mode>` | `-s` | Modalità stampa fronte-retro: `landscape` o `portrait` | `landscape` |
+| `--flip <mode>` | `-f` | Modalità di stampa: `short` o `long`. | `short` |
 
 ### Modalità Disponibili
 
-#### **Landscape** (default)
-- Il foglio viene capovolto sul **lato lungo**
-- Tipico per stampanti da ufficio standard
-- L'ordinamento del retro inverte sia righe che colonne
+#### **short** (default)
+- **Azione fisica**: Capovolgere il foglio sul **lato lungo** (long-edge binding).
+- **Comportamento**: Inverte l'ordine delle carte all'interno di ogni riga.
+- **Uso tipico**: La maggior parte delle stampanti da ufficio.
 
-```bash
-node kpi-card-generator.js -i esercizio.json -o output.pdf -s landscape
+Layout di esempio per il retro di un foglio completo:
+```
+Fronte:              Retro (modalità 'short'):
+C1  C2  C3  C4       C4  C3  C2  C1
+C5  C6  C7  C8       C8  C7  C6  C5
 ```
 
-Layout esempio per 10 carte:
-```
-FOGLIO 2:
-Fronte:              Retro (landscape):
-C9  C10  P   P       P   P   P   P
-P   P    P   P       P   P   D10 D9
-```
+#### **long**
+- **Azione fisica**: Capovolgere il foglio sul **lato corto** (short-edge binding).
+- **Comportamento**: Inverte l'ordine delle righe di carte.
+- **Uso tipico**: Alcune stampanti domestiche o impostazioni di stampa specifiche.
 
-#### **Portrait**
-- Il foglio viene capovolto sul **lato corto**
-- Comune in alcune stampanti domestiche
-- L'ordinamento del retro inverte solo le colonne
-
-```bash
-node kpi-card-generator.js -i esercizio.json -o output.pdf -s portrait
+Layout di esempio per il retro di un foglio completo:
 ```
-
-Layout esempio per 10 carte:
-```
-FOGLIO 2:
-Fronte:              Retro (portrait):
-C9  C10  P   P       P   P   D10 D9
-P   P    P   P       P   P   P   P
+Fronte:              Retro (modalità 'long'):
+C1  C2  C3  C4       C5  C6  C7  C8
+C5  C6  C7  C8       C1  C2  C3  C4
 ```
 
 ### Esempi di Utilizzo
@@ -112,17 +101,15 @@ P   P    P   P       P   P   P   P
 Il parametro è **case-insensitive**, tutti questi comandi sono validi:
 
 ```bash
-# Modalità landscape (vari formati)
-node kpi-card-generator.js -i dati.json -o carte.pdf -s LANDSCAPE
-node kpi-card-generator.js -i dati.json -o carte.pdf -s landscape
-node kpi-card-generator.js -i dati.json -o carte.pdf --sheet LandScape
+# Modalità short (vari formati)
+node kpi-card-generator.js -i dati.json -o carte.pdf -f short
+node kpi-card-generator.js -i dati.json -o carte.pdf --flip SHORT
 
-# Modalità portrait (vari formati)
-node kpi-card-generator.js -i dati.json -o carte.pdf -s portrait
-node kpi-card-generator.js -i dati.json -o carte.pdf -s PORTRAIT
-node kpi-card-generator.js -i dati.json -o carte.pdf --sheet Portrait
+# Modalità long (vari formati)
+node kpi-card-generator.js -i dati.json -o carte.pdf -f long
+node kpi-card-generator.js -i dati.json -o carte.pdf --flip Long
 
-# Default (landscape) se non specificato
+# Default (short) se non specificato
 node kpi-card-generator.js -i dati.json -o carte.pdf
 ```
 
@@ -131,8 +118,7 @@ node kpi-card-generator.js -i dati.json -o carte.pdf
 1. **Fai una stampa di prova** con poche carte
 2. **Verifica l'allineamento** tenendo il foglio contro una finestra
 3. Se le carte non si allineano:
-   - Se usi `landscape` e non funziona → prova `portrait`
-   - Se usi `portrait` e non funziona → prova `landscape`
+   - Se usi `long` e non funziona → prova `short` o viceversa
 
 ### Istruzioni di Stampa per Ogni Modalità
 
@@ -150,7 +136,7 @@ node kpi-card-generator.js -i dati.json -o carte.pdf
 
 | Problema | Soluzione |
 | --- | --- |
-| Le carte del retro sono capovolte | Cambia modalità da `landscape` a `portrait` o viceversa |
+| Le carte del retro sono capovolte | Cambia modalità da `short` a `long` o viceversa |
 | Le carte non si allineano | Verifica i margini di stampa (devono essere 0) |
 | Il PDF ha pagine vuote | Normale per mazzi con numero di carte non multiplo di 8 |
 
@@ -171,7 +157,7 @@ Questo progetto ha una doppia licenza:
 
 ### **Codice Sorgente**
 
-Il codice dello script (kpi-card-generator.js, package.json, etc.) è rilasciato sotto **Licenza MIT**. Sei libero di usarlo, modificarlo e distribuirlo come preferisci.
+Il codice dello script (`kpi-card-generator.js`, `package.json`, etc.) è rilasciato sotto **Licenza MIT**. Sei libero di usarlo, modificarlo e distribuirlo come preferisci.
 
 ### **Contenuto delle Carte**
 
@@ -190,4 +176,4 @@ Alle seguenti condizioni:
 
 ## **Crediti**
 
-Questo progetto è stato ideato e sviluppato da **Francesco Fullone** per i suoi workshop su Metriche e KPI.
+Questo progetto è stato ideato e sviluppato da **Francesco Fullone** per i suoi workshop su Metriche e KPI e OKR.
