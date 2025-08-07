@@ -95,8 +95,116 @@ function generateCardHtml(card, template, data, isFront = true) {
     return html;
 }
 
+/**
+ * Genera l'HTML per tutti i fogli (front/back containers).
+ * @param {Array} pages - Array di pagine.
+ * @param {string} frontTemplate - Template per il fronte.
+ * @param {string} backTemplate - Template per il retro.
+ * @param {Object} data - Dati generali dell'esercizio.
+ * @returns {string} La stringa HTML contenente tutti i fogli.
+ */
+function generateSheetsHtml(pages, frontTemplate, backTemplate, data) {
+    return pages.map((page, pageIndex) => {
+        const pageFrontsHtml = page.fronts
+            .map(card => generateCardHtml(card, frontTemplate, data, true))
+            .join('');
+
+        const pageBacksHtml = page.backs
+            .map(card => generateCardHtml(card, backTemplate, data, false))
+            .join('');
+
+        // Per la visualizzazione a schermo, i titoli sono utili
+        const frontTitle = pages.length > 1 ? `Fronte Carte - Foglio ${pageIndex + 1}` : 'Fronte Carte';
+        const backTitle = pages.length > 1 ? `Retro Carte - Foglio ${pageIndex + 1}` : 'Retro Carte';
+
+        return `
+        <!-- FOGLIO ${pageIndex + 1} di ${pages.length} -->
+        <div class="fronts-container">
+            <h2 class="section-title">${frontTitle}</h2>
+            <div class="card-grid">${pageFrontsHtml}</div>
+        </div>
+        <div class="backs-container">
+            <h2 class="section-title">${backTitle}</h2>
+            <div class="card-grid">${pageBacksHtml}</div>
+        </div>`;
+    }).join(pages.length > 1 ? '<div class="sheet-separator"></div>' : '');
+}
+
+/**
+ * Genera l'HTML completo per tutte le pagine, gestendo sia il caso di foglio singolo che multiplo.
+ * @param {Array} pages - Array di pagine con fronti e retri.
+ * @param {Object} data - Dati dell'esercizio (titolo, sottotitolo, etc.).
+ * @param {string} frontTemplate - Template HTML per il fronte di una carta.
+ * @param {string} backTemplate - Template HTML per il retro di una carta.
+ * @param {string} flipMode - Modalità di stampa ('short' o 'long').
+ * @returns {Promise<string>} Una promise che si risolve con la stringa HTML completa.
+ */
+async function generateCompleteHtml(pages, data, frontTemplate, backTemplate, flipMode) {
+    if (pages.length > 1) {
+        console.log(`📄 Generazione di ${pages.length} fogli per ${data.carte.length} carte...`);
+    }
+
+    // Carica il template principale che farà da contenitore
+    const mainTemplatePath = path.resolve('assets/main-template.html');
+    let fullHtml = await fs.readFile(mainTemplatePath, 'utf-8');
+
+    // Genera l'HTML per tutti i fogli (sia uno che molti)
+    const allSheetsHtml = generateSheetsHtml(pages, frontTemplate, backTemplate, data);
+
+    // Aggiungi gli stili specifici per la modalità di stampa e la paginazione
+    const dynamicStyles = `
+    <style>
+        /* Stili per l'indicatore della modalità a schermo */
+        @media screen {
+            .print-mode-info {
+                background-color: #fef3c7; border: 2px solid #f59e0b; padding: 1rem;
+                margin: 1rem auto; border-radius: 0.5rem; text-align: center; max-width: 600px;
+            }
+            .print-mode-info strong { color: #d97706; text-transform: uppercase; }
+        }
+
+        /* Stili specifici per la stampa */
+        @media print {
+            .print-mode-info { display: none !important; }
+            
+            /* Separatore di pagina per la stampa multi-foglio */
+            .sheet-separator { page-break-after: always; height: 0; display: block; }
+            
+            /* La rotazione del retro dipende dalla modalità di flip */
+            ${flipMode === 'long' ? 
+            `.backs-container .playing-card { transform: rotate(180deg); }` : 
+            ''
+            }
+        }
+    </style>
+    `;
+
+    // Aggiungi l'indicatore della modalità di stampa per la visualizzazione a schermo
+    const modeInfoHTML = `
+    <div class="print-mode-info no-print">
+        <strong>Modalità stampa: ${flipMode.toUpperCase()}</strong><br>
+        Stampa fronte-retro capovolgendo sul lato ${flipMode === 'short' ? 'corto' : 'lungo'}
+    </div>`;
+
+    // Sostituisci i placeholder nel template principale
+    fullHtml = fullHtml.replace(/{{TITOLO_ESERCIZIO}}/g, data.titolo || '');
+    fullHtml = fullHtml.replace(/{{SOTTOTITOLO_ESERCIZIO}}/g, data.sottotitolo || '');
+
+    // Inserisci gli stili dinamici prima della chiusura dell'head
+    fullHtml = fullHtml.replace('</head>', `${dynamicStyles}</head>`);
+
+    // Inserisci il banner informativo e i fogli generati nel corpo del documento.
+    // Sostituiamo il layout originale (fronti, istruzioni, retro) con quello nuovo e sequenziale.
+    // Questa regex è più precisa e sicura, e rende opzionale il div di istruzioni.
+    const layoutBlockRegex = /<div class="fronts-container">[\s\S]*?<\/div>(\s*<div class="print-instructions no-print">[\s\S]*?<\/div>)?\s*<div class="backs-container">[\s\S]*?<\/div>/s;
+    const finalContent = modeInfoHTML + allSheetsHtml;
+    fullHtml = fullHtml.replace(layoutBlockRegex, finalContent);
+
+    return fullHtml;
+}
+
 // Funzione principale per eseguire lo script da riga di comando
-async function run() {
+export async function run() {
     const program = new Command();
     program
         .version('2.1.0')
@@ -147,217 +255,7 @@ async function run() {
         // Log della modalità utilizzata
         console.log(`🖨️  Modalità stampa: ${flipMode.toUpperCase()} (capovolgi sul lato ${flipMode === 'short' ? 'corto' : 'lungo'})`);
 
-        /** BEGIN - RIFATTORIZZARE PORTANDO SU FUNZIONE DEDICATA 
-         *  generateCompleteHtml(pages, data, frontTemplate, backTemplate, flipMode)
-        */
-
-        // Se ci sono più pagine, dobbiamo creare container separati per ogni foglio
-        let fullHtml = '';
-        
-        if (pages.length === 1) {
-            // Caso semplice: solo un foglio, usa il template standard
-            const page = pages[0];
-            
-            const frontsHtml = page.fronts
-                .map(card => generateCardHtml(card, frontTemplate, data, true))
-                .join('');
-            
-            const backsHtml = page.backs
-                .map(card => generateCardHtml(card, backTemplate, data, false))
-                .join('');
-
-            
-            // Carica il template principale dai file assets
-            const mainTemplatePath = path.resolve('assets/main-template.html');
-            fullHtml = await fs.readFile(mainTemplatePath, 'utf-8');
-            
-            // Aggiungi CSS per la modalità di stampa
-            const modeInfoCSS = `
-            <style>
-                @media screen {
-                    .print-mode-info {
-                        background-color: #fef3c7;
-                        border: 2px solid #f59e0b;
-                        padding: 1rem;
-                        margin: 1rem auto;
-                        border-radius: 0.5rem;
-                        text-align: center;
-                        max-width: 600px;
-                    }
-                    
-                    .print-mode-info strong {
-                        color: #d97706;
-                        text-transform: uppercase;
-                    }
-                }
-                
-                @media print {
-                    .print-mode-info {
-                        display: none !important;
-                    }
-                }
-
-
-            </style>
-            `;
-            
-            // Inserisci CSS prima di </head>
-            fullHtml = fullHtml.replace('</head>', modeInfoCSS + '</head>');
-            
-            // Aggiungi l'indicatore della modalità dopo il titolo
-            const modeInfoHTML = `
-            <div class="print-mode-info no-print">
-                <strong>Modalità stampa: ${flipMode.toUpperCase()}</strong><br>
-                Stampa fronte-retro capovolgendo sul lato ${flipMode === 'short' ? 'corto' : 'lungo'}
-            </div>`;
-            
-            // Inserisci dopo il sottotitolo
-            fullHtml = fullHtml.replace('{{SOTTOTITOLO_ESERCIZIO}}</p>', 
-                `{{SOTTOTITOLO_ESERCIZIO}}</p>${modeInfoHTML}`);
-            
-            // Sostituisci i placeholder nel template
-            fullHtml = fullHtml.replace(/{{TITOLO_ESERCIZIO}}/g, data.titolo || '');
-            fullHtml = fullHtml.replace(/{{SOTTOTITOLO_ESERCIZIO}}/g, data.sottotitolo || '');
-            fullHtml = fullHtml.replace(/{{FRONTE_CARTE}}/g, frontsHtml);
-            fullHtml = fullHtml.replace(/{{RETRO_CARTE}}/g, backsHtml);
-            
-        } else {
-            // Caso complesso: più fogli, dobbiamo replicare la struttura per ogni foglio
-            console.log(`📄 Generazione di ${pages.length} fogli per ${data.carte.length} carte...`);
-            
-            // Carica il template e estrai le parti necessarie
-            const mainTemplatePath = path.resolve('assets/main-template.html');
-            const mainTemplate = await fs.readFile(mainTemplatePath, 'utf-8');
-            
-            // Estrai head e stili dal template
-            const headMatch = mainTemplate.match(/<head>([\s\S]*?)<\/head>/);
-            const headContent = headMatch ? headMatch[1] : '';
-            
-            // Inizia a costruire l'HTML
-            fullHtml = `<!DOCTYPE html>
-<html lang="it">
-<head>
-${headContent}
-<style>
-    /* CSS aggiuntivo per gestione multi-pagina */
-    @media print {
-        .sheet-separator {
-            page-break-after: always;
-            height: 0;
-            display: block;
-        }
-        
-        .fronts-container,
-        .backs-container {
-            width: 297mm;
-            height: 210mm;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            page-break-inside: avoid;
-        }
-        
-        /* Ogni container di fronte deve avere page break dopo */
-        .fronts-container {
-            page-break-after: always;
-        }
-        
-        /* L'ultimo backs-container non deve avere page break */
-        .backs-container:last-of-type {
-            page-break-after: auto;
-        }
-        
-        /* Nascondi info modalità in stampa */
-        .print-mode-info {
-            display: none !important;
-        }
-    }
-    
-    @media screen {
-        .print-mode-info {
-            background-color: #fef3c7;
-            border: 2px solid #f59e0b;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
-            text-align: center;
-        }
-        
-        .print-mode-info strong {
-            color: #d97706;
-            text-transform: uppercase;
-        }
-    }            `;
-if (flipMode === 'long') {
-    fullHtml +=
-    `
-    /* Rotazione carte retro in caso di flip su lato lungo */
-    .backs-container .playing-card {
-        transform: rotate(180deg);
-    }`;
-}
-
-fullHtml += `
-</style>
-</head>
-<body>
-    <div class="page-container">
-        <div class="text-center mb-12 no-print">
-            <h1 class="text-4xl font-bold text-gray-800">${data.titolo || ''}</h1>
-            <p class="mt-4 text-lg text-gray-600">${data.sottotitolo || ''}</p>
-        </div>
-        <div class="print-mode-info">
-            <strong>ℹ️ Modalità stampa: ${flipMode.toUpperCase()}</strong><br>
-            Stampa fronte-retro capovolgendo sul lato ${flipMode === 'short' ? 'lungo' : 'corto'}
-        </div>`;
-            
-
-      // Genera HTML per ogni foglio
-        pages.forEach((page, pageIndex) => {
-            const pageFrontsHtml = page.fronts
-                .map(card => generateCardHtml(card, frontTemplate, data, true))
-                .join('');
-                
-            const pageBacksHtml = page.backs
-                .map(card => generateCardHtml(card, backTemplate, data, false))
-                .join('');
-        
-                // Aggiungi commento per debug
-                fullHtml += `
-        <!-- FOGLIO ${pageIndex + 1} di ${pages.length} -->`;
-                
-                // Aggiungi fronti
-                fullHtml += `
-        <div class="fronts-container">
-            <h2 class="section-title">Fronte Carte - Foglio ${pageIndex + 1}</h2>
-            <div class="card-grid">${pageFrontsHtml}</div>
-        </div>`;
-                
-                // Aggiungi retri
-                fullHtml += `
-        <div class="backs-container">
-            <h2 class="section-title">Retro Carte - Foglio ${pageIndex + 1}</h2>
-            <div class="card-grid">${pageBacksHtml}</div>
-        </div>`;
-                
-                // Aggiungi separatore tra fogli (ma non dopo l'ultimo)
-                if (pageIndex < pages.length - 1) {
-                    fullHtml += `
-        <div class="sheet-separator"></div>`;
-                }
-            });
-            
-            fullHtml += `
-    </div>
-</body>
-</html>`;
-        }
-        
-        const finalHtml = fullHtml;
-
-        /** END - RIFATTORIZZARE PORTANDO SU FUNZIONE DEDICATA */
+        const finalHtml = await generateCompleteHtml(pages, data, frontTemplate, backTemplate, flipMode);
 
         if (options.browser) {
             const htmlPath = path.resolve(options.browser);
