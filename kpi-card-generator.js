@@ -7,14 +7,13 @@ import path from 'path';
 
 /**
  * Calcola la disposizione delle carte per la stampa fronte-retro con paginazione.
- * Gestisce la divisione in fogli da 8 carte (2x4) con ordinamento speculare corretto.
- * * @param {Array<Object>} cards - L'array di oggetti carta.
+ * @param {Array<Object>} cards - L'array di oggetti carta.
  * @param {number} cardsPerPage - Il numero di carte per pagina (default 8).
  * @param {number} cardsPerRow - Il numero di carte per riga (default 4).
- * @param {string} sheetMode - La modalità di stampa: 'landscape' o 'portrait'.
+ * @param {string} sheetMode - La modalità di stampa: 'shortside' o 'longside'.
  * @returns {Array<{fronts: Array, backs: Array}>} Array di pagine con fronti e retri ordinati.
  */
-export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4, sheetMode = 'landscape') {
+export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4, sheetMode = 'shortside') {
     const pages = [];
     const totalCards = cards.length;
     const totalPages = Math.ceil(totalCards / cardsPerPage);
@@ -24,13 +23,11 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
         const endIdx = Math.min(startIdx + cardsPerPage, totalCards);
         const pageCards = cards.slice(startIdx, endIdx);
         
-        // Aggiungi placeholder se necessario per completare la pagina
         const pageFronts = [...pageCards];
         while (pageFronts.length < cardsPerPage) {
             pageFronts.push({ isPlaceholder: true });
         }
         
-        // Crea il retro con l'ordinamento corretto in base alla modalità
         const pageBacks = createMirroredBacks(pageFronts, cardsPerRow, sheetMode);
         
         pages.push({
@@ -44,18 +41,17 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
 
 /**
  * Crea l'ordinamento speculare del retro per una pagina in base alla modalità.
- * - 'landscape': Inverte solo l'ordine delle carte in ogni riga.
- * - 'portrait': Inverte solo l'ordine delle righe.
- * * @param {Array<Object>} fronts - Array delle carte del fronte.
+ * - 'shortside': Inverte solo l'ordine delle carte in ogni riga (per capovolgere sul lato lungo).
+ * - 'longside': Inverte solo l'ordine delle righe (per capovolgere sul lato corto).
+ * @param {Array<Object>} fronts - Array delle carte del fronte.
  * @param {number} cardsPerRow - Numero di carte per riga.
- * @param {string} sheetMode - La modalità di stampa ('landscape' o 'portrait').
- * @returns {Array<Object>} Array delle carte del retro ordinate correttamente.
+ * @param {string} sheetMode - La modalità di stampa ('shortside' o 'longside').
+ * @returns {Array<Object>} Array delle carte del retro ordinate.
  */
 function createMirroredBacks(fronts, cardsPerRow, sheetMode) {
     const allRows = [];
     const rows = Math.ceil(fronts.length / cardsPerRow);
     
-    // 1. Dividi le carte in righe
     for (let i = 0; i < rows; i++) {
         const rowCards = fronts.slice(i * cardsPerRow, (i + 1) * cardsPerRow);
         allRows.push(rowCards);
@@ -63,20 +59,17 @@ function createMirroredBacks(fronts, cardsPerRow, sheetMode) {
     
     let processedRows;
 
-    // 2. Applica la logica in base alla modalità
-    if (sheetMode === 'portrait') {
-        // Modalità Portrait: Inverte l'ordine delle righe.
-        // ES: [Riga1, Riga2] -> [Riga2, Riga1]
+    if (sheetMode === 'longside') {
+        // Modalità Long-Side: Inverte l'ordine delle righe.
         processedRows = allRows.reverse();
     } else {
-        // Modalità Landscape (default): Inverte le carte in ogni riga.
-        // ES: [ [C1, C2], [C3, C4] ] -> [ [C2, C1], [C4, C3] ]
+        // Modalità Short-Side (default): Inverte le carte in ogni riga.
         processedRows = allRows.map(row => row.reverse());
     }
     
-    // 3. Unisci le righe processate in un unico array
     return processedRows.flat();
 }
+
 
 /**
  * Funzione di compatibilità per i test esistenti.
@@ -159,29 +152,29 @@ function generatePageHtml(page, data, frontTemplate, backTemplate, pageNumber, i
 async function run() {
     const program = new Command();
     program
-      .version('2.0.0')
-      .description('Generatore di carte da gioco per workshop KPI con paginazione corretta')
-      .requiredOption('-i, --input <file>', 'File di input JSON con i dati delle carte')
-      .option('-o, --output <file>', 'Genera il PDF delle carte nel file specificato')
-      .option('-b, --browser <file>', 'Genera il file HTML delle carte per la visualizzazione nel browser')
-      .option('-t, --template <file>', 'Percorso del file template per le singole carte', 'assets/card-template.html')
-      .option('-s, --sheet <mode>', 'Modalità stampa fronte-retro: landscape (default) o portrait', 'landscape');
+        .version('2.1.0')
+        .description('Generatore di carte da gioco per workshop KPI con paginazione corretta')
+        .requiredOption('-i, --input <file>', 'File di input JSON con i dati delle carte')
+        .option('-o, --output <file>', 'Genera il PDF delle carte nel file specificato')
+        .option('-b, --browser <file>', 'Genera il file HTML delle carte per la visualizzazione nel browser')
+        .option('-t, --template <file>', 'Percorso del file template per le singole carte', 'assets/card-template.html')
+        .option('-s, --sheet <mode>', 'Modalità stampa fronte-retro: shortside (lato corto) o longside (lato lungo)', 'shortside'); 
     program.helpOption('-h, --help', 'Mostra questo messaggio di aiuto');
     program.parse(process.argv);
     const options = program.opts();
 
-    // Valida la modalità sheet
     const sheetMode = options.sheet.toLowerCase();
-    if (sheetMode !== 'landscape' && sheetMode !== 'portrait') {
+    if (sheetMode !== 'shortside' && sheetMode !== 'longside') { 
         console.error(`❌ Errore: Modalità sheet non valida '${options.sheet}'.`);
-        console.error('   Usa "landscape" (capovolgi sul lato lungo) o "portrait" (capovolgi sul lato corto).');
+        console.error('   Usa "shortside" (capovolgi sul lato lungo) o "longside" (capovolgi sul lato corto).'); 
         process.exit(1);
     }
 
     if (!options.output && !options.browser) {
-      console.error('Errore: Devi specificare almeno un formato di output (-o per PDF o -b per HTML). Usa -h per aiuto.');
-      process.exit(1);
+        console.error('Errore: Devi specificare almeno un formato di output (-o per PDF o -b per HTML). Usa -h per aiuto.');
+        process.exit(1);
     }
+
 
     try {
         const jsonPath = path.resolve(options.input);
@@ -204,7 +197,7 @@ async function run() {
         const pages = calculatePaginatedLayouts(data.carte, 8, 4, sheetMode);
 
         // Log della modalità utilizzata
-        console.log(`🖨️  Modalità stampa: ${sheetMode.toUpperCase()} (capovolgi sul lato ${sheetMode === 'landscape' ? 'lungo' : 'corto'})`);
+        console.log(`🖨️  Modalità stampa: ${sheetMode.toUpperCase()} (capovolgi sul lato ${sheetMode === 'shortside' ? 'corto' : 'lungo'})`);
 
         // Se ci sono più pagine, dobbiamo creare container separati per ogni foglio
         let fullHtml = '';
@@ -274,6 +267,18 @@ async function run() {
                         display: none !important;
                     }
                 }
+            `;
+
+            if (sheetMode === 'longside') {
+                modeInfoCSS +=
+                `
+                /* Rotazione carte retro */
+                .backs-container .playing-card {
+                    transform: rotate(180deg);
+                }`;
+            }
+
+            modeInfoCSS += `
             </style>
             `;
             
@@ -284,7 +289,7 @@ async function run() {
             const modeInfoHTML = `
             <div class="print-mode-info no-print">
                 <strong>Modalità stampa: ${sheetMode.toUpperCase()}</strong><br>
-                Stampa fronte-retro capovolgendo sul lato ${sheetMode === 'landscape' ? 'lungo (landscape)' : 'corto (portrait)'}
+                Stampa fronte-retro capovolgendo sul lato ${sheetMode === 'shortside' ? 'corto' : 'lungo'}
             </div>`;
             
             // Inserisci dopo il sottotitolo
