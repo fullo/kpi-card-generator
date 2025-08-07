@@ -10,10 +10,10 @@ import path from 'path';
  * @param {Array<Object>} cards - L'array di oggetti carta.
  * @param {number} cardsPerPage - Il numero di carte per pagina (default 8).
  * @param {number} cardsPerRow - Il numero di carte per riga (default 4).
- * @param {string} sheetMode - La modalità di stampa: 'shortside' o 'longside'.
+ * @param {string} flipMode - La modalità di stampa: 'short' o 'long'.
  * @returns {Array<{fronts: Array, backs: Array}>} Array di pagine con fronti e retri ordinati.
  */
-export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4, sheetMode = 'shortside') {
+export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4, flipMode = 'short') {
     const pages = [];
     const totalCards = cards.length;
     const totalPages = Math.ceil(totalCards / cardsPerPage);
@@ -28,7 +28,7 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
             pageFronts.push({ isPlaceholder: true });
         }
         
-        const pageBacks = createMirroredBacks(pageFronts, cardsPerRow, sheetMode);
+        const pageBacks = createMirroredBacks(pageFronts, cardsPerRow, flipMode);
         
         pages.push({
             fronts: pageFronts,
@@ -41,14 +41,14 @@ export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow =
 
 /**
  * Crea l'ordinamento speculare del retro per una pagina in base alla modalità.
- * - 'shortside': Inverte solo l'ordine delle carte in ogni riga (per capovolgere sul lato lungo).
- * - 'longside': Inverte solo l'ordine delle righe (per capovolgere sul lato corto).
+ * - 'short': Inverte solo l'ordine delle carte in ogni riga (per capovolgere sul lato lungo).
+ * - 'long': Inverte solo l'ordine delle righe (per capovolgere sul lato corto).
  * @param {Array<Object>} fronts - Array delle carte del fronte.
  * @param {number} cardsPerRow - Numero di carte per riga.
- * @param {string} sheetMode - La modalità di stampa ('shortside' o 'longside').
+ * @param {string} flipMode - La modalità di stampa ('short' o 'long').
  * @returns {Array<Object>} Array delle carte del retro ordinate.
  */
-function createMirroredBacks(fronts, cardsPerRow, sheetMode) {
+function createMirroredBacks(fronts, cardsPerRow, flipMode) {
     const allRows = [];
     const rows = Math.ceil(fronts.length / cardsPerRow);
     
@@ -59,7 +59,7 @@ function createMirroredBacks(fronts, cardsPerRow, sheetMode) {
     
     let processedRows;
 
-    if (sheetMode === 'longside') {
+    if (flipMode === 'long') {
         // Modalità Long-Side: Inverte l'ordine delle righe.
         processedRows = allRows.reverse();
     } else {
@@ -70,82 +70,29 @@ function createMirroredBacks(fronts, cardsPerRow, sheetMode) {
     return processedRows.flat();
 }
 
-
 /**
- * Funzione di compatibilità per i test esistenti.
- * Mantiene la stessa interfaccia della vecchia funzione ma usa la nuova logica.
- * NOTA: Per mantenere la compatibilità, questa vecchia funzione non può passare
- * la modalità 'portrait'. Userà sempre il default 'landscape'.
+ * Genera l'HTML per una carta (fronte o retro).
  */
-export function calculateLayouts(cards, cardsPerRow = 4) {
-    // Chiama la nuova funzione con la modalità di default 'landscape'
-    const pages = calculatePaginatedLayouts(cards, 8, cardsPerRow, 'landscape');
+function generateCardHtml(card, template, data, isFront = true) {
+    if (card.isPlaceholder) {
+        return '<div class="playing-card placeholder"></div>';
+    }
     
-    // Il resto della logica di compatibilità rimane invariato
-    let allFronts = [];
-    let allBacks = [];
+    let html = template;
+    if (isFront) {
+        html = html.replace(/{{titolo}}/g, card.titolo || '');
+        html = html.replace(/{{icona}}/g, card.icona || '');
+        html = html.replace(/{{emoji}}/g, card.emoji || '');
+        html = html.replace(/{{tipo}}/g, card.tipo || '');
+        html = html.replace(/{{testo}}/g, card.testo || '');
+        html = html.replace(/{{flavor}}/g, card.flavor || '');
+        html = html.replace(/{{classe}}/g, card.classe || '');
+    } else {
+        html = html.replace(/{{icona_esercizio}}/g, data.icona_esercizio || '❓');
+        html = html.replace(/{{classe}}/g, card.classe || '');
+    }
     
-    pages.forEach(page => {
-        allFronts.push(...page.fronts.filter(c => !c.isPlaceholder));
-        allBacks.push(...page.backs);
-    });
-    
-    // Per una perfetta compatibilità con i vecchi test, potremmo dover
-    // riempire l'array 'allFronts' con placeholder fino alla dimensione di 'allBacks'
-    // ma per ora lo lasciamo così come richiesto dalla logica di rimozione dei placeholder.
-    
-    return {
-        fronts: allFronts,
-        backs: allBacks
-    };
-}
-
-/**
- * Genera l'HTML per una singola pagina di carte.
- */
-function generatePageHtml(page, data, frontTemplate, backTemplate, pageNumber, isLastPage) {
-    let pageHtml = '';
-    
-    // Genera il fronte
-    pageHtml += `<div class="print-page fronts-container page-${pageNumber}-front">`;
-    pageHtml += '<div class="card-grid">';
-    
-    page.fronts.forEach(card => {
-        if (card.isPlaceholder) {
-            pageHtml += '<div class="playing-card placeholder"></div>';
-        } else {
-            let front = frontTemplate;
-            front = front.replace(/{{titolo}}/g, card.titolo || '');
-            front = front.replace(/{{icona}}/g, card.icona || '');
-            front = front.replace(/{{emoji}}/g, card.emoji || '');
-            front = front.replace(/{{tipo}}/g, card.tipo || '');
-            front = front.replace(/{{testo}}/g, card.testo || '');
-            front = front.replace(/{{flavor}}/g, card.flavor || '');
-            front = front.replace(/{{classe}}/g, card.classe || '');
-            pageHtml += front;
-        }
-    });
-    
-    pageHtml += '</div></div>';
-    
-    // Genera il retro su una pagina separata
-    pageHtml += `<div class="print-page backs-container page-${pageNumber}-back">`;
-    pageHtml += '<div class="card-grid">';
-    
-    page.backs.forEach(card => {
-        if (card.isPlaceholder) {
-            pageHtml += '<div class="playing-card placeholder"></div>';
-        } else {
-            let back = backTemplate;
-            back = back.replace(/{{icona_esercizio}}/g, data.icona_esercizio || '❓');
-            back = back.replace(/{{classe}}/g, card.classe || '');
-            pageHtml += back;
-        }
-    });
-    
-    pageHtml += '</div></div>';
-    
-    return pageHtml;
+    return html;
 }
 
 // Funzione principale per eseguire lo script da riga di comando
@@ -158,20 +105,21 @@ async function run() {
         .option('-o, --output <file>', 'Genera il PDF delle carte nel file specificato')
         .option('-b, --browser <file>', 'Genera il file HTML delle carte per la visualizzazione nel browser')
         .option('-t, --template <file>', 'Percorso del file template per le singole carte', 'assets/card-template.html')
-        .option('-s, --sheet <mode>', 'Modalità stampa fronte-retro: shortside (lato corto) o longside (lato lungo)', 'shortside'); 
+        .option('-f, --flip <mode>', 'Modalità stampa fronte-retro: short (lato corto) o long (lato lungo)', 'short'); 
     program.helpOption('-h, --help', 'Mostra questo messaggio di aiuto');
     program.parse(process.argv);
     const options = program.opts();
 
-    const sheetMode = options.sheet.toLowerCase();
-    if (sheetMode !== 'shortside' && sheetMode !== 'longside') { 
-        console.error(`❌ Errore: Modalità sheet non valida '${options.sheet}'.`);
-        console.error('   Usa "shortside" (capovolgi sul lato lungo) o "longside" (capovolgi sul lato corto).'); 
+    const flipMode = options.flip.toLowerCase();
+    if (flipMode !== 'short' && flipMode !== 'long') { 
+        console.error(`❌ Errore: Modalità sheet non valida '${options.flip}'.`);
+        console.error('   Usa "short" (capovolgi sul lato lungo) o "long" (capovolgi sul lato corto).'); 
         process.exit(1);
     }
 
     if (!options.output && !options.browser) {
-        console.error('Errore: Devi specificare almeno un formato di output (-o per PDF o -b per HTML). Usa -h per aiuto.');
+        console.error('❌ Errore: Devi specificare almeno un formato di output (-o per PDF o -b per HTML).');
+        console.error('   Usa -h per aiuto.');
         process.exit(1);
     }
 
@@ -194,49 +142,30 @@ async function run() {
         const backTemplate = backTemplateMatch[1];
 
         // Calcola il layout paginato con la modalità sheet specificata
-        const pages = calculatePaginatedLayouts(data.carte, 8, 4, sheetMode);
+        const pages = calculatePaginatedLayouts(data.carte, 8, 4, flipMode);
 
         // Log della modalità utilizzata
-        console.log(`🖨️  Modalità stampa: ${sheetMode.toUpperCase()} (capovolgi sul lato ${sheetMode === 'shortside' ? 'corto' : 'lungo'})`);
+        console.log(`🖨️  Modalità stampa: ${flipMode.toUpperCase()} (capovolgi sul lato ${flipMode === 'short' ? 'corto' : 'lungo'})`);
+
+        /** BEGIN - RIFATTORIZZARE PORTANDO SU FUNZIONE DEDICATA 
+         *  generateCompleteHtml(pages, data, frontTemplate, backTemplate, flipMode)
+        */
 
         // Se ci sono più pagine, dobbiamo creare container separati per ogni foglio
         let fullHtml = '';
         
         if (pages.length === 1) {
             // Caso semplice: solo un foglio, usa il template standard
-            let allFrontsHtml = '';
-            let allBacksHtml = '';
-            
             const page = pages[0];
             
-            // Genera HTML per i fronti
-            page.fronts.forEach(card => {
-                if (card.isPlaceholder) {
-                    allFrontsHtml += '<div class="playing-card placeholder"></div>';
-                } else {
-                    let front = frontTemplate;
-                    front = front.replace(/{{titolo}}/g, card.titolo || '');
-                    front = front.replace(/{{icona}}/g, card.icona || '');
-                    front = front.replace(/{{emoji}}/g, card.emoji || '');
-                    front = front.replace(/{{tipo}}/g, card.tipo || '');
-                    front = front.replace(/{{testo}}/g, card.testo || '');
-                    front = front.replace(/{{flavor}}/g, card.flavor || '');
-                    front = front.replace(/{{classe}}/g, card.classe || '');
-                    allFrontsHtml += front;
-                }
-            });
+            const frontsHtml = page.fronts
+                .map(card => generateCardHtml(card, frontTemplate, data, true))
+                .join('');
             
-            // Genera HTML per i retri
-            page.backs.forEach(card => {
-                if (card.isPlaceholder) {
-                    allBacksHtml += '<div class="playing-card placeholder"></div>';
-                } else {
-                    let back = backTemplate;
-                    back = back.replace(/{{icona_esercizio}}/g, data.icona_esercizio || '❓');
-                    back = back.replace(/{{classe}}/g, card.classe || '');
-                    allBacksHtml += back;
-                }
-            });
+            const backsHtml = page.backs
+                .map(card => generateCardHtml(card, backTemplate, data, false))
+                .join('');
+
             
             // Carica il template principale dai file assets
             const mainTemplatePath = path.resolve('assets/main-template.html');
@@ -278,8 +207,8 @@ async function run() {
             // Aggiungi l'indicatore della modalità dopo il titolo
             const modeInfoHTML = `
             <div class="print-mode-info no-print">
-                <strong>Modalità stampa: ${sheetMode.toUpperCase()}</strong><br>
-                Stampa fronte-retro capovolgendo sul lato ${sheetMode === 'shortside' ? 'corto' : 'lungo'}
+                <strong>Modalità stampa: ${flipMode.toUpperCase()}</strong><br>
+                Stampa fronte-retro capovolgendo sul lato ${flipMode === 'short' ? 'corto' : 'lungo'}
             </div>`;
             
             // Inserisci dopo il sottotitolo
@@ -289,8 +218,8 @@ async function run() {
             // Sostituisci i placeholder nel template
             fullHtml = fullHtml.replace(/{{TITOLO_ESERCIZIO}}/g, data.titolo || '');
             fullHtml = fullHtml.replace(/{{SOTTOTITOLO_ESERCIZIO}}/g, data.sottotitolo || '');
-            fullHtml = fullHtml.replace(/{{FRONTE_CARTE}}/g, allFrontsHtml);
-            fullHtml = fullHtml.replace(/{{RETRO_CARTE}}/g, allBacksHtml);
+            fullHtml = fullHtml.replace(/{{FRONTE_CARTE}}/g, frontsHtml);
+            fullHtml = fullHtml.replace(/{{RETRO_CARTE}}/g, backsHtml);
             
         } else {
             // Caso complesso: più fogli, dobbiamo replicare la struttura per ogni foglio
@@ -361,10 +290,10 @@ ${headContent}
             text-transform: uppercase;
         }
     }            `;
-if (sheetMode === 'longside') {
+if (flipMode === 'long') {
     fullHtml +=
     `
-    /* Rotazione carte retro */
+    /* Rotazione carte retro in caso di flip su lato lungo */
     .backs-container .playing-card {
         transform: rotate(180deg);
     }`;
@@ -380,44 +309,21 @@ fullHtml += `
             <p class="mt-4 text-lg text-gray-600">${data.sottotitolo || ''}</p>
         </div>
         <div class="print-mode-info">
-            <strong>Modalità stampa: ${sheetMode.toUpperCase()}</strong><br>
-            Stampa fronte-retro capovolgendo sul lato ${sheetMode === 'landscape' ? 'lungo' : 'corto'}
+            <strong>ℹ️ Modalità stampa: ${flipMode.toUpperCase()}</strong><br>
+            Stampa fronte-retro capovolgendo sul lato ${flipMode === 'short' ? 'lungo' : 'corto'}
         </div>`;
             
-            // Genera HTML per ogni foglio
-            pages.forEach((page, pageIndex) => {
-                let pageFrontsHtml = '';
-                let pageBacksHtml = '';
+
+      // Genera HTML per ogni foglio
+        pages.forEach((page, pageIndex) => {
+            const pageFrontsHtml = page.fronts
+                .map(card => generateCardHtml(card, frontTemplate, data, true))
+                .join('');
                 
-                // Genera fronti per questa pagina
-                page.fronts.forEach(card => {
-                    if (card.isPlaceholder) {
-                        pageFrontsHtml += '<div class="playing-card placeholder"></div>';
-                    } else {
-                        let front = frontTemplate;
-                        front = front.replace(/{{titolo}}/g, card.titolo || '');
-                        front = front.replace(/{{icona}}/g, card.icona || '');
-                        front = front.replace(/{{emoji}}/g, card.emoji || '');
-                        front = front.replace(/{{tipo}}/g, card.tipo || '');
-                        front = front.replace(/{{testo}}/g, card.testo || '');
-                        front = front.replace(/{{flavor}}/g, card.flavor || '');
-                        front = front.replace(/{{classe}}/g, card.classe || '');
-                        pageFrontsHtml += front;
-                    }
-                });
-                
-                // Genera retri per questa pagina
-                page.backs.forEach(card => {
-                    if (card.isPlaceholder) {
-                        pageBacksHtml += '<div class="playing-card placeholder"></div>';
-                    } else {
-                        let back = backTemplate;
-                        back = back.replace(/{{icona_esercizio}}/g, data.icona_esercizio || '❓');
-                        back = back.replace(/{{classe}}/g, card.classe || '');
-                        pageBacksHtml += back;
-                    }
-                });
-                
+            const pageBacksHtml = page.backs
+                .map(card => generateCardHtml(card, backTemplate, data, false))
+                .join('');
+        
                 // Aggiungi commento per debug
                 fullHtml += `
         <!-- FOGLIO ${pageIndex + 1} di ${pages.length} -->`;
@@ -451,6 +357,8 @@ fullHtml += `
         
         const finalHtml = fullHtml;
 
+        /** END - RIFATTORIZZARE PORTANDO SU FUNZIONE DEDICATA */
+
         if (options.browser) {
             const htmlPath = path.resolve(options.browser);
             await fs.writeFile(htmlPath, finalHtml);
@@ -481,7 +389,7 @@ fullHtml += `
             console.log(`🎴 Carte totali: ${data.carte.length}`);
         }
     } catch (error) {
-        console.error('Si è verificato un errore:', error.message);
+        console.error('❌ Si è verificato un errore:', error.message);
         process.exit(1);
     }
 }

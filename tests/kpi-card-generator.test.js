@@ -14,13 +14,13 @@ const getLayoutIds = (layout) => {
 describe('calculatePaginatedLayouts - Test per Short-Side (default)', () => {
 
     test('dovrebbe gestire 0 carte', () => {
-        const pages = calculatePaginatedLayouts(createMockCards(0), 8, 4, 'shortside');
+        const pages = calculatePaginatedLayouts(createMockCards(0), 8, 4, 'short');
         expect(pages.length).toBe(0);
     });
 
     test('dovrebbe generare layout per 8 carte (foglio completo)', () => {
         const cards = createMockCards(8);
-        const pages = calculatePaginatedLayouts(cards, 8, 4, 'shortside');
+        const pages = calculatePaginatedLayouts(cards, 8, 4, 'short');
         
         expect(pages.length).toBe(1);
         const page = pages[0];
@@ -39,7 +39,7 @@ describe('calculatePaginatedLayouts - Test per Short-Side (default)', () => {
 
     test('dovrebbe generare layout per 10 carte (2 fogli)', () => {
         const cards = createMockCards(10);
-        const pages = calculatePaginatedLayouts(cards, 8, 4, 'shortside');
+        const pages = calculatePaginatedLayouts(cards, 8, 4, 'short');
         
         expect(pages.length).toBe(2);
         
@@ -60,7 +60,7 @@ describe('calculatePaginatedLayouts - Test Modalità Long-Side', () => {
 
     test('modalità LONG-SIDE: dovrebbe invertire righe per 8 carte', () => {
         const cards = createMockCards(8);
-        const pages = calculatePaginatedLayouts(cards, 8, 4, 'longside');
+        const pages = calculatePaginatedLayouts(cards, 8, 4, 'long');
         
         const page = pages[0];
         
@@ -73,7 +73,7 @@ describe('calculatePaginatedLayouts - Test Modalità Long-Side', () => {
 
     test('modalità LONG-SIDE: dovrebbe invertire righe per 10 carte (foglio 2)', () => {
         const cards = createMockCards(10);
-        const pages = calculatePaginatedLayouts(cards, 8, 4, 'longside');
+        const pages = calculatePaginatedLayouts(cards, 8, 4, 'long');
         
         const page2 = pages[1];
         
