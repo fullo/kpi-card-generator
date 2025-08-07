@@ -267,18 +267,8 @@ async function run() {
                         display: none !important;
                     }
                 }
-            `;
 
-            if (sheetMode === 'longside') {
-                modeInfoCSS +=
-                `
-                /* Rotazione carte retro */
-                .backs-container .playing-card {
-                    transform: rotate(180deg);
-                }`;
-            }
 
-            modeInfoCSS += `
             </style>
             `;
             
@@ -370,7 +360,17 @@ ${headContent}
             color: #d97706;
             text-transform: uppercase;
         }
-    }
+    }            `;
+if (sheetMode === 'longside') {
+    fullHtml +=
+    `
+    /* Rotazione carte retro */
+    .backs-container .playing-card {
+        transform: rotate(180deg);
+    }`;
+}
+
+fullHtml += `
 </style>
 </head>
 <body>
