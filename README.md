@@ -14,10 +14,11 @@ Per utilizzare questo generatore, sono necessari i seguenti strumenti:
 ## **Installazione**
 
 1. **Clona il repository:**  
-   `git clone https://github.com/fullo/kpi-card-generator.git  `
+   `git clone https://github.com/fullo/kpi-card-generator.git`
+   
    `cd kpi-card-generator`
  
-2. Installa le dipendenze:  
+3. Installa le dipendenze:  
    Questo comando installerà le librerie necessarie (commander per la gestione dei comandi e puppeteer per la generazione del PDF).  
    `npm install`
 
