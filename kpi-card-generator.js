@@ -4,9 +4,16 @@ import { Command } from 'commander';
 import puppeteer from 'puppeteer';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { LayoutCalculator } from './class/LayoutCalculator.js';
+import { CardPaginator } from './class/CardPaginator.js';
+import { CardRenderer } from './class/CardRenderer.js';
+import { DeckValidator } from './class/DeckValidator.js';
+import { PDFGenerator } from './class/PDFGenerator.js';
+import { CLIInterface } from './class/CLIInterface.js';
 
 /**
  * Calcola la disposizione delle carte per la stampa fronte-retro con paginazione.
+ * @deprecated Usa direttamente CardPaginator.createPaginatedLayouts per maggiore flessibilità
  * @param {Array<Object>} cards - L'array di oggetti carta.
  * @param {number} cardsPerPage - Il numero di carte per pagina (default 8).
  * @param {number} cardsPerRow - Il numero di carte per riga (default 4).
@@ -14,61 +21,16 @@ import path from 'path';
  * @returns {Array<{fronts: Array, backs: Array}>} Array di pagine con fronti e retri ordinati.
  */
 export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4, flipMode = 'short') {
-    const pages = [];
-    const totalCards = cards.length;
-    const totalPages = Math.ceil(totalCards / cardsPerPage);
-    
-    for (let pageIndex = 0; pageIndex < totalPages; pageIndex++) {
-        const startIdx = pageIndex * cardsPerPage;
-        const endIdx = Math.min(startIdx + cardsPerPage, totalCards);
-        const pageCards = cards.slice(startIdx, endIdx);
-        
-        const pageFronts = [...pageCards];
-        while (pageFronts.length < cardsPerPage) {
-            pageFronts.push({ isPlaceholder: true });
-        }
-        
-        const pageBacks = createMirroredBacks(pageFronts, cardsPerRow, flipMode);
-        
-        pages.push({
-            fronts: pageFronts,
-            backs: pageBacks
-        });
-    }
-    
-    return pages;
+    console.warn('calculatePaginatedLayouts è deprecata, usa CardPaginator.createPaginatedLayouts');
+    return CardPaginator.createPaginatedLayouts(
+        cards, 
+        cardsPerPage, 
+        cardsPerRow, 
+        flipMode, 
+        (fronts, cardsPerRow, printMode) => LayoutCalculator.calculateMirrorLayout(fronts, cardsPerRow, printMode)
+    );
 }
 
-/**
- * Crea l'ordinamento speculare del retro per una pagina in base alla modalità.
- * - 'short': Inverte solo l'ordine delle carte in ogni riga (per capovolgere sul lato lungo).
- * - 'long': Inverte solo l'ordine delle righe (per capovolgere sul lato corto).
- * @param {Array<Object>} fronts - Array delle carte del fronte.
- * @param {number} cardsPerRow - Numero di carte per riga.
- * @param {string} flipMode - La modalità di stampa ('short' o 'long').
- * @returns {Array<Object>} Array delle carte del retro ordinate.
- */
-function createMirroredBacks(fronts, cardsPerRow, flipMode) {
-    const allRows = [];
-    const rows = Math.ceil(fronts.length / cardsPerRow);
-    
-    for (let i = 0; i < rows; i++) {
-        const rowCards = fronts.slice(i * cardsPerRow, (i + 1) * cardsPerRow);
-        allRows.push(rowCards);
-    }
-    
-    let processedRows;
-
-    if (flipMode === 'long') {
-        // Modalità Long-Side: Inverte l'ordine delle righe.
-        processedRows = allRows.reverse();
-    } else {
-        // Modalità Short-Side (default): Inverte le carte in ogni riga.
-        processedRows = allRows.map(row => row.reverse());
-    }
-    
-    return processedRows.flat();
-}
 
 /**
  * Genera l'HTML per una carta (fronte o retro).
@@ -205,91 +167,20 @@ async function generateCompleteHtml(pages, data, frontTemplate, backTemplate, fl
 
 // Funzione principale per eseguire lo script da riga di comando
 export async function run() {
-    const program = new Command();
-    program
-        .version('2.1.0')
-        .description('Generatore di carte da gioco per workshop KPI con paginazione corretta')
-        .requiredOption('-i, --input <file>', 'File di input JSON con i dati delle carte')
-        .option('-o, --output <file>', 'Genera il PDF delle carte nel file specificato')
-        .option('-b, --browser <file>', 'Genera il file HTML delle carte per la visualizzazione nel browser')
-        .option('-t, --template <file>', 'Percorso del file template per le singole carte', 'assets/card-template.html')
-        .option('-f, --flip <mode>', 'Modalità stampa fronte-retro: short (lato corto) o long (lato lungo)', 'short'); 
-    program.helpOption('-h, --help', 'Mostra questo messaggio di aiuto');
-    program.parse(process.argv);
-    const options = program.opts();
-
-    const flipMode = options.flip.toLowerCase();
-    if (flipMode !== 'short' && flipMode !== 'long') { 
-        console.error(`❌ Errore: Modalità sheet non valida '${options.flip}'.`);
-        console.error('   Usa "short" (capovolgi sul lato lungo) o "long" (capovolgi sul lato corto).'); 
-        process.exit(1);
+    console.warn('⚠️  La funzione run() è deprecata. Usa CLIInterface per le nuove implementazioni.');
+    
+    // Per compatibilità, creiamo un'istanza del CLI moderno
+    const cli = new CLIInterface();
+    
+    // Converte gli argomenti nel nuovo formato
+    const args = process.argv;
+    
+    // Se non ci sono comandi specifici, assume 'generate' per compatibilità
+    if (args.length > 2 && !['generate', 'validate', 'optimize', 'info'].includes(args[2])) {
+        args.splice(2, 0, 'generate');
     }
-
-    if (!options.output && !options.browser) {
-        console.error('❌ Errore: Devi specificare almeno un formato di output (-o per PDF o -b per HTML).');
-        console.error('   Usa -h per aiuto.');
-        process.exit(1);
-    }
-
-
-    try {
-        const jsonPath = path.resolve(options.input);
-        const jsonData = await fs.readFile(jsonPath, 'utf-8');
-        const data = JSON.parse(jsonData);
-
-        const templatePath = path.resolve(options.template);
-        const templateHtml = await fs.readFile(templatePath, 'utf-8');
-        
-        const frontTemplateMatch = templateHtml.match(/<template id="card-front">([\s\S]*?)<\/template>/);
-        const backTemplateMatch = templateHtml.match(/<template id="card-back">([\s\S]*?)<\/template>/);
-
-        if (!frontTemplateMatch || !backTemplateMatch) {
-            throw new Error(`Template non validi nel file: ${templatePath}.`);
-        }
-        const frontTemplate = frontTemplateMatch[1];
-        const backTemplate = backTemplateMatch[1];
-
-        // Calcola il layout paginato con la modalità sheet specificata
-        const pages = calculatePaginatedLayouts(data.carte, 8, 4, flipMode);
-
-        // Log della modalità utilizzata
-        console.log(`🖨️  Modalità stampa: ${flipMode.toUpperCase()} (capovolgi sul lato ${flipMode === 'short' ? 'corto' : 'lungo'})`);
-
-        const finalHtml = await generateCompleteHtml(pages, data, frontTemplate, backTemplate, flipMode);
-
-        if (options.browser) {
-            const htmlPath = path.resolve(options.browser);
-            await fs.writeFile(htmlPath, finalHtml);
-            console.log(`✅ File HTML generato con successo: ${htmlPath}`);
-        }
-
-        if (options.output) {
-            const pdfPath = path.resolve(options.output);
-            const browser = await puppeteer.launch({ 
-                headless: true, 
-                args: ['--no-sandbox'] 
-            });
-            const page = await browser.newPage();
-            await page.setContent(finalHtml, { waitUntil: 'networkidle0' });
-            
-            // Configurazione stampa con margini zero
-            await page.pdf({
-                path: pdfPath,
-                format: 'A4',
-                printBackground: true,
-                landscape: true,
-                margin: { top: '0', right: '0', bottom: '0', left: '0' }
-            });
-            
-            await browser.close();
-            console.log(`✅ File PDF generato con successo: ${pdfPath}`);
-            console.log(`📄 Fogli generati: ${pages.length} (${pages.length * 2} pagine totali)`);
-            console.log(`🎴 Carte totali: ${data.carte.length}`);
-        }
-    } catch (error) {
-        console.error('❌ Si è verificato un errore:', error.message);
-        process.exit(1);
-    }
+    
+    await cli.run(args);
 }
 
 // Controlla se lo script è stato eseguito direttamente

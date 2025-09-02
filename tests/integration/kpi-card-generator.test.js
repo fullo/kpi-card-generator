@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from '@jest/globals';
-import { calculatePaginatedLayouts } from '../kpi-card-generator.js';
+import { calculatePaginatedLayouts } from '../../kpi-card-generator.js';
 
 // Funzione helper per creare dati di test
 const createMockCards = (cardCount) => {
