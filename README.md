@@ -562,8 +562,8 @@ Creative Commons BY-NC-SA 4.0 - **Daruma Consulting di Francesco Fullone**
 
 Sviluppato da **Francesco Fullone** per workshop su Metriche, KPI e OKR.
 
-- 🌐 [Daruma Consulting](https://daruma.consulting)
-- 📧 francesco@daruma.consulting
+- 🌐 [Daruma Consulting](https://darumahq.it)
+- 📧 francesco@darumahq.it
 - 🐙 [GitHub](https://github.com/fullo)
 
 ---
