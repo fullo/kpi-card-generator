@@ -191,8 +191,11 @@
         .spiegazione .main-text { font-size: 0.75rem; line-height: 1.2; }
         .spiegazione .card-type-banner { background-color: black; }
         
+        .card-evento .card-title, 
+        .card-evento .card-type-banner,
         .card-evento-tecnico .card-title, 
         .card-evento-tecnico .card-type-banner { background-color: #3b82f6; color: white; } 
+        .card-evento .card-icon-container,
         .card-evento-tecnico .card-icon-container { background-color: #dbeafe; color: #3b82f6; }
         
         .card-evento-marketing .card-title, 
@@ -222,6 +225,18 @@
         .card-conflitto .card-title, 
         .card-conflitto .card-type-banner { background-color: #ef4444; color: white; } 
         .card-conflitto .card-icon-container { background-color: #fee2e2; color: #ef4444; }
+        
+        .card-bias .card-title, 
+        .card-bias .card-type-banner { background-color: #f7832a; color: white; } 
+  
+        .card-cavaliere .card-title, 
+        .card-cavaliere .card-type-banner { background-color: #265d80; color: white; } 
+        
+        .card-obiettivo-vago .card-title, 
+        .card-obiettivo-vago .card-type-banner { background-color: #aa4f4f; color: white; }
+        
+        .card-outcome .card-title, 
+        .card-outcome .card-type-banner { background-color: #648026; color: white; }
         
         /* === STILI STAMPA === */
         @media print {
@@ -395,6 +410,10 @@
                 font-size: 8pt !important; 
                 margin-bottom: 1mm !important; 
             }
+            
+/*            .card-bias .card-image-area { display: none !important; } */
+            .card-bias .card-description-box { padding: 1mm !important;  margin-top: 0mm !important; }
+            .card-bias .main-text { font-size: 6pt !important; line-height: 1.3 !important; }
         }
     </style>
 </head>

@@ -76,6 +76,7 @@ export class CLIInterface {
             .option('--cards-per-row <number>', 'Numero di carte per riga', '4')
             .option('--validate', 'Valida il JSON prima della generazione', true)
             .option('--no-validate', 'Salta la validazione del JSON')
+            .option('--no-char-limits', 'Bypassa i controlli di lunghezza caratteri (500 caratteri per testo)')
             .option('--progress', 'Mostra barra di progresso', this.config.enableProgress)
             .option('--no-progress', 'Nasconde la barra di progresso')
             .option('-v, --verbose', 'Output verboso per debugging')
@@ -93,6 +94,7 @@ export class CLIInterface {
             .description('Valida un file JSON delle carte senza generare output')
             .requiredOption('-i, --input <file>', 'File di input JSON da validare')
             .option('--strict', 'Validazione strict con controlli aggiuntivi')
+            .option('--no-char-limits', 'Bypassa i controlli di lunghezza caratteri (500 caratteri per testo)')
             .option('--report <file>', 'Salva il report di validazione in un file')
             .action(async (options) => {
                 await this.handleValidateCommand(options);
@@ -147,7 +149,11 @@ export class CLIInterface {
             const cardsPerRow = parseInt(options.cardsPerRow);
 
             // Caricamento e validazione JSON
-            const jsonData = await this.loadAndValidateJSON(options.input, options.validate);
+            // Commander.js mappa --no-char-limits come charLimits: false
+            const validationOptions = {
+                bypassCharacterLimits: options.charLimits === false
+            };
+            const jsonData = await this.loadAndValidateJSON(options.input, options.validate, validationOptions);
             
             if (options.verbose) {
                 this.log(`📊 Carte caricate: ${jsonData.carte.length}`, 'info');
@@ -219,9 +225,16 @@ export class CLIInterface {
             
             const jsonContent = await fs.readFile(path.resolve(options.input), 'utf-8');
             
-            // Configura validator per strict mode
+            // Configura validator per strict mode e bypass caratteri
+            // Commander.js mappa --no-char-limits come charLimits: false
+            const bypassLimits = options.charLimits === false;
+            
+            if (bypassLimits) {
+                this.log('🔓 Bypass dei limiti caratteri abilitato', 'info');
+            }
             const validator = new DeckValidator({
-                strictIconValidation: options.strict || false
+                strictIconValidation: options.strict || false,
+                bypassCharacterLimits: bypassLimits
             });
 
             const { result, report } = validator.validateWithReport(jsonContent);
@@ -384,15 +397,20 @@ export class CLIInterface {
      * Carica e valida il file JSON
      * @param {string} inputPath - Percorso del file JSON
      * @param {boolean} shouldValidate - Se eseguire la validazione
+     * @param {Object} validationOptions - Opzioni per la validazione
      * @returns {Promise<Object>} Dati JSON validati
      */
-    async loadAndValidateJSON(inputPath, shouldValidate = true) {
+    async loadAndValidateJSON(inputPath, shouldValidate = true, validationOptions = {}) {
         try {
             const jsonPath = path.resolve(inputPath);
             const jsonContent = await fs.readFile(jsonPath, 'utf-8');
             
             if (shouldValidate) {
-                const { result } = this.validator.validateWithReport(jsonContent);
+                // Crea un validator con le opzioni specificate
+                const validator = new DeckValidator({
+                    ...validationOptions
+                });
+                const { result } = validator.validateWithReport(jsonContent);
                 
                 if (!result.isValid) {
                     this.log('❌ Validazione JSON fallita:', 'error');

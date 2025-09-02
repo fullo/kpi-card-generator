@@ -25,8 +25,16 @@ export class CardRenderer {
         enableCache: true,
         debugMode: false,
         preserveWhitespace: false,
-        validateHtml: true
+        validateHtml: true,
+        allowHtmlMarkup: true
     };
+
+    /**
+     * Tag HTML permessi per il markup nelle carte
+     */
+    static ALLOWED_HTML_TAGS = [
+        'strong', 'b', 'em', 'i', 'italic', 'u', 'br', 'ul', 'ol', 'li'
+    ];
 
     /**
      * Costruttore del renderer
@@ -95,13 +103,69 @@ export class CardRenderer {
     }
 
     /**
+     * Sanitizza l'HTML permettendo solo i tag sicuri specificati
+     * @param {string} html - HTML da sanitizzare
+     * @returns {string} HTML sanitizzato
+     */
+    static sanitizeHtml(html) {
+        if (!html || typeof html !== 'string') {
+            return '';
+        }
+
+        // Escapea tutti i caratteri pericolosi prima
+        let sanitized = html.replace(/[<>&"']/g, (match) => {
+            const escapeMap = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' };
+            return escapeMap[match];
+        });
+
+        // Poi ripristina solo i tag permessi
+        CardRenderer.ALLOWED_HTML_TAGS.forEach(tag => {
+            // Tag di apertura
+            const openTagRegex = new RegExp(`&lt;(${tag}(?:\\s[^&]*?)?)&gt;`, 'gi');
+            sanitized = sanitized.replace(openTagRegex, '<$1>');
+            
+            // Tag di chiusura
+            const closeTagRegex = new RegExp(`&lt;\\/${tag}&gt;`, 'gi');
+            sanitized = sanitized.replace(closeTagRegex, `</${tag}>`);
+        });
+
+        return sanitized;
+    }
+
+    /**
+     * Conta i caratteri in un testo escludendo i tag HTML
+     * @param {string} text - Testo che può contenere HTML
+     * @returns {number} Numero di caratteri senza markup
+     */
+    static countTextCharacters(text) {
+        if (!text || typeof text !== 'string') {
+            return 0;
+        }
+
+        // Rimuove tutti i tag HTML e conta solo il testo visibile
+        const textOnly = text.replace(/<[^>]*>/g, '');
+        
+        // Decodifica le entità HTML comuni per il conteggio corretto
+        const decoded = textOnly
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#x27;/g, "'")
+            .replace(/&nbsp;/g, ' ');
+
+        return decoded.length;
+    }
+
+    /**
      * Sostituisce i placeholder in un template con i valori forniti
      * @param {string} template - Template con placeholder {{variabile}}
      * @param {Object} data - Oggetto con i valori per i placeholder
      * @param {boolean} strict - Se true, lancia errore per placeholder non trovati
+     * @param {boolean} allowHtml - Se true, permette HTML sicuro nei valori
      * @returns {string} Template con placeholder sostituiti
      */
-    static replacePlaceholders(template, data = {}, strict = false) {
+    static replacePlaceholders(template, data = {}, strict = false, allowHtml = true) {
         if (!template || typeof template !== 'string') {
             return '';
         }
@@ -117,12 +181,22 @@ export class CardRenderer {
             
             if (data.hasOwnProperty(key)) {
                 const value = data[key];
-                // Escape HTML per sicurezza se il valore è una stringa
-                const safeValue = typeof value === 'string' ? 
-                    value.replace(/[<>&"']/g, (match) => {
-                        const escapeMap = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' };
-                        return escapeMap[match];
-                    }) : String(value);
+                let safeValue;
+                
+                if (typeof value === 'string') {
+                    if (allowHtml) {
+                        // Usa il sanitizzatore HTML per permettere tag sicuri
+                        safeValue = CardRenderer.sanitizeHtml(value);
+                    } else {
+                        // Escape completo HTML se allowHtml è false
+                        safeValue = value.replace(/[<>&"']/g, (match) => {
+                            const escapeMap = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#x27;' };
+                            return escapeMap[match];
+                        });
+                    }
+                } else {
+                    safeValue = String(value);
+                }
                 
                 result = result.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), safeValue);
             } else {
@@ -160,7 +234,7 @@ export class CardRenderer {
         const data = isFront ? card : { ...exerciseData, classe: card.classe || '' };
         
         try {
-            return this.constructor.replacePlaceholders(template, data, this.config.validateHtml);
+            return this.constructor.replacePlaceholders(template, data, false, this.config.allowHtmlMarkup);
         } catch (error) {
             if (this.config.debugMode) {
                 return `<div class="playing-card error">
@@ -321,11 +395,11 @@ export class CardRenderer {
         const dynamicStyles = this.generateDynamicStyles(printMode, pages.length > 1);
         const modeIndicator = this.generateModeIndicator(printMode, modeDescription);
         
-        // Sostituisci i placeholder nel template principale
+        // Sostituisci i placeholder nel template principale (non permettere HTML nel titolo per sicurezza)
         let fullHtml = this.constructor.replacePlaceholders(this.mainTemplate, {
             TITOLO_ESERCIZIO: exerciseData.titolo || '',
             SOTTOTITOLO_ESERCIZIO: exerciseData.sottotitolo || ''
-        });
+        }, false, false);
 
         // Inserisci gli stili dinamici prima della chiusura dell'head
         fullHtml = fullHtml.replace('</head>', `${dynamicStyles}</head>`);
@@ -368,10 +442,14 @@ export class CardRenderer {
             errors.push('Tag HTML non bilanciati');
         }
 
-        // Controlla placeholder malformati
-        const malformedPlaceholders = template.match(/\{[^}]*\}|\{[^{]*\{\{/g);
+        // Controlla placeholder malformati (non doppi)
+        const malformedPlaceholders = template.match(/\{[^}]*\}(?!\})/g);
         if (malformedPlaceholders) {
-            errors.push(`Placeholder malformati trovati: ${malformedPlaceholders.join(', ')}`);
+            // Filtra solo quelli che non sono {{}}
+            const actualMalformed = malformedPlaceholders.filter(p => !p.startsWith('{{') || !p.endsWith('}}'));
+            if (actualMalformed.length > 0) {
+                errors.push(`Placeholder malformati trovati: ${actualMalformed.join(', ')}`);
+            }
         }
 
         return {

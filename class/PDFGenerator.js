@@ -75,6 +75,7 @@ export class PDFGenerator {
         
         this.browser = null;
         this.activePage = null;
+        this.listenersAdded = false;
         this.stats = {
             generatedPDFs: 0,
             totalTime: 0,
@@ -93,10 +94,12 @@ export class PDFGenerator {
                 this.browser = await puppeteer.launch(this.browserConfig);
                 
                 // Configura listener per cleanup automatico
-                if (this.config.autoCleanup) {
+                if (this.config.autoCleanup && !this.listenersAdded) {
+                    process.setMaxListeners(15); // Increase limit for testing
                     process.on('exit', () => this.cleanup());
                     process.on('SIGINT', () => this.cleanup());
                     process.on('SIGTERM', () => this.cleanup());
+                    this.listenersAdded = true;
                 }
             } catch (error) {
                 throw new Error(`Impossibile inizializzare il browser: ${error.message}`);
@@ -152,10 +155,10 @@ export class PDFGenerator {
             await page.setContent(htmlContent, setContentOptions);
             
             // Attendi che tutti i font siano caricati
-            await page.evaluateHandle(() => document.fonts.ready);
+            await page.evaluate(() => document.fonts.ready);
             
             // Attendi un momento extra per il rendering completo
-            await page.waitForTimeout(500);
+            await new Promise(resolve => setTimeout(resolve, 500));
             
         } catch (error) {
             throw new Error(`Errore nel caricamento del contenuto HTML: ${error.message}`);
@@ -214,7 +217,8 @@ export class PDFGenerator {
 
                 // Genera PDF
                 const pdfOptions = { ...this.pdfConfig, ...customPdfOptions };
-                const pdfBuffer = await page.pdf(pdfOptions);
+                const pdfResult = await page.pdf(pdfOptions);
+                const pdfBuffer = Buffer.from(pdfResult);
                 
                 // Cleanup pagina
                 await page.close();
@@ -325,7 +329,8 @@ export class PDFGenerator {
             }
 
             const pdfOptions = { ...this.pdfConfig, ...customPdfOptions };
-            const pdfBuffer = await page.pdf(pdfOptions);
+            const pdfResult = await page.pdf(pdfOptions);
+            const pdfBuffer = Buffer.from(pdfResult);
             
             await page.close();
             this.activePage = null;

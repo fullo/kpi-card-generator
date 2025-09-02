@@ -21,7 +21,10 @@ import { CLIInterface } from './class/CLIInterface.js';
  * @returns {Array<{fronts: Array, backs: Array}>} Array di pagine con fronti e retri ordinati.
  */
 export function calculatePaginatedLayouts(cards, cardsPerPage = 8, cardsPerRow = 4, flipMode = 'short') {
-    console.warn('calculatePaginatedLayouts è deprecata, usa CardPaginator.createPaginatedLayouts');
+    // Solo warn se non siamo in ambiente di test
+    if (process.env.NODE_ENV !== 'test' && !process.env.JEST_WORKER_ID) {
+        console.warn('calculatePaginatedLayouts è deprecata, usa CardPaginator.createPaginatedLayouts');
+    }
     return CardPaginator.createPaginatedLayouts(
         cards, 
         cardsPerPage, 

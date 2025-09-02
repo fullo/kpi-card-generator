@@ -1,0 +1,34 @@
+{
+  "titolo": "Test HTML Markup",
+  "sottotitolo": "Verifica supporto tag HTML nelle carte",
+  "icona_esercizio": "🔧",
+  "carte": [
+    {
+      "titolo": "Carta con <strong>grassetto</strong>",
+      "icona": "1️⃣",
+      "emoji": "📝",
+      "tipo": "Test HTML",
+      "testo": "Questa carta contiene <strong>testo in grassetto</strong>, <em>corsivo</em>, e <u>sottolineato</u>.<br><br>Lista di elementi:<ul><li>Primo elemento</li><li>Secondo elemento con <b>bold</b></li><li>Terzo elemento</li></ul>",
+      "flavor": "Testing: <italic>corsivo</italic> e <strong>forte</strong>",
+      "classe": "card-evento-tecnico"
+    },
+    {
+      "titolo": "Carta con Interruzioni",
+      "icona": "2️⃣", 
+      "emoji": "📋",
+      "tipo": "Test BR",
+      "testo": "Prima riga<br>Seconda riga<br><br>Dopo spazio vuoto<br>Ultima riga",
+      "flavor": "Testo con <br> interruzioni di riga",
+      "classe": "card-evento-marketing"
+    },
+    {
+      "titolo": "Lista Completa",
+      "icona": "3️⃣",
+      "emoji": "📊", 
+      "tipo": "Test UL/LI",
+      "testo": "<strong>Obiettivi:</strong><ul><li><em>Aumentare</em> le vendite del 20%</li><li><strong>Migliorare</strong> la qualità del servizio</li><li>Implementare <b>nuove funzionalità</b></li></ul><br><strong>Note:</strong> Tutti gli obiettivi sono <em>priorità alta</em>.",
+      "flavor": "Mix completo di <strong>tutti</strong> i tag supportati",
+      "classe": "card-obiettivo"
+    }
+  ]
+}

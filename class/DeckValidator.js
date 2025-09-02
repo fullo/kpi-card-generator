@@ -1,3 +1,5 @@
+import { CardRenderer } from './CardRenderer.js';
+
 /**
  * DeckValidator - Gestisce la validazione dei dati JSON delle carte
  * 
@@ -7,6 +9,7 @@
  * - Validazione tipi di dati
  * - Business rules validation
  * - Generazione messaggi di errore user-friendly
+ * - Conteggio caratteri escludendo markup HTML
  */
 export class DeckValidator {
 
@@ -48,6 +51,8 @@ export class DeckValidator {
         strictIconValidation: false,
         allowEmptyFields: true,
         validateEncoding: true,
+        countHtmlAsText: true,
+        bypassCharacterLimits: false,
         locale: 'it'
     };
 
@@ -91,12 +96,37 @@ export class DeckValidator {
     validateString(value, rules = {}) {
         const errors = [];
 
-        if (rules.maxLength && value.length > rules.maxLength) {
-            errors.push(`La stringa è troppo lunga (max ${rules.maxLength} caratteri, attuale ${value.length})`);
+        // Salta controlli lunghezza se bypass è abilitato
+        if (this.config.bypassCharacterLimits) {
+            // Solo validazione encoding se abilitata
+            if (this.config.validateEncoding) {
+                try {
+                    // Test encoding UTF-8
+                    encodeURIComponent(value);
+                } catch (error) {
+                    errors.push('Encoding non valido - caratteri non supportati');
+                }
+            }
+            return { isValid: errors.length === 0, errors };
         }
 
-        if (rules.minLength && value.length < rules.minLength) {
-            errors.push(`La stringa è troppo corta (min ${rules.minLength} caratteri, attuale ${value.length})`);
+        // Usa il conteggio caratteri che esclude il markup HTML se configurato
+        const textLength = this.config.countHtmlAsText ? 
+            CardRenderer.countTextCharacters(value) : 
+            value.length;
+
+        if (rules.maxLength && textLength > rules.maxLength) {
+            const lengthInfo = this.config.countHtmlAsText ? 
+                `max ${rules.maxLength} caratteri di testo, attuale ${textLength} (${value.length} con markup)` :
+                `max ${rules.maxLength} caratteri, attuale ${textLength}`;
+            errors.push(`La stringa è troppo lunga (${lengthInfo})`);
+        }
+
+        if (rules.minLength && textLength < rules.minLength) {
+            const lengthInfo = this.config.countHtmlAsText ? 
+                `min ${rules.minLength} caratteri di testo, attuale ${textLength} (${value.length} con markup)` :
+                `min ${rules.minLength} caratteri, attuale ${textLength}`;
+            errors.push(`La stringa è troppo corta (${lengthInfo})`);
         }
 
         // Validazione encoding UTF-8
