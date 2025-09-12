@@ -1,5 +1,180 @@
 # Changelog - KPI Card Generator
 
+## [4.2.1] - 2025-09-12
+
+### 📚 **Documentation Refactoring**
+
+#### **Restructured Documentation Architecture**
+- **Main README.md**: Streamlined project overview, architecture, and technology stack
+  - Concise but comprehensive introduction for new users
+  - Clear quick start guide for all interfaces (CLI, API, Web)
+  - Cross-references to specialized documentation
+  - Architecture highlights and performance benchmarks
+- **web/README.md**: Complete web application guide (comprehensive overhaul)
+  - Detailed usage workflows and component architecture
+  - Technical implementation details and customization options
+  - Deployment strategies and troubleshooting guides
+  - Development setup and testing procedures
+- **api/README.md**: Production-ready API documentation (comprehensive overhaul)
+  - Complete endpoint reference with examples
+  - Security features and configuration options
+  - Integration examples in multiple programming languages
+  - Performance monitoring and deployment guidance
+
+#### **Content Organization Improvements**
+- **Self-contained documentation**: Each README is complete for its domain
+- **Reduced duplication**: Eliminated repeated information across files
+- **Better navigation**: Clear cross-references between documentation sections
+- **User-focused approach**: Organized by user needs rather than technical structure
+
+#### **Enhanced Technical Coverage**
+- **Updated badges and version information** across all documentation
+- **Comprehensive troubleshooting sections** for each interface
+- **Real-world examples and use cases** for different user types
+- **Production deployment guidance** with Docker, PM2, and systemd examples
+
+### 🔧 **Recent Bug Fixes Integration**
+
+#### **PDF and Web Interface Consistency Fixes**
+- **Fixed PDF rendering consistency** between CLI, API, and Web interfaces
+- **Fixed template loading issues** in API RenderService for reliable rendering
+- **Fixed print mode normalization**: landscape→long, portrait→short mapping
+- **Fixed web preview export button functionality** with proper file download handling
+- **Fixed print mode mapping** in web interface for consistent user experience
+
+#### **Technical Improvements**
+- **Improved error handling** across all interfaces
+- **Enhanced template validation** for robust rendering
+- **Optimized file handling** in API and web components
+- **Better state management** in React web interface
+
+### 🎯 **Documentation Strategy**
+
+#### **New Structure Benefits**
+- **Faster onboarding**: Users can focus on their preferred interface
+- **Reduced cognitive load**: Less overwhelming for newcomers
+- **Better maintainability**: Changes to one interface don't affect others
+- **Improved discoverability**: Specialized content is easier to find
+
+#### **User Journey Optimization**
+- **Main README**: Project overview and interface selection
+- **API README**: Developer integration and production deployment
+- **Web README**: End-user workflows and customization
+- **Clear migration path**: Easy to switch between interfaces as needs grow
+
+---
+
+## [4.2.0] - 2025-09-07
+
+### 🔄 **Validation Architecture Refactoring (DRY Principle)**
+
+#### **Centralized Validation System**
+- **Eliminated DRY violations**: Removed duplicate validation logic between Joi schemas and DeckValidator
+- **Single source of truth**: All validation rules now centralized in `DeckValidator.js`
+- **API middleware refactoring**: Removed duplicate Joi schemas, now uses `DeckValidator.validateDeckQuick()` and `validateCardQuick()`
+- **English-only schema**: Completely removed Italian schema support for consistency
+
+#### **Security Pattern Improvements**
+- **Fixed false positives**: Updated security regex patterns with word boundaries (`\b`) to prevent legitimate words triggering security blocks
+- **Pattern precision**: Changed `/import\s*\(/i` to `/\bimport\s*\(/i` - now "importanza" (importance) won't trigger security alerts
+- **Duplicate pattern elimination**: Synchronized security patterns between `SanitizationService.js` and `containsAdvancedThreats()`
+
+#### **Validation Features Enhanced**
+- **Field length limits**: Increased `type` field to 255 characters (free text input)
+- **Emoji validation**: Relaxed emoji validation to support up to 3 Unicode characters
+- **Required field enforcement**: Title field now required for all cards
+- **Clear validation messages**: Added ✅ OK / ❌ KO status indicators
+
+#### **Test Suite Updates**
+- **API tests**: Updated from Italian to English schema field names
+- **XSS tests**: Fixed to include required title fields  
+- **Card tests**: Resolved undefined ID issues in card creation
+- **Coverage maintained**: All tests passing with 95%+ coverage
+
+#### **Technical Debt Reduction**
+- **Deprecated method removal**: Eliminated `LayoutCalculator.calculateLayouts()` and `DeckValidator.VALID_ICONS`
+- **Architecture documentation**: Added DRY validation architecture section to `CLAUDE.md`
+- **Code consistency**: Unified validation approach across CLI, API, and Web layers
+
+---
+
+## [4.1.1] - 2025-09-07
+
+### 🐛 **Critical Bug Fixes**
+
+#### **CLI Validator Schema Fix**
+- **Fixed "undefined%" validity rate bug**: DeckValidator now properly supports both English and Italian card schemas
+- **Enhanced schema validation**: Card validation requires at least one title field (`title` or `titolo`)
+- **Unicode emoji validation**: Replaced hardcoded VALID_ICONS list with comprehensive Unicode emoji regex pattern
+  - Now supports all Unicode emoji ranges: `\p{Emoji}`, `\p{Emoji_Modifier}`, `\p{Emoji_Component}`, `\p{Extended_Pictographic}`
+  - Performance optimized for emoji validation across thousands of cards
+- **Dual schema support**: Full backward compatibility with Italian legacy schema while prioritizing English schema
+  - English fields: `title`, `headerIcon`, `heroImage`, `type`, `description`, `flavorText`, `styleClass`  
+  - Italian fields: `titolo`, `icona`, `emoji`, `tipo`, `testo`, `flavor`, `classe`
+- **Validation statistics**: Proper calculation of validity ratios prevents undefined percentages
+
+#### **Technical Improvements**
+- Enhanced card validation logic checks for required title in either language
+- Improved error messages for schema mismatches
+- Fixed validation statistics calculation edge cases
+- All 136 CLI tests passing after schema updates
+
+---
+
+## [4.1.0] - 2025-09-07
+
+### 🔒 **Security Hardening - Complete Security Implementation**
+
+#### **Comprehensive XSS Protection**
+- **SanitizationService**: New security service with advanced HTML sanitization
+  - Multiple layers of XSS protection: pattern removal, HTML escaping, tag whitelisting
+  - Support for safe HTML tags while blocking dangerous content
+  - Advanced threat detection for encoding-based attacks, prototype pollution, template injection
+  - Performance optimized: handles large content and multiple XSS attempts efficiently
+
+#### **API Security Enhancement**
+- **Input Validation Middleware**: Joi-based validation with security constraints
+  - Enhanced deck and card schemas with pattern matching for dangerous content
+  - Size limits: max 100 cards per deck, field length restrictions
+  - Security-aware regex patterns to block HTML injection attempts
+  - Comprehensive error reporting with field-level validation details
+
+#### **Enhanced Security Headers**
+- **Content Security Policy**: Restrictive CSP preventing script injection
+- **HSTS**: Force HTTPS with 1-year max-age and subdomain inclusion
+- **Additional Headers**: X-Frame-Options (DENY), X-Content-Type-Options (nosniff), XSS-Filter
+- **CORS Hardening**: Domain whitelist, no wildcard origins in production
+
+#### **File Upload Security**
+- **Secure File Processing**: Type validation, size limits (10MB), content scanning
+- **JSON Security**: Suspicious pattern detection in uploaded files
+- **Temporary File Management**: Automatic cleanup on validation failure
+- **Virus-like Protection**: Pattern matching for encoded malicious content
+
+#### **Rate Limiting & DDoS Protection**
+- **Smart Rate Limiting**: Per-IP tracking with 100 requests/minute default
+- **Background Cleanup**: Automatic removal of expired rate limit entries
+- **Security Monitoring**: Logging and alerting for suspicious activity patterns
+
+#### **Security Testing Suite**
+- **52 Security Tests**: Comprehensive XSS, injection, and security validation tests
+- **Multiple Attack Vectors**: Script injection, event handlers, data URIs, encoding attacks
+- **Performance Testing**: Large content processing, multiple simultaneous attacks
+- **Real-world Scenarios**: Card/deck sanitization, file upload validation, URL handling
+
+### 🛠️ **Technical Improvements**
+
+#### **API Routes Security Integration**
+- All deck creation/update routes now use `validateAndSanitizeDeck` middleware
+- Card operations protected with `validateAndSanitizeCard` middleware
+- Export operations include `validateExportOptions` for secure parameter handling
+- Rate limiting applied to high-frequency endpoints
+
+#### **Enhanced Error Handling**
+- Security validation errors provide user-friendly messages without exposing internals
+- Centralized security incident logging for monitoring and analysis
+- Graceful degradation: failed sanitization doesn't break functionality
+
 ## [3.1.0] - 2025-01-02
 
 ### 🎨 **New Features - HTML Markup Support & Character Limits Bypass**

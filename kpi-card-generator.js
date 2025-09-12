@@ -4,12 +4,12 @@ import { Command } from 'commander';
 import puppeteer from 'puppeteer';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { LayoutCalculator } from './class/LayoutCalculator.js';
-import { CardPaginator } from './class/CardPaginator.js';
-import { CardRenderer } from './class/CardRenderer.js';
-import { DeckValidator } from './class/DeckValidator.js';
-import { PDFGenerator } from './class/PDFGenerator.js';
-import { CLIInterface } from './class/CLIInterface.js';
+import { LayoutCalculator } from './modules/cards/rendering/LayoutCalculator.js';
+import { CardPaginator } from './modules/cards/pagination/CardPaginator.js';
+import { CardRenderer } from './modules/cards/rendering/CardRenderer.js';
+import { DeckValidator } from './modules/cards/validation/DeckValidator.js';
+import { PDFGenerator } from './modules/export/pdf/PDFGenerator.js';
+import { CLIInterface } from './modules/interfaces/cli/CLIInterface.js';
 
 /**
  * Calcola la disposizione delle carte per la stampa fronte-retro con paginazione.
@@ -53,7 +53,8 @@ function generateCardHtml(card, template, data, isFront = true) {
         html = html.replace(/{{flavor}}/g, card.flavor || '');
         html = html.replace(/{{classe}}/g, card.classe || '');
     } else {
-        html = html.replace(/{{icona_esercizio}}/g, data.icona_esercizio || '❓');
+        html = html.replace(/{{icona_retro}}/g, data.icona_retro || data.icona_esercizio || '❓');
+        html = html.replace(/{{copyright}}/g, data.copyright || 'Daruma Consulting di Francesco Fullone - CC BY-SA-NC');
         html = html.replace(/{{classe}}/g, card.classe || '');
     }
     
@@ -179,7 +180,7 @@ export async function run() {
     const args = process.argv;
     
     // Se non ci sono comandi specifici, assume 'generate' per compatibilità
-    if (args.length > 2 && !['generate', 'validate', 'optimize', 'info'].includes(args[2])) {
+    if (args.length > 2 && !['generate', 'styles', 'validate', 'optimize', 'info'].includes(args[2])) {
         args.splice(2, 0, 'generate');
     }
     

@@ -1,0 +1,181 @@
+{
+  "info": {
+    "name": "KPI Cards API",
+    "description": "REST API collection for KPI Card Generator",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Get All Decks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/decks",
+          "host": ["{{base_url}}"],
+          "path": ["decks"]
+        }
+      }
+    },
+    {
+      "name": "Create New Deck",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titolo\": \"Sample Deck\",\n  \"sottotitolo\": \"Created from Postman\",\n  \"icona_esercizio\": \"🎯\",\n  \"carte\": [\n    {\n      \"titolo\": \"Sample Card\",\n      \"icona\": \"📊\",\n      \"emoji\": \"📈\",\n      \"tipo\": \"KPI\",\n      \"testo\": \"This is a sample card description\",\n      \"flavor\": \"Sample flavor text\",\n      \"classe\": \"card-kpi\"\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/decks",
+          "host": ["{{base_url}}"],
+          "path": ["decks"]
+        }
+      }
+    },
+    {
+      "name": "Get Deck by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/decks/:deckId",
+          "host": ["{{base_url}}"],
+          "path": ["decks", ":deckId"],
+          "variable": [
+            {
+              "key": "deckId",
+              "value": "deck_example_id"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update Deck (PATCH)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titolo\": \"Updated Title\",\n  \"sottotitolo\": \"Updated subtitle\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/decks/:deckId",
+          "host": ["{{base_url}}"],
+          "path": ["decks", ":deckId"],
+          "variable": [
+            {
+              "key": "deckId",
+              "value": "deck_example_id"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Deck",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/decks/:deckId",
+          "host": ["{{base_url}}"],
+          "path": ["decks", ":deckId"],
+          "variable": [
+            {
+              "key": "deckId",
+              "value": "deck_example_id"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Statistics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/decks/stats",
+          "host": ["{{base_url}}"],
+          "path": ["decks", "stats"]
+        }
+      }
+    },
+    {
+      "name": "Validate Deck",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/decks/:deckId/validate",
+          "host": ["{{base_url}}"],
+          "path": ["decks", ":deckId", "validate"],
+          "variable": [
+            {
+              "key": "deckId",
+              "value": "deck_example_id"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Paginate Deck",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"options\": {\n    \"cardsPerPage\": 8,\n    \"cardsPerRow\": 4\n  }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/decks/:deckId/paginate",
+          "host": ["{{base_url}}"],
+          "path": ["decks", ":deckId", "paginate"],
+          "variable": [
+            {
+              "key": "deckId",
+              "value": "deck_example_id"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

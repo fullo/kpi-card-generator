@@ -1,5 +1,5 @@
 import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { PDFGenerator } from '../../class/PDFGenerator.js';
+import { PDFGenerator } from '../../modules/export/pdf/PDFGenerator.js';
 
 describe('PDFGenerator - Configuration', () => {
     

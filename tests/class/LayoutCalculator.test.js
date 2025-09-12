@@ -1,11 +1,11 @@
 import { jest, describe, test, expect } from '@jest/globals';
-import { LayoutCalculator } from '../../class/LayoutCalculator.js';
+import { LayoutCalculator } from '../../modules/cards/rendering/LayoutCalculator.js';
 
 // Helper per creare carte mock
 const createMockCards = (count) => {
     return Array.from({ length: count }, (_, i) => ({ 
         id: `C${i + 1}`,
-        titolo: `Carta ${i + 1}` 
+        title: `Carta ${i + 1}` 
     }));
 };
 
@@ -252,15 +252,15 @@ describe('LayoutCalculator - Performance e Stabilità', () => {
 
     test('dovrebbe preservare le proprietà degli oggetti carta', () => {
         const cards = [
-            { id: 'C1', titolo: 'Prima carta', customProp: 'test1' },
-            { id: 'C2', titolo: 'Seconda carta', customProp: 'test2' }
+            { id: 'C1', title: 'Prima carta', customProp: 'test1' },
+            { id: 'C2', title: 'Seconda carta', customProp: 'test2' }
         ];
         
         const result = LayoutCalculator.calculateMirrorLayout(cards, 2, 'short');
         
         expect(result[0].customProp).toBe('test2');  // Seconda carta prima dopo inversione
         expect(result[1].customProp).toBe('test1');  // Prima carta seconda dopo inversione
-        expect(result[0].titolo).toBe('Seconda carta');
-        expect(result[1].titolo).toBe('Prima carta');
+        expect(result[0].title).toBe('Seconda carta');
+        expect(result[1].title).toBe('Prima carta');
     });
 });

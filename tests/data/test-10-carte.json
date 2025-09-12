@@ -1,97 +1,97 @@
 {
-  "titolo": "Test 10 Carte - Caso Reale",
-  "sottotitolo": "Simula il caso di esercizio-esempio.json con 10 carte totali",
-  "icona_esercizio": "🔬",
-  "carte": [
+  "title": "Test 10 Carte - Caso Reale",
+  "subtitle": "Simula il caso di esercizio-esempio.json con 10 carte totali",
+  "deckIcon": "🔬",
+  "cards": [
     {
-      "titolo": "Carta 1",
-      "icona": "1️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Prima carta - Foglio 1, Riga 1, Colonna 1",
-      "flavor": "Dovrebbe essere in alto a sinistra del primo foglio",
-      "classe": "card-evento-tecnico"
+      "title": "Carta 1",
+      "headerIcon": "1️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Prima carta - Foglio 1, Riga 1, Colonna 1",
+      "flavorText": "Dovrebbe essere in alto a sinistra del primo foglio",
+      "styleClass": "card-evento-tecnico"
     },
     {
-      "titolo": "Carta 2",
-      "icona": "2️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Seconda carta - Foglio 1, Riga 1, Colonna 2",
-      "flavor": "Prima riga, seconda posizione",
-      "classe": "card-evento-marketing"
+      "title": "Carta 2",
+      "headerIcon": "2️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Seconda carta - Foglio 1, Riga 1, Colonna 2",
+      "flavorText": "Prima riga, seconda posizione",
+      "styleClass": "card-evento-marketing"
     },
     {
-      "titolo": "Carta 3",
-      "icona": "3️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Terza carta - Foglio 1, Riga 1, Colonna 3",
-      "flavor": "Prima riga, terza posizione",
-      "classe": "card-evento-sales"
+      "title": "Carta 3",
+      "headerIcon": "3️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Terza carta - Foglio 1, Riga 1, Colonna 3",
+      "flavorText": "Prima riga, terza posizione",
+      "styleClass": "card-evento-sales"
     },
     {
-      "titolo": "Carta 4",
-      "icona": "4️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Quarta carta - Foglio 1, Riga 1, Colonna 4",
-      "flavor": "Prima riga, ultima posizione",
-      "classe": "card-evento-aziendale"
+      "title": "Carta 4",
+      "headerIcon": "4️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Quarta carta - Foglio 1, Riga 1, Colonna 4",
+      "flavorText": "Prima riga, ultima posizione",
+      "styleClass": "card-evento-aziendale"
     },
     {
-      "titolo": "Carta 5",
-      "icona": "5️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Quinta carta - Foglio 1, Riga 2, Colonna 1",
-      "flavor": "Seconda riga, prima posizione",
-      "classe": "card-obiettivo"
+      "title": "Carta 5",
+      "headerIcon": "5️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Quinta carta - Foglio 1, Riga 2, Colonna 1",
+      "flavorText": "Seconda riga, prima posizione",
+      "styleClass": "card-obiettivo"
     },
     {
-      "titolo": "Carta 6",
-      "icona": "6️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Sesta carta - Foglio 1, Riga 2, Colonna 2",
-      "flavor": "Seconda riga, seconda posizione",
-      "classe": "card-kpi"
+      "title": "Carta 6",
+      "headerIcon": "6️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Sesta carta - Foglio 1, Riga 2, Colonna 2",
+      "flavorText": "Seconda riga, seconda posizione",
+      "styleClass": "card-kpi"
     },
     {
-      "titolo": "Carta 7",
-      "icona": "7️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Settima carta - Foglio 1, Riga 2, Colonna 3",
-      "flavor": "Seconda riga, terza posizione",
-      "classe": "card-vanity"
+      "title": "Carta 7",
+      "headerIcon": "7️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Settima carta - Foglio 1, Riga 2, Colonna 3",
+      "flavorText": "Seconda riga, terza posizione",
+      "styleClass": "card-vanity"
     },
     {
-      "titolo": "Carta 8",
-      "icona": "8️⃣",
-      "emoji": "📊",
-      "tipo": "Foglio 1",
-      "testo": "Ottava carta - Foglio 1, Riga 2, Colonna 4",
-      "flavor": "ULTIMA carta del primo foglio",
-      "classe": "card-conflitto"
+      "title": "Carta 8",
+      "headerIcon": "8️⃣",
+      "heroImage": "📊",
+      "type": "Foglio 1",
+      "description": "Ottava carta - Foglio 1, Riga 2, Colonna 4",
+      "flavorText": "ULTIMA carta del primo foglio",
+      "styleClass": "card-conflitto"
     },
     {
-      "titolo": "Carta 9",
-      "icona": "9️⃣",
-      "emoji": "⭐",
-      "tipo": "Foglio 2",
-      "testo": "NONA CARTA - Dovrebbe essere nel SECONDO foglio, prima posizione",
-      "flavor": "⚠️ FOGLIO 2 - Prima carta nella prima riga",
-      "classe": "card-evento-tecnico"
+      "title": "Carta 9",
+      "headerIcon": "9️⃣",
+      "heroImage": "⭐",
+      "type": "Foglio 2",
+      "description": "NONA CARTA - Dovrebbe essere nel SECONDO foglio, prima posizione",
+      "flavorText": "⚠️ FOGLIO 2 - Prima carta nella prima riga",
+      "styleClass": "card-evento-tecnico"
     },
     {
-      "titolo": "Carta 10",
-      "icona": "🔟",
-      "emoji": "⭐",
-      "tipo": "Foglio 2",
-      "testo": "DECIMA CARTA - Dovrebbe essere nel SECONDO foglio, seconda posizione",
-      "flavor": "⚠️ FOGLIO 2 - Seconda carta nella prima riga. Il retro dovrebbe avere D10 e D9 nella seconda riga!",
-      "classe": "card-evento-marketing"
+      "title": "Carta 10",
+      "headerIcon": "🔟",
+      "heroImage": "⭐",
+      "type": "Foglio 2",
+      "description": "DECIMA CARTA - Dovrebbe essere nel SECONDO foglio, seconda posizione",
+      "flavorText": "⚠️ FOGLIO 2 - Seconda carta nella prima riga. Il retro dovrebbe avere D10 e D9 nella seconda riga!",
+      "styleClass": "card-evento-marketing"
     }
   ]
 }

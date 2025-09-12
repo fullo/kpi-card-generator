@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from '@jest/globals';
-import { DeckValidator } from '../../class/DeckValidator.js';
+import { DeckValidator } from '../../modules/cards/validation/DeckValidator.js';
 
 describe('DeckValidator - HTML Character Counting', () => {
     
@@ -39,42 +39,42 @@ describe('DeckValidator - HTML Character Counting', () => {
         expect(result.isValid).toBe(false);
     });
 
-    test('dovrebbe validare carte con HTML nel JSON', () => {
+    test('dovrebbe validare carte con HTML nel JSON', async () => {
         const deckWithHtml = {
-            titolo: 'Test HTML',
-            sottotitolo: 'Test with HTML markup',
-            carte: [
+            title: 'Test HTML',
+            subtitle: 'Test with HTML markup',
+            cards: [
                 {
-                    titolo: 'Carta <strong>Important</strong>',
-                    testo: '<strong>Questo</strong> è un <em>testo</em> con <ul><li>Lista 1</li><li>Lista 2</li></ul>',
-                    flavor: '<em>Solo</em> <b>poche</b> parole',
-                    tipo: 'Test',
-                    classe: 'card-test'
+                    title: 'Carta <strong>Important</strong>',
+                    description: '<strong>Questo</strong> è un <em>testo</em> con <ul><li>Lista 1</li><li>Lista 2</li></ul>',
+                    flavorText: '<em>Solo</em> <b>poche</b> parole',
+                    type: 'Test',
+                    styleClass: 'card-test'
                 }
             ]
         };
         
-        const result = validator.validateJSON(JSON.stringify(deckWithHtml));
+        const result = await validator.validateJSON(JSON.stringify(deckWithHtml));
         
         expect(result.isValid).toBe(true);
         expect(result.errors).toHaveLength(0);
     });
 
-    test('dovrebbe contare solo caratteri visibili per validazione lunghezza', () => {
+    test('dovrebbe contare solo caratteri visibili per validazione lunghezza', async () => {
         const deckWithLongMarkup = {
-            titolo: 'Test Lungo Markup',
-            carte: [
+            title: 'Test Lungo Markup',
+            cards: [
                 {
-                    titolo: 'Test',
+                    title: 'Test',
                     // Molto markup HTML ma testo effettivo breve
-                    testo: '<strong><em><u><b><i>Short</i></b></u></em></strong>', // Solo 5 caratteri
-                    tipo: 'Test',
-                    classe: 'card-test'
+                    description: '<strong><em><u><b><i>Short</i></b></u></em></strong>', // Solo 5 caratteri
+                    type: 'Test',
+                    styleClass: 'card-test'
                 }
             ]
         };
         
-        const result = validator.validateJSON(JSON.stringify(deckWithLongMarkup));
+        const result = await validator.validateJSON(JSON.stringify(deckWithLongMarkup));
         
         // Dovrebbe essere valida perché il testo effettivo è breve
         expect(result.isValid).toBe(true);

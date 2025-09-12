@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from '@jest/globals';
-import { DeckValidator } from '../../class/DeckValidator.js';
+import { DeckValidator } from '../../modules/cards/validation/DeckValidator.js';
 
 describe('DeckValidator - Character Limit Bypass', () => {
     
@@ -33,10 +33,10 @@ describe('DeckValidator - Character Limit Bypass', () => {
         const validator = new DeckValidator({ bypassCharacterLimits: true });
         
         const longCard = {
-            titolo: 'Carta Test',
-            testo: 'Questo è un testo molto lungo che supera i 500 caratteri di limite normalmente imposti dal sistema. '.repeat(10),
-            tipo: 'Test',
-            classe: 'card-test'
+            title: 'Carta Test',
+            description: 'Questo è un testo molto lungo che supera i 500 caratteri di limite normalmente imposti dal sistema. '.repeat(10),
+            type: 'Test',
+            styleClass: 'card-test'
         };
         
         const result = validator.validateCard(longCard);
@@ -45,28 +45,28 @@ describe('DeckValidator - Character Limit Bypass', () => {
         expect(result.errors).toHaveLength(0);
     });
 
-    test('dovrebbe validare deck completo con carte lunghe e bypass', () => {
+    test('dovrebbe validare deck completo con carte lunghe e bypass', async () => {
         const validator = new DeckValidator({ bypassCharacterLimits: true });
         
         const deckWithLongText = {
-            titolo: 'Test Deck',
-            carte: [
+            title: 'Test Deck',
+            cards: [
                 {
-                    titolo: 'Carta 1',
-                    testo: 'Testo molto lungo che supera i 500 caratteri normalmente permessi dal sistema di validazione. '.repeat(8),
-                    tipo: 'Test',
-                    classe: 'card-test'
+                    title: 'Carta 1',
+                    description: 'Testo molto lungo che supera i 500 caratteri normalmente permessi dal sistema di validazione. '.repeat(8),
+                    type: 'Test',
+                    styleClass: 'card-test'
                 },
                 {
-                    titolo: 'Carta 2', 
-                    testo: 'Altro testo molto lungo per testare il bypass dei limiti caratteri nel sistema. '.repeat(10),
-                    tipo: 'Test',
-                    classe: 'card-test'
+                    title: 'Carta 2', 
+                    description: 'Altro testo molto lungo per testare il bypass dei limiti caratteri nel sistema. '.repeat(10),
+                    type: 'Test',
+                    styleClass: 'card-test'
                 }
             ]
         };
         
-        const result = validator.validateJSON(JSON.stringify(deckWithLongText));
+        const result = await validator.validateJSON(JSON.stringify(deckWithLongText));
         
         expect(result.isValid).toBe(true);
         expect(result.errors).toHaveLength(0);
@@ -94,17 +94,17 @@ describe('DeckValidator - Character Limit Bypass', () => {
         });
         
         const cardWithMissingTitle = {
-            // titolo mancante (campo required)
-            testo: 'Testo molto lungo '.repeat(50), // Lungo ma bypass attivo
-            tipo: 'Test',
-            classe: 'card-test'
+            // title mancante (campo required)
+            description: 'Testo molto lungo '.repeat(50), // Lungo ma bypass attivo
+            type: 'Test',
+            styleClass: 'card-test'
         };
         
         const result = validator.validateCard(cardWithMissingTitle);
         
         // Dovrebbe fallire per il titolo mancante, non per la lunghezza del testo
         expect(result.isValid).toBe(false);
-        expect(result.errors.some(err => err.includes('titolo'))).toBe(true);
+        expect(result.errors.some(err => err.includes('title'))).toBe(true);
         expect(result.errors.some(err => err.includes('troppo lunga'))).toBe(false);
     });
 

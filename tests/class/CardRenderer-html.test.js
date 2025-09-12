@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from '@jest/globals';
-import { CardRenderer } from '../../class/CardRenderer.js';
+import { CardRenderer } from '../../modules/cards/rendering/CardRenderer.js';
 
 describe('CardRenderer - HTML Markup Support', () => {
     
@@ -81,9 +81,9 @@ describe('CardRenderer - HTML Markup Support', () => {
     });
 
     test('dovrebbe gestire placeholder con HTML misto sicuro e pericoloso', () => {
-        const template = '{{testo}} e {{altro}}';
+        const template = '{{description}} e {{altro}}';
         const data = { 
-            testo: '<strong>Sicuro</strong> <script>pericoloso</script>',
+            description: '<strong>Sicuro</strong> <script>pericoloso</script>',
             altro: '<em>Enfasi</em> ok'
         };
         

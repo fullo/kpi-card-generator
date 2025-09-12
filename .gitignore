@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+deck.pdf
+*.pdf
+deck.json
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -152,3 +155,8 @@ pdf/
 !tests/data/*.json
 !tests/scripts/*.sh
 !tests/*.md
+
+# API uploaded file
+api/data/decks/
+api/data/pdf/
+api/data/exports/

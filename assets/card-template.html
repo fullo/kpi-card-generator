@@ -9,17 +9,17 @@
 <body>
     <!-- TEMPLATE PER IL FRONTE DELLA CARTA -->
     <template id="card-front">
-        <div class="playing-card {{classe}}">
+        <div class="playing-card {{styleClass}}">
             <div class="inner-frame">
                 <div class="card-header">
-                    <h3 class="card-title">{{titolo}}</h3>
-                    <div class="card-icon-container"><span>{{icona}}</span></div>
+                    <h3 class="card-title">{{title}}</h3>
+                    <div class="card-icon-container"><span>{{headerIcon}}</span></div>
                 </div>
-                <div class="card-image-area">{{emoji}}</div>
-                <div class="card-type-banner">{{tipo}}</div>
+                <div class="card-image-area">{{heroImage}}</div>
+                <div class="card-type-banner">{{type}}</div>
                 <div class="card-description-box">
-                    <p class="main-text">{{testo}}</p>
-                    <div class="card-flavor-text">{{flavor}}</div>
+                    <p class="main-text">{{description}}</p>
+                    <div class="card-flavor-text">{{flavorText}}</div>
                 </div>
             </div>
         </div>
@@ -27,10 +27,10 @@
 
     <!-- TEMPLATE PER IL RETRO DELLA CARTA -->
     <template id="card-back">
-        <div class="playing-card {{classe}}">
+        <div class="playing-card {{styleClass}}">
             <div class="inner-frame card-back">
-                <div class="back-icon">{{icona_esercizio}}</div>
-                <div class="back-credit">Daruma Consulting di Francesco Fullone - CC BY-SA-NC</div>
+                <div class="back-icon">{{cardBackIcon}}</div>
+                <div class="back-credit">{{copyright}}</div>
             </div>
         </div>
     </template>

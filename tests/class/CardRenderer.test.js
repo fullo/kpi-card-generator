@@ -1,5 +1,5 @@
 import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
-import { CardRenderer } from '../../class/CardRenderer.js';
+import { CardRenderer } from '../../modules/cards/rendering/CardRenderer.js';
 
 describe('CardRenderer - Placeholder Replacement', () => {
     
@@ -12,8 +12,8 @@ describe('CardRenderer - Placeholder Replacement', () => {
     });
 
     test('dovrebbe gestire placeholder multipli dello stesso tipo', () => {
-        const template = '{{titolo}} - {{titolo}} è importante';
-        const data = { titolo: 'Test' };
+        const template = '{{title}} - {{title}} è importante';
+        const data = { title: 'Test' };
         const result = CardRenderer.replacePlaceholders(template, data);
         
         expect(result).toBe('Test - Test è importante');
@@ -66,7 +66,7 @@ describe('CardRenderer - Placeholder Replacement', () => {
 describe('CardRenderer - Template Validation', () => {
     
     test('dovrebbe validare template HTML corretto', () => {
-        const template = '<div class="card">{{titolo}}</div>';
+        const template = '<div class="card">{{title}}</div>';
         const result = CardRenderer.validateTemplate(template);
         
         expect(result.isValid).toBe(true);
@@ -74,7 +74,7 @@ describe('CardRenderer - Template Validation', () => {
     });
 
     test('dovrebbe rilevare tag HTML non bilanciati', () => {
-        const template = '<div class="card">{{titolo}}';
+        const template = '<div class="card">{{title}}';
         const result = CardRenderer.validateTemplate(template);
         
         expect(result.isValid).toBe(false);
@@ -183,10 +183,10 @@ describe('CardRenderer - Card Templates Loading', () => {
         // Test con mock inline
         const mockTemplateContent = `
             <template id="card-front">
-                <div class="card-front">{{titolo}}</div>
+                <div class="card-front">{{title}}</div>
             </template>
             <template id="card-back">
-                <div class="card-back">{{icona_esercizio}}</div>
+                <div class="card-back">{{deckIcon}}</div>
             </template>
         `;
         
@@ -196,8 +196,8 @@ describe('CardRenderer - Card Templates Loading', () => {
         
         await renderer.loadCardTemplates('/mock/path/cards.html');
         
-        expect(renderer.frontTemplate).toContain('{{titolo}}');
-        expect(renderer.backTemplate).toContain('{{icona_esercizio}}');
+        expect(renderer.frontTemplate).toContain('{{title}}');
+        expect(renderer.backTemplate).toContain('{{deckIcon}}');
         
         // Ripristina
         renderer.loadTemplate = originalLoadTemplate;
@@ -206,7 +206,7 @@ describe('CardRenderer - Card Templates Loading', () => {
     test('dovrebbe lanciare errore per template mancanti', async () => {
         const incompleteTemplate = `
             <template id="card-front">
-                <div>{{titolo}}</div>
+                <div>{{title}}</div>
             </template>
             <!-- Manca card-back -->
         `;
@@ -232,12 +232,12 @@ describe('CardRenderer - Single Card Rendering', () => {
         renderer = new CardRenderer();
         
         // Setup dei template base
-        renderer.frontTemplate = '<div class="card-front {{classe}}">{{titolo}}</div>';
-        renderer.backTemplate = '<div class="card-back {{classe}}">{{icona_esercizio}}</div>';
+        renderer.frontTemplate = '<div class="card-front {{styleClass}}">{{title}}</div>';
+        renderer.backTemplate = '<div class="card-back {{styleClass}}">{{deckIcon}}</div>';
     });
 
     test('dovrebbe renderizzare carta fronte', () => {
-        const card = { titolo: 'Test Card', classe: 'special' };
+        const card = { title: 'Test Card', styleClass: 'special' };
         const result = renderer.renderCard(card, true);
         
         expect(result).toContain('Test Card');
@@ -246,8 +246,8 @@ describe('CardRenderer - Single Card Rendering', () => {
     });
 
     test('dovrebbe renderizzare carta retro', () => {
-        const card = { classe: 'special' };
-        const exerciseData = { icona_esercizio: '⭐' };
+        const card = { styleClass: 'special' };
+        const exerciseData = { deckIcon: '⭐' };
         const result = renderer.renderCard(card, false, exerciseData);
         
         expect(result).toContain('⭐');
@@ -265,8 +265,8 @@ describe('CardRenderer - Single Card Rendering', () => {
 
     test('dovrebbe renderizzare placeholder con debug info', () => {
         const debugRenderer = new CardRenderer({ debugMode: true });
-        debugRenderer.frontTemplate = '<div>{{titolo}}</div>';
-        debugRenderer.backTemplate = '<div>{{icona_esercizio}}</div>';
+        debugRenderer.frontTemplate = '<div>{{title}}</div>';
+        debugRenderer.backTemplate = '<div>{{deckIcon}}</div>';
         
         const placeholderCard = { isPlaceholder: true };
         const result = debugRenderer.renderCard(placeholderCard);
@@ -279,9 +279,9 @@ describe('CardRenderer - Single Card Rendering', () => {
         // Questo test verifica che gli errori non bloccino il rendering in debug mode
         const debugRenderer = new CardRenderer({ debugMode: true });
         debugRenderer.frontTemplate = '{{placeholder_inesistente}}';
-        debugRenderer.backTemplate = '<div>{{icona_esercizio}}</div>';
+        debugRenderer.backTemplate = '<div>{{deckIcon}}</div>';
         
-        const card = { titolo: 'Test' };
+        const card = { title: 'Test' };
         const result = debugRenderer.renderCard(card);
         
         // Il renderer dovrebbe gestire placeholder mancanti senza crash
@@ -290,7 +290,7 @@ describe('CardRenderer - Single Card Rendering', () => {
 
     test('dovrebbe lanciare errore se template non sono caricati', () => {
         const emptyRenderer = new CardRenderer();
-        const card = { titolo: 'Test' };
+        const card = { title: 'Test' };
         
         expect(() => {
             emptyRenderer.renderCard(card);
@@ -305,14 +305,14 @@ describe('CardRenderer - Grid Rendering', () => {
     beforeEach(() => {
         CardRenderer.clearCache();
         renderer = new CardRenderer();
-        renderer.frontTemplate = '<div class="card">{{titolo}}</div>';
-        renderer.backTemplate = '<div class="card">{{icona_esercizio}}</div>';
+        renderer.frontTemplate = '<div class="card">{{title}}</div>';
+        renderer.backTemplate = '<div class="card">{{deckIcon}}</div>';
     });
 
     test('dovrebbe renderizzare griglia di carte', () => {
         const cards = [
-            { titolo: 'Card 1' },
-            { titolo: 'Card 2' },
+            { title: 'Card 1' },
+            { title: 'Card 2' },
             { isPlaceholder: true }
         ];
         
@@ -337,10 +337,10 @@ describe('CardRenderer - Grid Rendering', () => {
 
     test('dovrebbe aggiungere classe debug se abilitata', () => {
         const debugRenderer = new CardRenderer({ debugMode: true });
-        debugRenderer.frontTemplate = '<div>{{titolo}}</div>';
-        debugRenderer.backTemplate = '<div>{{icona_esercizio}}</div>';
+        debugRenderer.frontTemplate = '<div>{{title}}</div>';
+        debugRenderer.backTemplate = '<div>{{deckIcon}}</div>';
         
-        const result = debugRenderer.renderCardGrid([{ titolo: 'Test' }]);
+        const result = debugRenderer.renderCardGrid([{ title: 'Test' }]);
         expect(result).toContain('card-grid debug');
     });
 });
@@ -352,14 +352,14 @@ describe('CardRenderer - Page Rendering', () => {
     beforeEach(() => {
         CardRenderer.clearCache();
         renderer = new CardRenderer();
-        renderer.frontTemplate = '<div class="card">{{titolo}}</div>';
-        renderer.backTemplate = '<div class="card">{{icona_esercizio}}</div>';
+        renderer.frontTemplate = '<div class="card">{{title}}</div>';
+        renderer.backTemplate = '<div class="card">{{deckIcon}}</div>';
     });
 
     test('dovrebbe renderizzare singola pagina', () => {
-        const fronts = [{ titolo: 'Front 1' }];
-        const backs = [{ titolo: 'Back 1' }];
-        const exerciseData = { icona_esercizio: '⭐' };
+        const fronts = [{ title: 'Front 1' }];
+        const backs = [{ title: 'Back 1' }];
+        const exerciseData = { deckIcon: '⭐' };
         
         const result = renderer.renderPage(fronts, backs, exerciseData);
         
@@ -371,9 +371,9 @@ describe('CardRenderer - Page Rendering', () => {
     });
 
     test('dovrebbe renderizzare pagina multipla con numerazione', () => {
-        const fronts = [{ titolo: 'Front 1' }];
-        const backs = [{ titolo: 'Back 1' }];
-        const exerciseData = { icona_esercizio: '⭐' };
+        const fronts = [{ title: 'Front 1' }];
+        const backs = [{ title: 'Back 1' }];
+        const exerciseData = { deckIcon: '⭐' };
         
         const result = renderer.renderPage(fronts, backs, exerciseData, 1, 3);
         
@@ -469,10 +469,10 @@ describe('CardRenderer - Performance', () => {
     
     test('dovrebbe gestire molte carte velocemente', () => {
         const renderer = new CardRenderer();
-        renderer.frontTemplate = '<div>{{titolo}}</div>';
-        renderer.backTemplate = '<div>{{icona}}</div>';
+        renderer.frontTemplate = '<div>{{title}}</div>';
+        renderer.backTemplate = '<div>{{headerIcon}}</div>';
         
-        const cards = Array.from({ length: 100 }, (_, i) => ({ titolo: `Card ${i}` }));
+        const cards = Array.from({ length: 100 }, (_, i) => ({ title: `Card ${i}` }));
         
         const start = Date.now();
         renderer.renderCardGrid(cards, true);

@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for KPI Card Generator */
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-gray-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden;
+  }
+  
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 placeholder-gray-500;
+  }
+  
+  /* Form reset and styling to replace @tailwindcss/forms */
+  input[type="text"],
+  input[type="email"], 
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  input[type="url"],
+  select,
+  textarea {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-500;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+    @apply disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200;
+  }
+  
+  select {
+    @apply pr-8 bg-no-repeat bg-right;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+  }
+  
+  input[type="checkbox"],
+  input[type="radio"] {
+    @apply w-4 h-4 border border-gray-300 rounded focus:ring-2 focus:ring-primary-500;
+    @apply text-primary-600 bg-white;
+  }
+  
+  input[type="radio"] {
+    @apply rounded-full;
+  }
+  
+  textarea {
+    @apply resize-y min-h-[80px];
+  }
+}
+
+/* Custom card preview styles */
+.card-preview {
+  @apply bg-white border-2 border-gray-200 rounded-lg p-4 shadow-sm;
+  min-height: 200px;
+  transition: all 0.2s ease;
+}
+
+.card-preview:hover {
+  @apply border-primary-300 shadow-md;
+}
+
+.card-preview.selected {
+  @apply border-primary-500 ring-2 ring-primary-200;
+}

@@ -1,566 +1,476 @@
-# **Generatore di Carte KPI per Workshop** 🎯
+# KPI Card Generator 🎯
 
-Generatore basato su Node.js per creare mazzi di carte da gioco personalizzate per workshop interattivi su Metriche e Key Performance Indicators (KPI).
-
-**🆕 Versione 3.0** - Architettura modulare completamente rifattorizzata con nuovi comandi CLI!
+**Professional KPI card deck generator for interactive workshops and training sessions.**
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![ES Modules](https://img.shields.io/badge/ES-Modules-yellow.svg)](https://nodejs.org/api/esm.html)
-[![Test Coverage](https://img.shields.io/badge/Coverage-90%25-brightgreen.svg)](#test-coverage)
+[![REST API](https://img.shields.io/badge/REST-API-blue.svg)](#architecture)
+[![Web Interface](https://img.shields.io/badge/Web-React-61DAFB.svg)](#architecture)
+[![Test Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen.svg)](#testing)
 
-## **✨ Nuove Funzionalità v3.0**
+## Overview
 
-- 🏗️ **Architettura modulare** con 6 classi specializzate
-- 🔧 **Nuovi comandi CLI**: `generate`, `validate`, `optimize`, `info`
-- 🧪 **Test suite completa** (90+ test unitari + integrazione)
-- 🌍 **Modalità estese**: `portrait`/`landscape` + legacy `short`/`long`
-- 📊 **Validazione JSON avanzata** con report dettagliati
-- ⚡ **Ottimizzazione automatica** delle configurazioni
-- 🎨 **Template caching** e rendering ottimizzato
+A comprehensive Node.js-based tool for creating customizable KPI card decks designed for workshop facilitation, team training, and educational purposes. Generate professional PDF and HTML card decks with advanced layout options and security features.
 
-## **📦 Installazione**
+**Current Version:** 4.2.0 with CSS Style Customization, Modular Architecture, Complete REST API, and Security Hardening.
+
+## Key Features
+
+### 🏗️ **Modular Architecture**
+- **6 specialized classes** for reusable business logic
+- **Separation of concerns**: Layout, Pagination, Rendering, Validation, PDF, CLI
+- **Complete test suite** (95%+ coverage)
+
+### 🌐 **Multi-Interface Support**
+- **Modern CLI** with subcommands and advanced options
+- **REST API** with 26 endpoints for CRUD operations
+- **React Web Interface** for browser-based management
+- **Legacy CLI** for backward compatibility
+
+### 🔒 **Security First**
+- **XSS Protection** with comprehensive input sanitization
+- **Content Security Policy** and security headers
+- **Rate limiting** and DDoS protection
+- **File upload security** with content validation
+- **52+ security test cases** covering common vulnerabilities
+
+### 🎨 **Advanced Customization**
+- **CSS Style Customization** based on card `styleClass`
+- **Safe HTML markup** support in card content
+- **Multiple print modes**: landscape/portrait with optimized layouts
+- **Character limit bypass** for detailed content
+- **Template system** with caching and performance optimization
+
+## Technology Stack
+
+- **Runtime**: Node.js 18+ with ES Modules
+- **CLI**: Commander.js with modern subcommand architecture
+- **API**: Express.js with comprehensive middleware stack
+- **Web**: React 18+ with Tailwind CSS and Vite
+- **PDF Engine**: Puppeteer with Chrome headless rendering
+- **Testing**: Jest with Supertest for API integration
+- **Storage**: File-based JSON with atomic operations
+- **Security**: Helmet.js, CORS, rate limiting, input validation
+
+## Quick Start
+
+### All-in-One Setup (Recommended)
 
 ```bash
+# Clone and setup entire project
 git clone https://github.com/fullo/kpi-card-generator.git
 cd kpi-card-generator
+
+# Install dependencies for all components
 npm install
+cd api && npm install
+cd ../web && npm install && cd ..
+
+# Start complete system (3 terminals recommended)
+# Terminal 1: API Backend
+cd api && npm start
+
+# Terminal 2: Web Interface  
+cd web && npm run dev
+
+# Terminal 3: CLI Usage
+node cli/generate-cards.js generate -i tests/data/test-10-carte.json -o cards.pdf -f landscape
 ```
 
-## **🚀 Guida Rapida**
+### Individual Component Setup
 
-### **Nuovo CLI Moderno (Raccomandato)**
-
+**CLI Only:**
 ```bash
-# Genera carte (PDF + HTML)
-node cli/generate-cards.js generate -i tests/data/test-10-carte.json -o carte.pdf -b carte.html -f landscape
-
-# Valida file JSON
-node cli/generate-cards.js validate -i carte.json --strict
-
-# Ottimizza configurazione
-node cli/generate-cards.js optimize --cards 25
-
-# Info sistema
-node cli/generate-cards.js info --system --templates
+npm install
+node cli/generate-cards.js info --system
 ```
 
-### **CLI Legacy (Compatibilità)**
-
+**API Only:**
 ```bash
-# Funziona ancora, ma con warnings di deprecazione
-node kpi-card-generator.js generate -i carte.json -o carte.pdf -f portrait
+cd api && npm install && npm start
+# API available at http://localhost:3000/api/v1
 ```
 
-## **🎮 Comandi Disponibili**
-
-### **`generate` - Generazione Carte**
-
-Genera carte da un file JSON con tutte le opzioni avanzate.
-
+**Web Only (requires API):**
 ```bash
-node cli/generate-cards.js generate [opzioni]
+cd web && npm install && npm run dev
+# Web interface at http://localhost:5173
 ```
 
-| Opzione | Alias | Descrizione | Default |
-|---------|-------|-------------|---------|
-| `-i, --input <file>` | | **Obbligatorio** - File JSON con dati carte | |
-| `-o, --output <file>` | | Genera PDF nel file specificato | |
-| `-b, --browser <file>` | | Genera HTML per visualizzazione browser | |
-| `-f, --flip <mode>` | | Modalità stampa: `short`/`portrait` o `long`/`landscape` | `short` |
-| `--cards-per-page <n>` | | Numero carte per pagina | `8` |
-| `--cards-per-row <n>` | | Numero carte per riga | `4` |
-| `--validate` | | Valida JSON prima della generazione | `true` |
-| `--no-char-limits` | | ⚠️ **Bypassa limite 500 caratteri per testi** | |
-| `--progress` | | Mostra progresso durante generazione | `true` |
-| `-v, --verbose` | | Output dettagliato per debugging | |
-
-**Esempi:**
-```bash
-# Generazione completa con validazione
-node cli/generate-cards.js generate -i esercizio.json -o carte.pdf -b anteprima.html -f landscape --verbose
-
-# Solo PDF, configurazione personalizzata
-node cli/generate-cards.js generate -i carte.json -o output.pdf --cards-per-page 6 --cards-per-row 2
-
-# Generazione con testi lunghi (bypassa limite 500 caratteri)
-node cli/generate-cards.js generate -i carte-dettagliate.json -o output.pdf --no-char-limits
-
-# Generazione rapida senza validazione
-node cli/generate-cards.js generate -i carte.json -b preview.html --no-validate
-```
-
-### **`validate` - Validazione JSON**
-
-Valida un file JSON delle carte senza generare output.
-
-```bash
-node cli/generate-cards.js validate -i carte.json [opzioni]
-```
-
-| Opzione | Descrizione |
-|---------|-------------|
-| `-i, --input <file>` | **Obbligatorio** - File JSON da validare |
-| `--strict` | Validazione rigorosa con controlli extra |
-| `--no-char-limits` | ⚠️ **Bypassa il limite di 500 caratteri per campo testo** |
-| `--report <file>` | Salva report validazione in file |
-
-**Esempi:**
-```bash
-# Validazione base
-node cli/generate-cards.js validate -i carte.json
-
-# Validazione rigorosa con report
-node cli/generate-cards.js validate -i carte.json --strict --report validation-report.txt
-
-# Bypass limite caratteri per testi molto lunghi
-node cli/generate-cards.js validate -i carte-lunghe.json --no-char-limits
-```
-
-**Output di esempio:**
-```
-✅ VALIDAZIONE COMPLETATA CON SUCCESSO
-
-📊 STATISTICHE:
-   • Carte totali: 25
-   • Carte valide: 25
-   • Titoli unici: 25
-   • Tasso di validità: 100.0%
-
-🟡 AVVERTIMENTI:
-   • Carta 12: la carta ha solo il titolo, potrebbe essere troppo vuota
-```
-
-### **`optimize` - Ottimizzazione Configurazione**
-
-Suggerisce la configurazione ottimale per un numero specifico di carte.
-
-```bash
-node cli/generate-cards.js optimize --cards <numero> [opzioni]
-```
-
-| Opzione | Descrizione |
-|---------|-------------|
-| `--cards <numero>` | **Obbligatorio** - Numero di carte da ottimizzare |
-| `--formats <lista>` | Formati possibili separati da virgola | `4,6,8,9,10,12` |
-
-**Esempi:**
-```bash
-# Ottimizzazione per 17 carte
-node cli/generate-cards.js optimize --cards 17
-
-# Con formati personalizzati
-node cli/generate-cards.js optimize --cards 25 --formats "6,8,12,15"
-```
-
-**Output di esempio:**
-```
-🎯 Ottimizzazione per 17 carte...
-
-📊 CONFIGURAZIONE OTTIMALE:
-   • Carte per pagina: 6
-   • Carte per riga: 2
-   • Efficienza: 94.4%
-   • Fogli totali: 3
-   • Placeholder: 1
-
-📈 DETTAGLI:
-   • Righe per pagina: 3
-   • Carte nell'ultimo foglio: 5
-   • Spreco percentuale: 5.6%
-   • Ultimo foglio completo: No
-```
-
-### **`info` - Informazioni Sistema**
-
-Mostra informazioni di sistema e diagnostica.
-
-```bash
-node cli/generate-cards.js info [opzioni]
-```
-
-| Opzione | Descrizione |
-|---------|-------------|
-| `--system` | Mostra informazioni di sistema avanzate |
-| `--templates` | Verifica disponibilità template |
-
-**Esempi:**
-```bash
-# Informazioni base
-node cli/generate-cards.js info
-
-# Informazioni complete
-node cli/generate-cards.js info --system --templates
-```
-
-## **🎨 Modalità di Stampa**
-
-### **Modalità Supportate**
-
-| Modalità | Alias | Comportamento | Uso Tipico |
-|----------|-------|---------------|------------|
-| `short` | `portrait`, `shortside` | Inverte colonne in ogni riga | Stampanti da ufficio (rilegatura lato lungo) |
-| `long` | `landscape`, `longside` | Inverte ordine delle righe | Stampanti domestiche (rilegatura lato corto) |
-
-### **Esempi Visivi**
-
-**Modalità Short/Portrait:**
-```
-Fronte:              Retro:
-C1  C2  C3  C4   →   C4  C3  C2  C1
-C5  C6  C7  C8   →   C8  C7  C6  C5
-```
-
-**Modalità Long/Landscape:**
-```
-Fronte:              Retro:
-C1  C2  C3  C4   →   C5  C6  C7  C8
-C5  C6  C7  C8   →   C1  C2  C3  C4
-```
-
-### **Test della Modalità Corretta**
-
-```bash
-# Test rapido modalità portrait
-node cli/generate-cards.js generate -i tests/data/test-6-carte.json -b test-portrait.html -f portrait
-
-# Test rapido modalità landscape  
-node cli/generate-cards.js generate -i tests/data/test-6-carte.json -b test-landscape.html -f landscape
-```
-
-## **📄 Layout Personalizzati**
-
-### **Una Carta per Pagina**
-
-Per generare PDF con **una carta per pagina** (ideale per presentazioni o studio individuale):
-
-#### **Metodo 1: Ottimizzazione Automatica**
-```bash
-# Vedi configurazioni disponibili per le tue carte  
-node cli/generate-cards.js optimize --cards 6
-
-# Per forzare 1 carta per pagina usa la configurazione diretta
-node cli/generate-cards.js generate \
-  -i tue-carte.json \
-  -o carte-singole.pdf \
-  --cards-per-page 1 \
-  --cards-per-row 1 \
-  -f portrait
-```
-
-#### **Metodo 2: Configurazione Diretta**
-```bash
-# Generazione diretta con parametri personalizzati
-node cli/generate-cards.js generate \
-  -i tests/data/test-6-carte.json \
-  -o esempio-singole.pdf \
-  --cards-per-page 1 \
-  --cards-per-row 1 \
-  -f portrait
-```
-
-#### **Risultato**
-- **6 carte** → **12 pagine PDF** (6 fronti + 6 retri)
-- Ogni carta occupa un'intera pagina
-- Layout ottimizzato per visualizzazione/stampa individuale
-
-### **Altri Layout Personalizzati**
-
-```bash
-# 2 carte per pagina (formato brochure)
-node cli/generate-cards.js generate -i carte.json -o output.pdf \
-  --cards-per-page 2 --cards-per-row 1 -f portrait
-
-# 6 carte per pagina (layout compatto)  
-node cli/generate-cards.js generate -i carte.json -o output.pdf \
-  --cards-per-page 6 --cards-per-row 3 -f landscape
-
-# 12 carte per pagina (foglio riassuntivo)
-node cli/generate-cards.js generate -i carte.json -o output.pdf \
-  --cards-per-page 12 --cards-per-row 4 -f landscape
-```
-
-### **Parametri Layout**
-
-| Parametro | Descrizione | Valori Tipici |
-|-----------|-------------|---------------|
-| `--cards-per-page` | Numero totale carte per foglio | `1`, `2`, `4`, `6`, `8`, `12` |
-| `--cards-per-row` | Carte per riga | `1`, `2`, `3`, `4` |
-| `-f, --format` | Orientamento pagina | `portrait`, `landscape` |
-
-💡 **Suggerimento**: Usa sempre `node cli/generate-cards.js optimize --cards <N>` per trovare la configurazione ottimale per il tuo numero di carte.
-
-## **📁 Struttura del Progetto**
+## Project Structure
 
 ```
 kpi-card-generator/
-├── class/                    # 🆕 Classi modulari
-│   ├── LayoutCalculator.js   # Calcoli layout speculari
-│   ├── CardPaginator.js      # Gestione paginazione  
-│   ├── CardRenderer.js       # Rendering HTML/template
-│   ├── DeckValidator.js      # Validazione JSON
-│   ├── PDFGenerator.js       # Generazione PDF con Puppeteer
-│   └── CLIInterface.js       # Interfaccia CLI moderna
-├── cli/                      # 🆕 Script CLI
-│   └── generate-cards.js     # Entry point moderno
-├── tests/                    # 🆕 Test suite completa
-│   ├── class/               # Test unitari per classi
-│   ├── integration/         # Test di integrazione
-│   └── data/               # Dati di test
-├── assets/                   # Template HTML
-│   ├── card-template.html   # Template carte
-│   └── main-template.html   # Template pagina
-└── kpi-card-generator.js     # Script legacy (compatibilità)
+├── 📁 api/                          # REST API Backend
+│   ├── server/                      # Express server setup
+│   ├── controllers/                 # Request handlers  
+│   ├── services/                    # Business logic
+│   ├── routes/                      # API endpoints
+│   ├── middleware/                  # Security & validation
+│   ├── storage/                     # File-based storage
+│   └── tests/                       # API test suite
+├── 📁 web/                          # React Web Interface
+│   ├── src/components/              # React components
+│   ├── src/hooks/                   # Custom hooks
+│   ├── src/services/                # API integration
+│   └── src/test/                    # Web integration tests
+├── 📁 modules/                      # Core Business Logic
+│   ├── cards/                       # Card processing modules
+│   ├── export/                      # PDF generation
+│   ├── interfaces/                  # CLI interface
+│   └── styles/                      # CSS customization
+├── 📁 cli/                          # Modern CLI Interface
+├── 📁 tests/                        # Core test suite
+├── 📁 assets/                       # HTML templates
+└── 📁 postman/                      # API testing collection
 ```
 
-## **🧪 Testing**
+## Usage Interfaces
 
-### **Comandi Test**
+### 🖥️ Command Line Interface
+
+The CLI is the **source of truth** for all card generation. All other interfaces (API and Web) derive their functionality from the CLI.
+
+**Quick start:**
+```bash
+# Install and verify
+npm install
+node cli/generate-cards.js --version
+
+# Basic PDF generation
+node cli/generate-cards.js generate -i tests/data/test-10-carte.json -o cards.pdf
+
+# Advanced generation with custom layout
+node cli/generate-cards.js generate -i cards.json -o cards.pdf -f landscape --cards-per-page 8
+
+# Validate JSON schema
+node cli/generate-cards.js validate -i cards.json --strict
+
+# Optimize layout configuration
+node cli/generate-cards.js optimize --cards 25
+
+# System information
+node cli/generate-cards.js info --system --templates
+```
+
+**Available commands:**
+- 📄 **`generate`** - Generate PDF/HTML cards with full customization
+- ✅ **`validate`** - Validate JSON schema without generation  
+- 🎨 **`styles`** - Interactive CSS customization for styleClass
+- ⚡ **`optimize`** - Layout optimization for card counts
+- ℹ️ **`info`** - System diagnostics and troubleshooting
+
+**[📖 Complete CLI Documentation](cli/README.md)**
+
+### 🌐 REST API
+
+**Core endpoints:**
+```bash
+# Health check
+curl http://localhost:3000/api/v1/health
+
+# Create deck
+curl -X POST http://localhost:3000/api/v1/decks -H "Content-Type: application/json" -d '{"title":"My Deck","cards":[...]}'
+
+# Export to PDF
+curl -X POST http://localhost:3000/api/v1/decks/{id}/export/pdf -d '{"printMode":"landscape"}' --output deck.pdf
+```
+
+**[📖 Complete API Documentation](api/README.md)**
+
+### 💻 Web Interface
+
+**Modern React application:**
+- 📊 Dashboard with deck management
+- ✏️ Visual deck and card editor
+- 👁️ Live preview with export options
+- 📱 Mobile-responsive design
+- 🔄 Real-time API integration
+
+**[📖 Web Interface Guide](web/README.md)**
+
+## Architecture Highlights
+
+### Validation Architecture (DRY Principle)
+
+**Single Source of Truth:** All validation rules centralized in `DeckValidator.js`
+- English-only field names (title, type, description, etc.)
+- API wraps DeckValidator for security sanitization
+- Web layer uses DeckValidator directly
+- Eliminates code duplication between components
+
+### Security Patterns
+
+**Precise Regex with Word Boundaries:**
+- Pattern: `/\bimport\s*\(/i` instead of `/import\s*\(/i`
+- Prevents false positives (e.g., "importanza" won't trigger security alerts)
+- Applied in `SanitizationService.js` and `securityValidation.js`
+
+### Performance Optimizations
+
+- **Template caching** for rendering performance
+- **Lazy loading** of heavy modules
+- **Batch processing** for large datasets
+- **Memory cleanup** with automatic garbage collection
+
+## Testing
+
+**Comprehensive test coverage across all components:**
 
 ```bash
-# Tutti i test
+# Core classes (95%+ coverage)
 npm test
 
-# Solo test unitari
-npm run test:unit
+# API endpoints (95%+ coverage)  
+cd api && npm test
 
-# Solo test integrazione  
-npm run test:integration
-
-# Con coverage
-npm run test:coverage
+# Web integration (90%+ coverage)
+cd web && npm test
 ```
 
-### **Test Coverage**
+**Test metrics:**
+- ✅ 136 core tests
+- ✅ 97 API endpoint tests  
+- ✅ 34 web integration tests
+- ✅ 52 security test cases
 
-- ✅ **LayoutCalculator**: 24 test - Layout speculari e modalità
-- ✅ **CardPaginator**: 27 test - Paginazione e placeholder  
-- ✅ **CardRenderer**: 39 test - Template e rendering HTML
-- ✅ **Integrazione**: 9 test - Workflow completo end-to-end
+## Configuration
 
-## **⚙️ Configurazioni Avanzate**
+### Environment Variables
 
-### **Template Personalizzati**
-
+**API Configuration** (`.env` in `api/`):
 ```bash
-# Usa template personalizzato
-node cli/generate-cards.js generate -i carte.json -t custom-template.html -b output.html
+NODE_ENV=development
+PORT=3000
+HOST=localhost
+ENABLE_RATE_LIMIT=false
+DATA_PATH=../data
+LOG_LEVEL=debug
 ```
 
-### **Configurazione Debug**
-
+**Web Configuration** (`.env` in `web/`):
 ```bash
-# Abilita debug mode
-DEBUG=1 node cli/generate-cards.js generate -i carte.json -b output.html --verbose
+VITE_API_BASE_URL=http://localhost:3000/api/v1
+VITE_APP_NAME=KPI Card Generator
+VITE_APP_VERSION=4.2.0
 ```
 
-### **Batch Processing**
+### Print Modes
 
-```bash
-# Genera multiple varianti
-for mode in portrait landscape; do
-  node cli/generate-cards.js generate -i carte.json -o "carte-$mode.pdf" -f $mode
-done
-```
+| Mode | Alias | Best For | Layout |
+|------|-------|----------|--------|
+| `portrait` | `short` | Office printers | Standard binding |
+| `landscape` | `long` | Home printers | Landscape binding |
 
-## **🔧 Sviluppo e Contribuzione**
+### Recommended Configurations
 
-### **Architettura Modulare**
+| Use Case | Cards/Page | Cards/Row | Mode |
+|----------|------------|-----------|------|
+| **Workshop Standard** | 8 | 4 | Landscape |
+| **Individual Study** | 1 | 1 | Portrait |
+| **Summary Sheets** | 6 | 3 | Landscape |
+| **Pocket Cards** | 12 | 4 | Portrait |
 
-Il progetto utilizza un'architettura moderna basata su ES6+ modules:
+## JSON Schema
 
-- **LayoutCalculator**: Algoritmi di layout speculare
-- **CardPaginator**: Logica di paginazione e ottimizzazione  
-- **CardRenderer**: Engine di template e rendering HTML
-- **DeckValidator**: Schema validation con report dettagliati
-- **PDFGenerator**: Wrapper Puppeteer ottimizzato
-- **CLIInterface**: Orchestrazione e UX
+### Complete Deck Structure
 
-### **Estensioni Future**
-
-L'architettura è progettata per supportare:
-- 🌐 **API REST**: Integrazione con `api-architect`
-- ⚛️ **Frontend Web**: Con React/Vue components
-- 📱 **App Mobile**: Export configurazioni
-- 🔄 **CI/CD**: Pipeline automatizzate
-
-## **⚠️ Bypass Limiti Caratteri**
-
-Per impostazione predefinita, il sistema limita la lunghezza del testo delle carte a **500 caratteri** per garantire che si adattino bene al layout di stampa.
-
-### **Quando Usare il Bypass**
-
-Usa `--no-char-limits` quando:
-- ✅ Hai **testi dettagliati** che superano i 500 caratteri
-- ✅ Stai creando **materiale di studio** con descrizioni estese
-- ✅ Hai **contenuti tecnici** che richiedono spiegazioni lunghe
-- ✅ Stai prototipando e vuoi **testare layout** con testi reali
-
-### **Esempi di Utilizzo**
-
-```bash
-# Validazione con bypass
-node cli/generate-cards.js validate -i carte-dettagliate.json --no-char-limits
-
-# Generazione PDF con testi lunghi
-node cli/generate-cards.js generate \
-  -i workshop-completo.json \
-  -o materiale-dettagliato.pdf \
-  --no-char-limits \
-  --cards-per-page 1 \
-  --cards-per-row 1 \
-  -f portrait
-```
-
-### **⚠️ Considerazioni**
-
-- **Layout**: Testi molto lunghi potrebbero non adattarsi bene al layout standard
-- **Stampa**: Considera di usare layout personalizzati (1 carta per pagina) per testi lunghi
-- **Leggibilità**: Testi oltre i 500 caratteri possono risultare difficili da leggere su carte stampate
-
-### **Combinazione con HTML Markup**
-
-Il bypass funziona perfettamente con il markup HTML sicuro:
-
+**Full deck schema with all available fields:**
 ```json
 {
-  "titolo": "Carta Dettagliata",
-  "testo": "<strong>Obiettivo Principale:</strong><br><br><ul><li><em>Fase 1:</em> Analisi preliminare dei requisiti e mappatura degli stakeholder coinvolti nel processo decisionale</li><li><strong>Fase 2:</strong> Implementazione delle soluzioni tecnologiche identificate durante la fase di analisi</li><li><u>Fase 3:</u> Monitoraggio e ottimizzazione continua dei processi implementati</li></ul><br><strong>Note:</strong> Questo processo richiede coordinamento tra team tecnici e di business per garantire il successo dell'implementazione."
-}
-```
-
-## **📋 Schema JSON**
-
-### **Struttura Base**
-
-```json
-{
-  "titolo": "Nome dell'Esercizio",
-  "sottotitolo": "Descrizione opzionale", 
-  "icona_esercizio": "⭐",
-  "carte": [
+  "title": "Workshop KPI Cards",
+  "subtitle": "Interactive workshop for team performance metrics",
+  "deckIcon": "🎯",
+  "cardBackIcon": "🃏",
+  "copyright": "© 2024 Your Organization - Licensed under Creative Commons",
+  "cards": [
     {
-      "titolo": "Titolo Carta",
-      "icona": "📊",
-      "emoji": "🎯", 
-      "tipo": "Metrica",
-      "testo": "Descrizione della carta",
-      "flavor": "Testo aggiuntivo",
-      "classe": "css-class-name"
+      "title": "Customer Satisfaction Score",
+      "headerIcon": "😊",
+      "heroImage": "📈",
+      "type": "Customer KPI",
+      "description": "Measures customer satisfaction through <strong>surveys</strong> and <em>feedback forms</em>.<br><br><strong>Key metrics:</strong><ul><li>Survey response rate</li><li>Net Promoter Score (NPS)</li><li>Customer retention rate</li></ul>",
+      "flavorText": "\"Happy customers are <u>loyal customers</u>\"",
+      "styleClass": "card-customer-kpi"
+    },
+    {
+      "title": "Revenue Growth Rate",
+      "headerIcon": "💰",
+      "heroImage": "📊",
+      "type": "Financial KPI",
+      "description": "Monthly <b>revenue growth</b> percentage compared to previous period.<br>Target: <strong>15% monthly growth</strong>",
+      "flavorText": "Growth is the engine of success",
+      "styleClass": "card-financial-metric"
     }
   ]
 }
 ```
 
-### **✨ Supporto HTML Markup**
+### Field Definitions
 
-Il sistema supporta **markup HTML sicuro** nei campi di testo delle carte per formattazione avanzata:
+#### **Deck Level Fields**
+| Field | Type | Required | Max Length | Description |
+|-------|------|----------|------------|-------------|
+| `title` | string | ✅ Yes | 200 chars | Main deck title |
+| `subtitle` | string | ❌ No | 300 chars | Optional deck description |
+| `deckIcon` | string | ❌ No | 10 chars | Emoji/icon for the deck |
+| `cardBackIcon` | string | ❌ No | 10 chars | Icon for card backs |
+| `copyright` | string | ❌ No | 500 chars | Copyright/attribution text |
+| `cards` | array | ❌ No | min 1 | Array of card objects |
 
-#### **Tag HTML Supportati**
-- **Formattazione testo**: `<strong>`, `<b>`, `<em>`, `<i>`, `<italic>`, `<u>`
-- **Interruzioni**: `<br>`  
-- **Liste**: `<ul>`, `<ol>`, `<li>`
+#### **Card Level Fields**
+| Field | Type | Required | Max Length | Description |
+|-------|------|----------|------------|-------------|
+| `title` | string | ❌ No* | 200 chars | Card title (required for valid cards) |
+| `headerIcon` | string | ❌ No | 10 chars | Small icon in card header |
+| `heroImage` | string | ❌ No | 10 chars | Large central image/emoji |
+| `type` | string | ❌ No | 255 chars | Card category or type |
+| `description` | string | ❌ No | 2000 chars** | Main card content (HTML supported) |
+| `flavorText` | string | ❌ No | 200 chars | Additional context text |
+| `styleClass` | string | ❌ No | 100 chars | CSS class for styling |
 
-#### **Esempio con Markup**
+*At least one card must have a `title` field for the deck to be valid  
+**Can be bypassed with `--no-char-limits` CLI flag
 
+### Safe HTML Support
+
+**Allowed HTML Tags:**
+```html
+<strong>Bold text</strong>
+<b>Bold text</b>  
+<em>Emphasized text</em>
+<i>Italic text</i>
+<u>Underlined text</u>
+<br>Line break
+<ul><li>Unordered list items</li></ul>
+<ol><li>Ordered list items</li></ol>
+```
+
+**Security Features:**
+- ✅ Automatic XSS protection and HTML sanitization
+- ✅ Smart character counting (excludes HTML markup)
+- ✅ Content Security Policy enforcement
+- ❌ Dangerous tags (`<script>`, `<iframe>`, etc.) are escaped
+
+**Example with HTML:**
 ```json
 {
-  "titolo": "Workshop <strong>Metriche KPI</strong>",
-  "carte": [
+  "title": "Card with <strong>HTML</strong>",
+  "description": "This supports <em>emphasis</em> and <b>bold</b>.<br><br>Lists work too:<ul><li>Feature A</li><li>Feature B</li></ul>"
+}
+```
+
+### Style Customization
+
+**Using `styleClass` for custom card styling:**
+```json
+{
+  "title": "Premium KPI Card",
+  "styleClass": "premium-kpi",
+  "description": "This card uses custom CSS styling"
+}
+```
+
+**Common style classes:**
+- `card-kpi-primary`: Primary KPI styling
+- `card-metric-secondary`: Secondary metric styling  
+- `card-objective`: Goal/objective cards
+- `card-risk`: Risk indicator cards
+- `card-success`: Success metric cards
+
+## Advanced Features
+
+### Character Limit Bypass
+```bash
+# For detailed content exceeding 500 characters
+node cli/generate-cards.js generate -i detailed-cards.json -o output.pdf --no-char-limits
+```
+
+### CSS Style Customization
+```json
+{
+  "cards": [
     {
-      "titolo": "Metrica <em>Importante</em>",
-      "testo": "<strong>Obiettivo:</strong> Aumentare conversioni<br><br><ul><li><em>Target</em>: +20%</li><li><b>Scadenza</b>: Q4 2024</li><li>Owner: <u>Team Marketing</u></li></ul>",
-      "flavor": "<strong>Note:</strong> Priorità <em>alta</em> ⚡"
+      "title": "Custom Styled Card",
+      "styleClass": "premium-kpi",
+      "description": "Card with custom styling"
     }
   ]
 }
 ```
 
-#### **Sicurezza HTML**
-
-- ✅ **Tag sicuri** vengono renderizzati correttamente
-- 🚫 **Tag pericolosi** (script, iframe, etc.) vengono automaticamente escapati  
-- 📏 **Conteggio caratteri** esclude il markup per limiti di lunghezza
-- 🔒 **Sanitizzazione** automatica per prevenire XSS
-
-#### **Conteggio Caratteri Intelligente**
-
+### Bulk Operations via API
 ```bash
-# Esempio: Testo con markup
-"<strong>Breve</strong> <em>testo</em>" 
-# → Caratteri di testo: 11 (solo "Breve testo")
-# → Caratteri totali: 32 (con markup)
-
-# La validazione usa solo i caratteri di testo visibile
-node cli/generate-cards.js validate -i carte-con-html.json
+curl -X POST http://localhost:3000/api/v1/decks/{id}/cards/bulk \
+  -d '{"operations":[{"type":"add","data":{"title":"Bulk Card"}}]}'
 ```
 
-### **Validazione Schema**
+## Contributing
 
+### Development Setup
 ```bash
-# Verifica schema con report dettagliato
-node cli/generate-cards.js validate -i carte.json --strict --report schema-check.txt
+# Clone and install
+git clone https://github.com/fullo/kpi-card-generator.git
+cd kpi-card-generator && npm install
+
+# Run all tests
+npm test && cd api && npm test && cd ../web && npm test
+
+# Start development servers
+# Terminal 1: cd api && npm run dev
+# Terminal 2: cd web && npm run dev
 ```
 
-## **🐛 Risoluzione Problemi**
+### Code Standards
+- **ES Modules** throughout
+- **95%+ test coverage** required
+- **Security-first** development
+- **Documentation** for all public APIs
 
-### **Test che Falliscono**
+## Troubleshooting
 
+**Common issues and solutions:**
+
+**Test Failures:**
 ```bash
-# Pulisci cache e reinstalla
-npm run clean
-npm install
-
-# Verifica configurazione Node.js
-node --version  # Deve essere >= 18.0.0
+# Clean install
+npm run clean && npm install
+node --version  # Ensure >= 18.0.0
 ```
 
-### **PDF Generation Issues**
-
+**PDF Generation Issues:**
 ```bash
-# Test sistema PDF
+# System check
 node cli/generate-cards.js info --system
 
-# Genera solo HTML per debug
-node cli/generate-cards.js generate -i carte.json -b debug.html --verbose
+# Debug with HTML only
+node cli/generate-cards.js generate -i cards.json -b debug.html --verbose
 ```
 
-### **Template Errors**
-
+**API Connection Failed:**
 ```bash
-# Verifica template
-node cli/generate-cards.js info --templates
-
-# Test template con dati semplici
-node cli/generate-cards.js generate -i tests/data/test-6-carte.json -b template-test.html
+# Verify API server
+cd api && npm start
+curl http://localhost:3000/api/v1/health
 ```
 
-## **📊 Performance**
+## Performance Benchmarks
 
-### **Benchmark**
+- **Pagination**: < 10ms for 1000 cards
+- **HTML Rendering**: < 100ms for 100 cards  
+- **PDF Generation**: < 5s for 50 cards
+- **Memory Usage**: < 200MB for typical operations
+- **API Response**: < 200ms for CRUD operations
 
-- **Paginazione**: < 10ms per 1000 carte
-- **Rendering HTML**: < 100ms per 100 carte  
-- **PDF Generation**: < 5s per 50 carte
-- **Memory Usage**: < 200MB per 100 carte
+## License & Credits
 
-### **Ottimizzazioni**
+### Code
+MIT License - Free for commercial and non-commercial use
 
-- Template caching per performance
-- Lazy loading dei moduli pesanti
-- Batch processing per grandi dataset
-- Memory cleanup automatico
-
-## **📜 Licenza**
-
-### **Codice Sorgente** 
-MIT License - Libero per uso commerciale e non
-
-### **Contenuto delle Carte**
+### Content
 Creative Commons BY-NC-SA 4.0 - **Daruma Consulting di Francesco Fullone**
 
-## **👨‍💻 Credits**
-
-Sviluppato da **Francesco Fullone** per workshop su Metriche, KPI e OKR.
+**Developed by Francesco Fullone** for workshops on Metrics, KPIs, and OKRs.
 
 - 🌐 [Daruma Consulting](https://darumahq.it)
 - 📧 francesco@darumahq.it
@@ -568,4 +478,6 @@ Sviluppato da **Francesco Fullone** per workshop su Metriche, KPI e OKR.
 
 ---
 
-**🎯 Ready per i tuoi prossimi workshop KPI!** 🚀
+**🎯 Ready for your next KPI workshop!** 🚀
+
+Choose your preferred interface: [CLI](cli/README.md) | [API](api/README.md) | [Web](web/README.md)

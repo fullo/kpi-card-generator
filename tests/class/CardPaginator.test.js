@@ -1,12 +1,12 @@
 import { jest, describe, test, expect } from '@jest/globals';
-import { CardPaginator } from '../../class/CardPaginator.js';
+import { CardPaginator } from '../../modules/cards/pagination/CardPaginator.js';
 
 // Helper per creare carte mock
 const createMockCards = (count) => {
     return Array.from({ length: count }, (_, i) => ({ 
         id: `C${i + 1}`,
-        titolo: `Carta ${i + 1}`,
-        tipo: 'test'
+        title: `Carta ${i + 1}`,
+        type: 'test'
     }));
 };
 
@@ -328,14 +328,14 @@ describe('CardPaginator - Performance', () => {
 
     test('dovrebbe preservare proprietà delle carte', () => {
         const cards = [
-            { id: 'C1', titolo: 'Prima', customProp: 'test1' },
-            { id: 'C2', titolo: 'Seconda', customProp: 'test2' }
+            { id: 'C1', title: 'Prima', customProp: 'test1' },
+            { id: 'C2', title: 'Seconda', customProp: 'test2' }
         ];
         
         const { pages } = CardPaginator.paginateCards(cards, 8, 4);
         
         expect(pages[0][0].customProp).toBe('test1');
         expect(pages[0][1].customProp).toBe('test2');
-        expect(pages[0][0].titolo).toBe('Prima');
+        expect(pages[0][0].title).toBe('Prima');
     });
 });

@@ -1,0 +1,709 @@
+{
+  "title": "Mazzo KPI Workshop - Deck Completo Ottimizzato",
+  "subtitle": "Tutte le carte per workshop su Metriche e KPI (core deck + esempi)",
+  "deckIcon": "🎴",
+  "cardBackIcon": "🎴",
+  "copyright": "Daruma Consulting di Francesco Fullone - CC BY-SA-NC",
+  "cards": [
+    
+    {
+      "title": "Spiegazione Esercizio 1",
+      "headerIcon": "📜",
+      "heroImage": "🔗", 
+      "type": "Istruzioni",
+      "description": "<strong>Obiettivo:</strong> Collegare azioni di dipartimento a risultati di business.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende 1 carta \"Evento Multi-Scenario\" ⚡ e 1 \"Obiettivo Business\" 🎯.<br><br><strong>2. Collega:</strong> Trovate la carta \"KPI\" 📊 che meglio unisce le prime due. Se non c'è, createne una!<br><br><strong>3. Racconta:</strong> Preparate una \"storia\" di 1 minuto che spieghi la catena causa-effetto.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Esempio di Gioco (Positivo)",
+      "headerIcon": "💡",
+      "heroImage": "💡",
+      "type": "ESEMPIO - 1",
+      "description": "<strong>Carte Pescate:</strong><br>🤝 Ciclo di vendita ridotto di 5 giorni<br>🎯 Aumentare il revenue<br><br><strong>KPI Scelto:</strong><br>📊 Customer Lifetime Value (CLV)<br><br><strong>La nostra storia:</strong> \"Un ciclo di vendita più breve significa che incassiamo prima e possiamo reinvestire più velocemente. Inoltre, un processo rapido migliora l'esperienza del cliente, che sarà più propenso a rimanere a lungo, aumentando il suo valore nel tempo (CLV).\"",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Esempio di Gioco (Negativo)",
+      "headerIcon": "💡",
+      "heroImage": "💡",
+      "type": "ESEMPIO - 1",
+      "description": "<strong>Carte Pescate:</strong><br>⚙️ Aumento del 15% degli errori 5xx<br>🎯 Migliorare la soddisfazione utente<br><br><strong>KPI Scelto:</strong><br>📊 Customer Satisfaction (CSAT)<br><br><strong>La nostra storia:</strong> \"Un aumento degli errori 5xx significa che il nostro servizio non è affidabile. Questo crea frustrazione e un'esperienza negativa. Il CSAT misurerà direttamente questo impatto: se non risolviamo gli errori, il punteggio di soddisfazione crollerà.\"",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Spiegazione Esercizio 2", 
+      "headerIcon": "📜",
+      "heroImage": "📺",
+      "type": "Istruzioni",
+      "description": "<strong>Obiettivo:</strong> Distinguere e collegare Outcome e Output.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende una carta \"Outcome Desiderato\" 🏆.<br><br><strong>2. Brainstorming Azioni (Output):</strong> Quali 2-3 azioni concrete fareste per raggiungere quell'outcome?<br><br><strong>3. Definisci i KPI (Key Results):</strong> Per ogni azione, definite un KPI azionabile e causale che misuri il suo successo.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Esempio di Gioco",
+      "headerIcon": "💡",
+      "heroImage": "💡",
+      "type": "ESEMPIO - 2",
+      "description": "<strong>Outcome:</strong> 🏆 Rendere il checkout impeccabile.<br><br><strong>Azione 1 (Output):</strong> Ridisegnare la UI del checkout.<br><strong>KPI 1:</strong> Ridurre l'abbandono del carrello dal 70% al 40%.<br><br><strong>Azione 2 (Output):</strong> Aggiungere più metodi di pagamento.<br><strong>KPI 2:</strong> Aumentare il tasso di conversione del 15%.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Spiegazione Esercizio 3",
+      "headerIcon": "📜", 
+      "heroImage": "🪦",
+      "type": "Istruzioni",
+      "description": "<strong>Obiettivo:</strong> Distinguere le metriche inutili da quelle utili.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende una carta \"Metrica di Vanità\" 🪦.<br><br><strong>2. Analizza:</strong> Discutete perché non è una buona metrica. Scrivete la sua \"lapide\".<br><br><strong>3. Trasforma:</strong> Proponete 1-2 metriche \"rinate\" 🌱 che misurino il vero valore.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Esempio di Gioco",
+      "headerIcon": "💡",
+      "heroImage": "💡",
+      "type": "ESEMPIO - 3",
+      "description": "<strong>Carta Pescata:</strong><br>🪦 Numero di download<br><br><strong>Lapide:</strong> \"Qui giace una metrica che ci ha fatto sentire popolari, ma non ci ha mai detto se gli utenti amassero l'app o l'avessero cancellata dopo 5 minuti.\"<br><br><strong>Rinascita:</strong><br>🌱 Tasso di attivazione (utenti che completano l'onboarding).<br>🌱 Tasso di retention a 7 giorni.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Spiegazione Esercizio 4",
+      "headerIcon": "📜",
+      "heroImage": "🎨", 
+      "type": "Istruzioni",
+      "description": "<strong>Obiettivo:</strong> Trasformare un'idea vaga in un KPI concreto.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende una carta \"Obiettivo Vago\" 🎯.<br><br><strong>2. Traduci:</strong> Cosa significa *davvero* questo obiettivo per voi? Cosa deve cambiare?<br><br><strong>3. Progetta:</strong> Usate il framework \"SMARTER\" per definire un KPI finale, specifico e misurabile.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Esempio di Gioco",
+      "headerIcon": "💡",
+      "heroImage": "💡",
+      "type": "ESEMPIO - 4",
+      "description": "<strong>Carta Pescata:</strong><br>🎯 \"Vogliamo che il prodotto sia più stabile.\"<br><br><strong>Traduzione:</strong> \"Significa meno crash e meno errori critici per gli utenti.\"<br><br><strong>KPI Finale (SMARTER):</strong> \"Ridurre il crash rate per sessione dal 2% allo 0.5% entro la fine del Q3, misurato tramite il nostro tool di error tracking.\"",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Framework SMARTER",
+      "headerIcon": "🧠",
+      "heroImage": "🧠",
+      "type": "RIFERIMENTO - 4",
+      "description": "Usa questa checklist per il tuo KPI:<br><strong>S</strong>pecific: Chiaro e ben definito?<br><strong>M</strong>easurable: Si può misurare?<br><strong>A</strong>chievable: È realistico?<br><strong>R</strong>elevant: È importante per il business?<br><strong>T</strong>ime-bound: Ha una scadenza?<br><strong>E</strong>ngaged: È coinvolgente?<br><strong>R</strong>esponsible: Chi ne risponde?",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Spiegazione Esercizio 5",
+      "headerIcon": "📜",
+      "heroImage": "⚔️",
+      "type": "Istruzioni", 
+      "description": "<strong>Obiettivo:</strong> Valutare un KPI esistente usando i 4 Cavalieri.<br><br><strong>1. Scegli:</strong> Prendete un KPI che usate nel vostro lavoro quotidiano.<br><br><strong>2. Valuta:</strong> Usate le 4 carte Cavaliere come checklist. Date un voto da 1 a 5 per ogni Cavaliere.<br><br><strong>3. Migliora:</strong> Discutete: come potreste migliorare il KPI per renderlo più forte in ogni categoria?",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Esempio di Gioco",
+      "headerIcon": "💡",
+      "heroImage": "💡",
+      "type": "ESEMPIO - 5",
+      "description": "<strong>KPI Scelto:</strong> \"Numero di visite al sito\"<br><br><strong>Valutazione:</strong><br><strong>Comparabile:</strong> ✅ (4/5)<br><strong>Comprensibile:</strong> ✅ (5/5)<br><strong>Normalizzabile:</strong> ❌ (1/5 - un numero assoluto)<br><strong>Eseguibile:</strong> ❌ (2/5 - se aumenta, non so perché)<br><br><strong>Miglioramento:</strong> \"Tasso di conversione per sorgente di traffico.\"",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Spiegazione Esercizio 6",
+      "headerIcon": "📜",
+      "heroImage": "🎭",
+      "type": "Istruzioni",
+      "description": "<strong>Obiettivo:</strong> Trovare un equilibrio tra obiettivi contrastanti.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende una carta \"Scenario: Conflitto\" 🎭.<br><br><strong>2. Analizza:</strong> Identificate le due metriche in tensione e il problema di fondo.<br><br><strong>3. Risolvi:</strong> Proponete una metrica \"ponte\" o un \"budget di errore\" per allineare gli incentivi e trovare un compromesso intelligente.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Esempio di Gioco",
+      "headerIcon": "💡",
+      "heroImage": "💡",
+      "type": "ESEMPIO - 6",
+      "description": "<strong>Carta Pescata:</strong><br>🎭 Velocità vs Stabilità <br><br><strong>Conflitto:</strong> Rilasciare velocemente (Deployment Frequency) vs rilasciare in sicurezza (Change Failure Rate).<br><br><strong>Soluzione Proposta:</strong> Introdurre un \"Error Budget\" basato sull'Uptime. Il team può rilasciare velocemente finché non esaurisce il budget (es. Uptime > 99.9%). Se scende, i nuovi sviluppi si fermano per risolvere i problemi di stabilità.",
+      "flavorText": "",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Spiegazione Esercizio 7",
+      "headerIcon": "📜",
+      "heroImage": "🧠",
+      "type": "Istruzioni",
+      "description": "<strong>Obiettivo:</strong> Classificare scenari aziendali come Bias, Rumore, Entrambi o Nessuno.<br><br><strong>1. Leggete:</strong> Lo scenario in coppia (30 secondi).<br><br><strong>2. Discutete:</strong> È Bias (errore sistematico), Rumore (variabilità casuale), Entrambi o Nessuno?<br><br><strong>3. Classificate:</strong> Scegliete la categoria e passate al prossimo scenario.<br><br><strong>Tempo:</strong> 1 minuto per scenario!",
+      "flavorText": "\"Bias, Rumore, Entrambi o Nessuno? Quella è la domanda!\"",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Evento: Performance in Calo",
+      "headerIcon": "⚡",
+      "heroImage": "📉",
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Aumento del 15% degli errori 5xx.<br><strong>Marketing:</strong> Tasso di apertura email diminuito del 10%.<br><strong>Sales:</strong> Valore medio del contratto (ACV) diminuito.<br><strong>Aziendale:</strong> Tasso di turnover dei dipendenti +5%.",
+      "flavorText": "\"Houston, abbiamo un problema. E a quanto pare, si sta moltiplicando.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Velocità Migliorata", 
+      "headerIcon": "⚡",
+      "heroImage": "🚀",
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Deploy completato in 10 min vs 30.<br><strong>Marketing:</strong> Click-Through Rate (CTR) su annunci raddoppiato.<br><strong>Sales:</strong> Tempo medio di prima risposta al lead < 1 ora.<br><strong>Aziendale:</strong> Tempo medio di chiusura ticket IT ridotto del 20%.",
+      "flavorText": "\"Il tempo è denaro, specialmente quando la produzione è in fiamme.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Crescita Inaspettata",
+      "headerIcon": "⚡", 
+      "heroImage": "📈",
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Utilizzo CPU medio > 85% per 1 ora.<br><strong>Marketing:</strong> Aumento del 15% del traffico organico.<br><strong>Sales:</strong> Numero di demo prenotate +40%.<br><strong>Aziendale:</strong> Tempo medio per assunzione ridotto a 30gg.",
+      "flavorText": "\"Il server sta sudando più di un dev prima di un deploy di venerdì.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Problemi di Qualità",
+      "headerIcon": "⚡",
+      "heroImage": "🐛", 
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Copertura test unitari scesa dal 80% al 65%.<br><strong>Marketing:</strong> Bounce rate del blog ridotto del 30%.<br><strong>Sales:</strong> Percentuale di trattative perse per \"prezzo\" diminuita.<br><strong>Aziendale:</strong> Feedback positivo da sondaggio clima aziendale.",
+      "flavorText": "\"Viviamo pericolosamente. Forse troppo.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Nuovi Successi",
+      "headerIcon": "⚡",
+      "heroImage": "🎯",
+      "type": "Multi-Scenario", 
+      "description": "<strong>Tecnico:</strong> Riduzione del 20% della latenza API.<br><strong>Marketing:</strong> Costo per Lead (CPL) ridotto del 10%.<br><strong>Sales:</strong> Tasso di chiusura contratti +15%.<br><strong>Aziendale:</strong> Tasso di completamento corsi di formazione al 95%.",
+      "flavorText": "\"Più veloce della luce? No, ma i nostri utenti potrebbero non notare la differenza.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Problemi di Connessione",
+      "headerIcon": "⚡",
+      "heroImage": "🔗",
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Login falliti +50%.<br><strong>Marketing:</strong> Tasso di conversione della landing page al 5%.<br><strong>Sales:</strong> Tasso di risposta alle email a freddo al 15%.<br><strong>Aziendale:</strong> Implementazione nuovo software gestionale.",
+      "flavorText": "\"O i nostri utenti sono molto smemorati, o qualcuno sta bussando alla porta.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Stabilità Raggiunta",
+      "headerIcon": "⚡",
+      "heroImage": "🛡️",
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Diminuzione del 50% nell'uso di una feature.<br><strong>Marketing:</strong> Aumento del 25% delle menzioni del brand.<br><strong>Sales:</strong> Pipeline di vendita cresciuta del 30%.<br><strong>Aziendale:</strong> Riduzione del 15% degli infortuni sul lavoro.", 
+      "flavorText": "\"L'abbiamo costruita, e loro... non sono venuti.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Cambi di Processo",
+      "headerIcon": "⚡",
+      "heroImage": "🔄",
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Numero di hotfix urgenti raddoppiato.<br><strong>Marketing:</strong> Nuova partnership con influencer avviata.<br><strong>Sales:</strong> Nuovo script di vendita implementato.<br><strong>Aziendale:</strong> Nuovo programma di welfare aziendale lanciato.",
+      "flavorText": "\"Quando 'muoviti veloce e rompi le cose' diventa solo 'rompi le cose'.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Feedback Clienti",
+      "headerIcon": "⚡", 
+      "heroImage": "💬",
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Tempo di risposta ricerca > 500ms.<br><strong>Marketing:</strong> Video promozionale con 100k visualizzazioni.<br><strong>Sales:</strong> Numero di referral da clienti esistenti raddoppiato.<br><strong>Aziendale:</strong> Tasso di adozione del nuovo CRM al 90%.",
+      "flavorText": "\"I nostri utenti riescono a prepararsi un caffè nell'attesa.\"", 
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Evento: Competizione",
+      "headerIcon": "⚡",
+      "heroImage": "🏁", 
+      "type": "Multi-Scenario",
+      "description": "<strong>Tecnico:</strong> Dimensione del bundle JS aumentata del 30%.<br><strong>Marketing:</strong> Quota di mercato aumentata di 2 punti.<br><strong>Sales:</strong> Raggiungimento del 110% del target trimestrale.<br><strong>Aziendale:</strong> Riduzione del 10% del consumo energetico degli uffici.",
+      "flavorText": "\"La nostra app ha messo su qualche chilo. Ora è più lenta a fare le scale.\"",
+      "styleClass": "card-evento"
+    },
+
+    {
+      "title": "Obiettivo Business",
+      "headerIcon": "🎯",
+      "heroImage": "😊",
+      "type": "Outcome Strategico", 
+      "description": "Migliorare la soddisfazione utente.",
+      "flavorText": "\"Perché i clienti felici si lamentano di meno. E, a volte, pagano di più.\"",
+      "styleClass": "card-obiettivo"
+    },
+
+    {
+      "title": "Obiettivo Business",
+      "headerIcon": "🎯",
+      "heroImage": "💰", 
+      "type": "Outcome Strategico",
+      "description": "Aumentare il revenue.",
+      "flavorText": "\"La metrica che fa sorridere gli investitori e tremare i competitor.\"",
+      "styleClass": "card-obiettivo"
+    },
+
+    {
+      "title": "Obiettivo Business",
+      "headerIcon": "🎯",
+      "heroImage": "💸",
+      "type": "Outcome Strategico",
+      "description": "Ridurre i costi operativi.",
+      "flavorText": "\"Fare di più con meno. Il mantra di ogni CFO.\"",
+      "styleClass": "card-obiettivo"
+    },
+
+    {
+      "title": "Obiettivo Business", 
+      "headerIcon": "🎯",
+      "heroImage": "🧲",
+      "type": "Outcome Strategico",
+      "description": "Aumentare la retention degli utenti.",
+      "flavorText": "\"Acquisire un cliente è una vittoria. Farlo restare è un'arte.\"",
+      "styleClass": "card-obiettivo"
+    },
+
+    {
+      "title": "Obiettivo Business",
+      "headerIcon": "🎯",
+      "heroImage": "🌍", 
+      "type": "Outcome Strategico",
+      "description": "Espandersi in un nuovo mercato.",
+      "flavorText": "\"Conquistare nuovi mondi. O almeno, nuovi CAP.\"",
+      "styleClass": "card-obiettivo"
+    },
+
+    {
+      "title": "Outcome Desiderato",
+      "headerIcon": "🏆",
+      "heroImage": "🚀",
+      "type": "Obiettivo Prodotto",
+      "description": "I nostri clienti diventano \"power users\" più velocemente.",
+      "flavorText": "\"Dall'iscrizione alla maestria, in un batter d'occhio.\"",
+      "styleClass": "card-outcome"
+    },
+
+    {
+      "title": "Outcome Desiderato",
+      "headerIcon": "🏆",
+      "heroImage": "📢", 
+      "type": "Obiettivo Marketing",
+      "description": "Il nostro brand diventa un punto di riferimento nel settore.",
+      "flavorText": "\"Quando pensano al nostro settore, devono pensare a noi.\"",
+      "styleClass": "card-outcome"
+    },
+
+    {
+      "title": "Outcome Desiderato", 
+      "headerIcon": "🏆",
+      "heroImage": "🤝",
+      "type": "Obiettivo Sales",
+      "description": "Il processo di vendita è un'esperienza piacevole per il cliente.",
+      "flavorText": "\"Vogliamo che comprare da noi sia facile come parlare con un amico.\"", 
+      "styleClass": "card-outcome"
+    },
+
+    {
+      "title": "Outcome Desiderato",
+      "headerIcon": "🏆",
+      "heroImage": "❤️",
+      "type": "Obiettivo Aziendale", 
+      "description": "Siamo il miglior posto dove lavorare nel nostro settore.",
+      "flavorText": "\"La gente fa la fila per entrare, non per uscire.\"",
+      "styleClass": "card-outcome"
+    },
+
+    {
+      "title": "Outcome Desiderato",
+      "headerIcon": "🏆",
+      "heroImage": "💎",
+      "type": "Obiettivo Marketing",
+      "description": "Generiamo lead di alta qualità per il team Sales.", 
+      "flavorText": "\"Non peschiamo a strascico, andiamo a caccia di perle.\"",
+      "styleClass": "card-outcome"
+    },
+
+    {
+      "title": "Obiettivo Vago", 
+      "headerIcon": "🎯",
+      "heroImage": "🧱",
+      "type": "Missione Tech",
+      "description": "\"Vogliamo che il nostro prodotto sia più stabile.\"",
+      "flavorText": "\"Stabile come un tavolo a tre gambe o stabile come una fortezza?\"",
+      "styleClass": "card-obiettivo-vago"
+    },
+
+    {
+      "title": "Obiettivo Vago",
+      "headerIcon": "🎯", 
+      "heroImage": "🎨",
+      "type": "Missione Product", 
+      "description": "\"Dobbiamo migliorare l'esperienza utente.\"",
+      "flavorText": "\"Certo. Quale utente? Quale esperienza? In quale universo parallelo?\"",
+      "styleClass": "card-obiettivo-vago"
+    },
+
+    {
+      "title": "Obiettivo Vago",
+      "headerIcon": "🎯",
+      "heroImage": "💪", 
+      "type": "Missione Operations",
+      "description": "\"Il nostro team deve diventare più produttivo.\"", 
+      "flavorText": "\"Più codice? Più feature? O più caffè?\"",
+      "styleClass": "card-obiettivo-vago"
+    },
+
+    {
+      "title": "Obiettivo Vago",
+      "headerIcon": "🎯",
+      "heroImage": "📈",
+      "type": "Missione Sales", 
+      "description": "\"Dobbiamo incrementare le performance commerciali.\"",
+      "flavorText": "\"Performance commerciali: quando ogni numero è buono, ma nessuno è abbastanza buono.\"", 
+      "styleClass": "card-obiettivo-vago"
+    },
+
+    {
+      "title": "Obiettivo Vago",
+      "headerIcon": "🎯",
+      "heroImage": "🔢",
+      "type": "Missione Marketing",
+      "description": "\"Vogliamo migliorare l'awareness del brand.\"",
+      "flavorText": "\"Awareness: tutti sanno chi siamo, nessuno sa perché dovrebbe interessargli.\"", 
+      "styleClass": "card-obiettivo-vago"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊", 
+      "heroImage": "⭐",
+      "type": "Misura di Performance",
+      "description": "Net Promoter Score (NPS)",
+      "flavorText": "\"L'unica metrica dove essere un 7/10 ti rende invisibile.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator", 
+      "headerIcon": "📊",
+      "heroImage": "🛒", 
+      "type": "Misura di Performance",
+      "description": "Tasso di Conversione",
+      "flavorText": "\"La sottile linea rossa che separa 'Hmm, interessante...' dal 'Prendi subito i miei soldi!'\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊",
+      "heroImage": "👋",
+      "type": "Misura di Performance", 
+      "description": "Customer Churn Rate",
+      "flavorText": "\"Il numero che ti ricorda quanti 'Non sei tu, sono io' hai ricevuto questo mese.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator", 
+      "headerIcon": "📊",
+      "heroImage": "👑",
+      "type": "Misura di Performance",
+      "description": "Customer Lifetime Value (CLV)",
+      "flavorText": "\"Il valore di un cliente non è in un acquisto, ma in una relazione.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊",
+      "heroImage": "😊", 
+      "type": "Misura di Performance", 
+      "description": "Customer Satisfaction (CSAT)",
+      "flavorText": "\"Il sorriso del cliente, trasformato in un numero.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊",
+      "heroImage": "💸",
+      "type": "Misura di Performance",
+      "description": "Cost per Acquisition (CPA)",
+      "flavorText": "\"Quanto ci costa un 'ciao'?\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊",
+      "heroImage": "👥", 
+      "type": "Misura di Performance",
+      "description": "Daily Active Users (DAU)", 
+      "flavorText": "\"Le persone che tornano. I veri eroi della nostra storia.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊",
+      "heroImage": "🗓️", 
+      "type": "Misura di Performance",
+      "description": "Deployment Frequency",
+      "flavorText": "\"Quante volte premiamo il bottone rosso? Sperando non esploda nulla.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊",
+      "heroImage": "🛠️",
+      "type": "Misura di Performance",
+      "description": "Mean Time To Recovery (MTTR)", 
+      "flavorText": "\"Quanto velocemente riusciamo a rimettere il nastro adesivo quando tutto si rompe.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator", 
+      "headerIcon": "📊",
+      "heroImage": "⏳",
+      "type": "Misura di Performance",
+      "description": "Sales Cycle Length",
+      "flavorText": "\"Il tempo che intercorre tra una stretta di mano e un bonifico.\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊", 
+      "heroImage": "🍰",
+      "type": "Misura di Performance",
+      "description": "Market Share",
+      "flavorText": "\"Quanto è grande la nostra fetta di torta? E chi sta mangiando il resto?\"",
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Key Indicator",
+      "headerIcon": "📊",
+      "heroImage": "✅",
+      "type": "Misura di Performance",
+      "description": "Uptime / Availability",
+      "flavorText": "\"La metrica che, se va bene, nessuno nota. Se va male, lo notano tutti.\"", 
+      "styleClass": "card-kpi"
+    },
+
+    {
+      "title": "Metrica di Vanità", 
+      "headerIcon": "🪦", 
+      "heroImage": "📥",
+      "type": "Apparenza",
+      "description": "Numero di download",
+      "flavorText": "\"Qui giace una metrica che ci ha fatto sentire popolari, ma non ci ha mai detto se gli utenti amassero l'app o l'avessero cancellata dopo 5 minuti.\"",
+      "styleClass": "card-vanity"
+    },
+
+    {
+      "title": "Metrica di Vanità", 
+      "headerIcon": "🪦",
+      "heroImage": "👍",
+      "type": "Apparenza",
+      "description": "Like sulla pagina Facebook",
+      "flavorText": "\"10.000 fan! E tre hanno comprato qualcosa. Forse.\"",
+      "styleClass": "card-vanity"
+    },
+
+    {
+      "title": "Metrica di Vanità",
+      "headerIcon": "🪦",
+      "heroImage": "📜", 
+      "type": "Apparenza",
+      "description": "Numero di righe di codice scritte",
+      "flavorText": "\"Ho scritto un romanzo. Peccato fosse un bug.\"", 
+      "styleClass": "card-vanity"
+    },
+
+    {
+      "title": "Metrica di Vanità", 
+      "headerIcon": "🪦",
+      "heroImage": "📄",
+      "type": "Apparenza", 
+      "description": "Pagine viste sul sito",
+      "flavorText": "\"Un sacco di gente è entrata nel negozio. Hanno solo guardato le vetrine e sono usciti.\"",
+      "styleClass": "card-vanity"
+    },
+
+    {
+      "title": "Metrica di Vanità",
+      "headerIcon": "🪦",
+      "heroImage": "🎁",
+      "type": "Apparenza",
+      "description": "Numero di feature rilasciate",
+      "flavorText": "\"Questo mese abbiamo aggiunto 10 nuove funzioni. Nessuno le usa, ma il nostro changelog è bellissimo.\"",
+      "styleClass": "card-vanity"
+    },
+
+    {
+      "title": "1° Cavaliere: Comparabile", 
+      "headerIcon": "📊",
+      "heroImage": "📊",
+      "type": "Principio",
+      "description": "Un KPI deve poter essere confrontato nel tempo, tra segmenti o con i competitor.",
+      "flavorText": "\"Un dato da solo è un'opinione. Confrontato con un altro, diventa un'informazione.\"",
+      "styleClass": "card-cavaliere"
+    },
+
+    {
+      "title": "2° Cavaliere: Comprensibile", 
+      "headerIcon": "🧠",
+      "heroImage": "🧠",
+      "type": "Principio",
+      "description": "Un KPI deve essere semplice da capire e da ricordare per chiunque in azienda.",
+      "flavorText": "\"Se hai bisogno di un manuale per spiegarlo, probabilmente non è un buon KPI.\"",
+      "styleClass": "card-cavaliere"
+    },
+
+    {
+      "title": "3° Cavaliere: Normalizzabile",
+      "headerIcon": "⚖️", 
+      "heroImage": "⚖️",
+      "type": "Principio",
+      "description": "Un KPI dovrebbe essere un rapporto o una percentuale per evitare distorsioni dovute alla scala.",
+      "flavorText": "\"Confrontare mele con arance è facile, se usi la percentuale di succo.\"",
+      "styleClass": "card-cavaliere"
+    },
+
+    {
+      "title": "4° Cavaliere: Eseguibile",
+      "headerIcon": "⚡️", 
+      "heroImage": "⚡️",
+      "type": "Principio", 
+      "description": "Un KPI deve spingere a un'azione. Se cambia, dobbiamo sapere cosa fare (o non fare).",
+      "flavorText": "\"Un KPI che non porta a un'azione è solo un numero su uno schermo.\"",
+      "styleClass": "card-cavaliere"
+    },
+
+    {
+      "title": "Scenario: Conflitto",
+      "headerIcon": "🎭",
+      "heroImage": "⚖️",
+      "type": "Dilemma", 
+      "description": "Il management vuole aumentare la <strong>Deployment Frequency</strong>. Il team SRE è preoccupato perché il <strong>Change Failure Rate</strong> sta aumentando.",
+      "flavorText": "\"Muoviti veloce e rompi le cose. Ma per favore, non *troppo*.\"",
+      "styleClass": "card-conflitto"
+    },
+
+    {
+      "title": "Scenario: Conflitto",
+      "headerIcon": "🎭",
+      "heroImage": "🎯",
+      "type": "Dilemma",
+      "description": "Il Marketing è misurato sul <strong>Numero di Lead</strong>. Le Vendite lamentano un basso <strong>Tasso di Conversione</strong> su quei lead.",
+      "flavorText": "\"Il marketing porta la folla, le vendite cercano l'acquirente.\"",
+      "styleClass": "card-conflitto"
+    },
+
+    {
+      "title": "Scenario: Conflitto", 
+      "headerIcon": "🎭",
+      "heroImage": "🏃‍♂️",
+      "type": "Dilemma",
+      "description": "Per aumentare il <strong>Tempo Speso sulla Piattaforma</strong>, si aggiungono animazioni. Il team tecnico segnala che il <strong>Tempo di Caricamento</strong> è peggiorato.",
+      "flavorText": "\"Vogliamo che gli utenti restino. Non che restino bloccati.\"",
+      "styleClass": "card-conflitto"
+    },
+
+    {
+      "title": "Scenario: Conflitto",
+      "headerIcon": "🎭",
+      "heroImage": "🎣",
+      "type": "Dilemma", 
+      "description": "Il Marketing ottimizza il <strong>Costo per Acquisizione (CPA)</strong>. Il Prodotto nota un alto <strong>Customer Churn Rate</strong> a 3 mesi.",
+      "flavorText": "\"È più facile riempire un secchio bucato o tappare il buco?\"",
+      "styleClass": "card-conflitto"
+    },
+
+    {
+      "title": "Quick Reference",
+      "headerIcon": "📋",
+      "heroImage": "✅", 
+      "type": "Reference",
+      "description": "<strong>A1:</strong> RUMORE • <strong>A2:</strong> BIAS • <strong>A3:</strong> ENTRAMBI<br><strong>B1:</strong> BIAS • <strong>B2:</strong> BIAS • <strong>B3:</strong> RUMORE<br><strong>C1:</strong> BIAS • <strong>C2:</strong> ENTRAMBI • <strong>C3:</strong> RUMORE<br><strong>D1:</strong> ENTRAMBI • <strong>D2:</strong> NESSUNO • <strong>D3:</strong> NESSUNO",
+      "flavorText": "\"Tutte le risposte in un colpo d'occhio - ora tocca a voi spiegare il perché!\"",
+      "styleClass": "spiegazione"
+    },
+
+    {
+      "title": "Selezione Candidati",
+      "headerIcon": "🧠",
+      "heroImage": "👥",
+      "type": "Bias",
+      "description": "<strong>A1 - Selezione Candidati:</strong> Durante i colloqui, i recruiter esperti adattano strategicamente le domande al background specifico del candidato per ottenere insights più profondi e personalizzati.<br><strong>A2 - Benchmark Aziendali:</strong> L'azienda utilizza da cinque anni gli stessi criteri di performance consolidati: crescita del 15% annuo, margini del 20%, customer satisfaction >4.0.<br><strong>A3 - Valutazioni HR:</strong> Nel processo di selezione, ogni senior recruiter decide autonomamente quali competenze approfondire in base alla propria esperienza professionale e intuizione.",
+      "flavorText": "\"L'esperienza conta: ogni candidato è unico, ogni colloquio è su misura.\"",
+      "styleClass": "card-bias"
+    },
+
+    {
+      "title": "Campagna Digitale",
+      "headerIcon": "🧠",
+      "heroImage": "📱",
+      "type": "Bias",
+      "description": "<strong>B1 - Campagna Digitale:</strong> Il team marketing celebra il successo di una campagna social che ha generato 50.000 visualizzazioni e 500 click, superando tutti i benchmark interni.<br><strong>B2 - Analisi Strategiche:</strong> Il board dedica tempo significativo alle analisi che supportano la roadmap aziendale già definita, validando le assunzioni strategiche con dati di mercato coerenti.<br><strong>B3 - Supporto Clienti:</strong> Gli operatori del customer service utilizzano lo stesso script standardizzato per gestire reclami simili, ma ricevono valutazioni molto diverse dai clienti.",
+      "flavorText": "\"I numeri parlano chiaro: quando i KPI sono verdi, la strategia funziona.\"",
+      "styleClass": "card-bias"
+    },
+
+    {
+      "title": "Processo Decisionale",
+      "headerIcon": "🧠",
+      "heroImage": "🤔",
+      "type": "Bias",
+      "description": "<strong>C1 - Processo Decisionale:</strong> Nel workshop strategico annuale, il leadership team valuta le nuove proposte utilizzando framework consolidati e best practices di settore.<br><strong>C2 - Research Feedback:</strong> Il sistema di feedback automaticamente invia survey di soddisfazione ai clienti che contattano il supporto tecnico, attivandosi istantaneamente al momento della chiusura del ticket.<br><strong>C3 - Task Management:</strong> Il team riceve ogni lunedì la stessa lista di priorità settimanali con criteri chiari di urgenza e importanza. Tuttavia, membri diversi del team interpretano diversamente le priorità.",
+      "flavorText": "\"Perché reinventare la ruota? Il successo si replica.\"",
+      "styleClass": "card-bias"
+    },
+
+    {
+      "title": "Executive Dashboard",
+      "headerIcon": "🧠",
+      "heroImage": "🛠️",
+      "type": "Bias", 
+      "description": "<strong>D1 - Executive Dashboard:</strong> Il dashboard esecutivo si aggiorna automaticamente ogni giorno alle 9:00 con i KPI del giorno precedente, utilizzando algoritmi di data processing avanzati.<br><strong>D2 - Testing Sperimentale:</strong> Il team marketing esegue A/B test sofisticati dividendo casualmente gli utenti in gruppi statisticamente equivalenti, con controlli rigidi sui fattori esterni.<br><strong>D3 - Quality Assurance:</strong> Ogni modifica al codice passa attraverso un sistema automatizzato di review con 47 controlli predefiniti, analisi statica del codice e test automatici.",
+      "flavorText": "\"Dati freschi e leggibili: quando la tecnologia incontra l'user experience.\"",
+      "styleClass": "card-bias"
+    }
+  ]
+}

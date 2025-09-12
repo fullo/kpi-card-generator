@@ -7,7 +7,7 @@
  * class-based architecture for better maintainability and testing.
  */
 
-import { CLIInterface } from '../class/CLIInterface.js';
+import { CLIInterface } from '../modules/interfaces/cli/CLIInterface.js';
 
 async function main() {
     try {
