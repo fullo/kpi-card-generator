@@ -119,17 +119,6 @@ export class LayoutCalculator {
         return processedRows.flat();
     }
 
-    /**
-     * DEPRECATED: Compatibilità con versioni precedenti
-     * @param {Array} cards - Array di carte
-     * @param {number} cardsPerRow - Carte per riga
-     * @param {string} flipMode - Modalità di stampa
-     * @returns {Array} Array ordinato per il retro
-     * @deprecated Usa calculateMirrorLayout invece
-     */
-    static calculateLayouts(cards, cardsPerRow, flipMode = 'short') {
-        console.warn('calculateLayouts è deprecata, usa calculateMirrorLayout');
-        return this.calculateMirrorLayout(cards, cardsPerRow, flipMode);
-    }
+    // Removed deprecated calculateLayouts method - use calculateMirrorLayout instead
 
 }

@@ -37,7 +37,7 @@ export class FileStore {
      * Genera un ID unico per un nuovo mazzo
      */
     generateId() {
-        return `deck_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        return `deck_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
     }
 
     /**
@@ -88,7 +88,12 @@ export class FileStore {
     async getAllDecks() {
         try {
             const files = await fs.readdir(this.decksPath);
-            const deckFiles = files.filter(file => file.endsWith('.json'));
+            // Filter only actual deck files, exclude style files and backups
+            const deckFiles = files.filter(file => 
+                file.endsWith('.json') && 
+                !file.includes('.styles.') && 
+                !file.includes('.backup')
+            );
             
             const decks = await Promise.all(
                 deckFiles.map(async (file) => {
@@ -99,8 +104,19 @@ export class FileStore {
                         );
                         const deck = JSON.parse(content);
                         
+                        // Skip files that don't have an ID (not valid deck files)
+                        if (!deck.id) {
+                            return null;
+                        }
+                        
                         // Restituisce solo metadata per la lista (supporto schema English e Italian)
                         const cards = deck.cards || deck.carte || [];
+                        
+                        // Skip decks with 0 cards (empty decks)
+                        if (cards.length === 0) {
+                            return null;
+                        }
+                        
                         return {
                             id: deck.id,
                             title: deck.title || deck.titolo,

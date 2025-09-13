@@ -15,7 +15,7 @@ export class CardService {
      * Genera un ID unico per una carta
      */
     generateCardId() {
-        return `card_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        return `card_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
     }
 
     /**

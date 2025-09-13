@@ -32,6 +32,8 @@
   "license": "MIT",
   "dependencies": {
     "commander": "^12.1.0",
+    "isomorphic-dompurify": "^2.26.0",
+    "jsdom": "^26.1.0",
     "puppeteer": "^23.11.0"
   },
   "devDependencies": {

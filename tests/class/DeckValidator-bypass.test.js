@@ -94,18 +94,18 @@ describe('DeckValidator - Character Limit Bypass', () => {
         });
         
         const cardWithMissingTitle = {
-            // title mancante (campo required)
-            description: 'Testo molto lungo '.repeat(50), // Lungo ma bypass attivo
+            // title mancante (not required anymore per CLI schema alignment)
+            description: 'x'.repeat(2001), // Too long description (exceeds 2000 char limit)
             type: 'Test',
             styleClass: 'card-test'
         };
         
         const result = validator.validateCard(cardWithMissingTitle);
         
-        // Dovrebbe fallire per il titolo mancante, non per la lunghezza del testo
+        // Should fail for description length, not title (title no longer required)
         expect(result.isValid).toBe(false);
-        expect(result.errors.some(err => err.includes('title'))).toBe(true);
-        expect(result.errors.some(err => err.includes('troppo lunga'))).toBe(false);
+        expect(result.errors.some(err => err.includes('description'))).toBe(true);
+        expect(result.errors.some(err => err.includes('title'))).toBe(false);
     });
 
     test('dovrebbe funzionare con conteggio HTML abilitato e bypass', () => {

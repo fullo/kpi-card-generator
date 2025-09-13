@@ -222,20 +222,7 @@ describe('LayoutCalculator - Configurazioni Diverse', () => {
     });
 });
 
-describe('LayoutCalculator - Compatibilità e Deprecazione', () => {
-    
-    test('funzione deprecata dovrebbe funzionare ma warning', () => {
-        const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-        
-        const cards = createMockCards(4);
-        const result = LayoutCalculator.calculateLayouts(cards, 4, 'short');
-        
-        expect(getIds(result)).toEqual(['C4', 'C3', 'C2', 'C1']);
-        expect(consoleSpy).toHaveBeenCalledWith('calculateLayouts è deprecata, usa calculateMirrorLayout');
-        
-        consoleSpy.mockRestore();
-    });
-});
+// Removed: Test for deprecated calculateLayouts method
 
 describe('LayoutCalculator - Performance e Stabilità', () => {
     
