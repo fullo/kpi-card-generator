@@ -2,7 +2,7 @@
 
 ## [4.2.3] - 2025-09-13
 
-### 🧹 **Dependencies Cleanup & Optimization**
+### 🧹 **Dependencies Cleanup & Web Interface Bug Fixes**
 
 #### **Dependency Analysis & Cleanup**
 - **Analyzed project dependencies**: Comprehensive audit of both root and web project dependencies
@@ -18,10 +18,20 @@
 - **Updated package-lock.json**: Fresh dependency resolution for optimal package versions
 - **No unused dependencies**: Analysis confirmed no packages to remove
 
+#### **Web Interface Upload Bug Fix**
+- **Fixed false error messages**: Resolved issue where successful JSON deck uploads showed "internal server error"
+  - API correctly returns 201 status with `{"success": true, "data": ..., "message": "..."}` 
+  - Web interface was incorrectly interpreting successful responses as errors
+  - Added comprehensive logging to API service and useDecks hook for debugging
+  - **Location**: `web/src/services/api.js` and `web/src/hooks/useDecks.js`
+- **Improved error handling**: Enhanced error detection and response validation in web interface
+- **Better user experience**: Users no longer see false error messages for successful uploads
+
 #### **Technical Improvements**
 - **Dependency detection**: Used `depcheck` tool for automated unused dependency detection
 - **Cross-platform compatibility**: Ensured sanitization dependencies work in both browser and Node.js
 - **Build tool verification**: Confirmed Tailwind CSS, PostCSS, and Autoprefixer are properly integrated
+- **Development environment**: Updated Vite proxy configuration for proper API routing
 
 ---
 

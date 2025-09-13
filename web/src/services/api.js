@@ -67,6 +67,7 @@ const apiRequest = async (endpoint, options = {}) => {
 
     // Handle JSON responses
     const data = await response.json();
+    console.log('API Request successful - Status:', response.status, 'Data:', data);
     return { data };
 
   } catch (error) {
@@ -211,9 +212,11 @@ export const utilityAPI = {
 
 // Helper function to handle API responses consistently
 export const handleAPIResponse = (response) => {
+  console.log('handleAPIResponse called with:', response);
   if (response.data && response.data.success) {
     return response.data;
   }
+  console.error('API response failed validation:', response);
   throw new Error(response.data?.message || 'API request failed');
 };
 

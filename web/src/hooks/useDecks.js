@@ -35,14 +35,19 @@ export const useDecks = (initialParams = {}) => {
     setError(null);
 
     try {
+      console.log('useDecks createDeck called with:', deckData);
       const response = await deckAPI.create(deckData);
+      console.log('deckAPI.create response:', response);
       const data = handleAPIResponse(response);
+      console.log('handleAPIResponse result:', data);
       
       // Add the new deck to the beginning of the list
       setDecks(prevDecks => [data.data, ...prevDecks]);
       return data.data;
     } catch (err) {
+      console.error('createDeck error:', err);
       const errorMessage = handleAPIError(err);
+      console.log('Error message:', errorMessage);
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
