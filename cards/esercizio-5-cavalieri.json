@@ -1,0 +1,14 @@
+{
+  "titolo": "Esercizio 5: I 4 Cavalieri del KPI",
+  "sottotitolo": "Usa i 4 Cavalieri per valutare e migliorare un KPI reale del tuo lavoro.",
+  "icona_esercizio": "⚔️",
+  "carte": [
+    {"titolo": "Spiegazione Esercizio", "icona": "📜", "tipo": "Istruzioni", "testo": "<strong>Obiettivo:</strong> Valutare un KPI esistente usando i 4 Cavalieri.<br><br><strong>1. Scegli:</strong> Prendete un KPI che usate nel vostro lavoro quotidiano.<br><br><strong>2. Valuta:</strong> Usate le 4 carte Cavaliere come checklist. Date un voto da 1 a 5 per ogni Cavaliere.<br><br><strong>3. Migliora:</strong> Discutete: come potreste migliorare il KPI per renderlo più forte in ogni categoria?", "classe": "spiegazione"},
+    {"titolo": "Esempio di Gioco", "icona": "💡", "tipo": "Esempio", "testo": "<strong>KPI Scelto:</strong> \"Numero di visite al sito\"<br><br><strong>Valutazione:</strong><br><strong>Comparabile:</strong> ✅ (4/5)<br><strong>Comprensibile:</strong> ✅ (5/5)<br><strong>Normalizzabile:</strong> ❌ (1/5 - un numero assoluto)<br><strong>Eseguibile:</strong> ❌ (2/5 - se aumenta, non so perché)<br><br><strong>Miglioramento:</strong> \"Tasso di conversione per sorgente di traffico.\"", "classe": "spiegazione"},
+    {"titolo": "1° Cavaliere: Comparabile", "icona": "📊", "emoji": "📊", "tipo": "Principio", "testo": "Un KPI deve poter essere confrontato nel tempo, tra segmenti o con i competitor.", "flavor": "\"Un dato da solo è un'opinione. Confrontato con un altro, diventa un'informazione.\"", "classe": "card-cavaliere"},
+    {"titolo": "2° Cavaliere: Comprensibile", "icona": "🧠", "emoji": "🧠", "tipo": "Principio", "testo": "Un KPI deve essere semplice da capire e da ricordare per chiunque in azienda.", "flavor": "\"Se hai bisogno di un manuale per spiegarlo, probabilmente non è un buon KPI.\"", "classe": "card-cavaliere"},
+    {"titolo": "3° Cavaliere: Normalizzabile", "icona": "⚖️", "emoji": "⚖️", "tipo": "Principio", "testo": "Un KPI dovrebbe essere un rapporto o una percentuale per evitare distorsioni dovute alla scala.", "flavor": "\"Confrontare mele con arance è facile, se usi la percentuale di succo.\"", "classe": "card-cavaliere"},
+    {"titolo": "4° Cavaliere: Eseguibile", "icona": "⚡️", "emoji": "⚡️", "tipo": "Principio", "testo": "Un KPI deve spingere a un'azione. Se cambia, dobbiamo sapere cosa fare (o non fare).", "flavor": "\"Un KPI che non porta a un'azione è solo un numero su uno schermo.\"", "classe": "card-cavaliere"}
+  ]
+}
+

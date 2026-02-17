@@ -1,0 +1,22 @@
+{
+  "titolo": "Esercizio 3: Il Cimitero delle Vanity Metrics",
+  "sottotitolo": "\"Seppellisci\" le metriche di vanità e falle \"rinascere\" come metriche azionabili.",
+  "icona_esercizio": "🪦",
+  "carte": [
+    {"titolo": "Spiegazione Esercizio", "icona": "📜", "tipo": "Istruzioni", "testo": "<strong>Obiettivo:</strong> Distinguere le metriche inutili da quelle utili.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende una carta \"Metrica di Vanità\" 🪦.<br><br><strong>2. Analizza:</strong> Discutete perché non è una buona metrica. Scrivete la sua \"lapide\".<br><br><strong>3. Trasforma:</strong> Proponete 1-2 metriche \"rinate\" 🌱 che misurino il vero valore.", "classe": "spiegazione"},
+    {"titolo": "Esempio di Gioco", "icona": "💡", "tipo": "Esempio", "testo": "<strong>Carta Pescata:</strong><br>🪦 Numero di download<br><br><strong>Lapide:</strong> \"Qui giace una metrica che ci ha fatto sentire popolari, ma non ci ha mai detto se gli utenti amassero l'app o l'avessero cancellata dopo 5 minuti.\"<br><br><strong>Rinascita:</strong><br>🌱 Tasso di attivazione (utenti che completano l'onboarding).<br>🌱 Tasso di retention a 7 giorni.", "classe": "spiegazione"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "📥", "tipo": "Apparenza", "testo": "Numero di download", "flavor": "\"Qui giace una metrica che ci ha fatto sentire popolari, ma non ci ha mai detto se gli utenti amassero l'app o l'avessero cancellata dopo 5 minuti.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "👍", "tipo": "Apparenza", "testo": "Like sulla pagina Facebook", "flavor": "\"10.000 fan! E tre hanno comprato qualcosa. Forse.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "📜", "tipo": "Apparenza", "testo": "Numero di righe di codice scritte", "flavor": "\"Ho scritto un romanzo. Peccato fosse un bug.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "📄", "tipo": "Apparenza", "testo": "Pagine viste sul sito", "flavor": "\"Un sacco di gente è entrata nel negozio. Hanno solo guardato le vetrine e sono usciti.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "🕰️", "tipo": "Apparenza", "testo": "Tempo medio sulla pagina", "flavor": "\"Sono rimasti a lungo. Forse stavano leggendo, o forse si sono addormentati.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "📬", "tipo": "Apparenza", "testo": "Numero di iscritti alla newsletter", "flavor": "\"Una lista piena di gente che archivia le tue email senza leggerle.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "✅", "tipo": "Apparenza", "testo": "100% Code Coverage", "flavor": "\"Abbiamo testato ogni singola riga. Anche i commenti. Non abbiamo trovato un bug, ma ci sentiamo realizzati.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "🎁", "tipo": "Apparenza", "testo": "Numero di feature rilasciate", "flavor": "\"Questo mese abbiamo aggiunto 10 nuove funzioni. Nessuno le usa, ma il nostro changelog è bellissimo.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "🐦", "tipo": "Apparenza", "testo": "Numero di follower", "flavor": "\"Un esercito di follower che non comprerà mai nulla.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "😴", "tipo": "Apparenza", "testo": "Ore passate in riunione", "flavor": "\"Abbiamo parlato tantissimo. Deciso? Quello è un altro discorso.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "🐞", "tipo": "Apparenza", "testo": "Numero di bug chiusi", "flavor": "\"Ne abbiamo chiusi 100! E ne abbiamo creati 120.\"", "classe": "card-vanity"},
+    {"titolo": "Metrica di Vanità", "icona": "🪦", "emoji": "👀", "tipo": "Apparenza", "testo": "Impressioni di un annuncio", "flavor": "\"Migliaia di persone hanno visto il nostro cartellone. Mentre sfrecciavano in autostrada.\"", "classe": "card-vanity"}
+  ]
+}
+

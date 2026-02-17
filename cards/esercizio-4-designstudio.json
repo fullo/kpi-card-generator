@@ -1,0 +1,125 @@
+{
+  "titolo": "Esercizio 4: KPI Design Studio",
+  "sottititolo": "Pesca una carta \"Obiettivo Vago\" e trasformala in un KPI robusto.",
+  "icona_esercizio": "🎨",
+  "carte": [
+    {
+      "titolo": "Spiegazione Esercizio",
+      "icona": "📜",
+      "tipo": "Istruzioni",
+      "testo": "<strong>Obiettivo:</strong> Trasformare un'idea vaga in un KPI concreto.<br><br><strong>1. Pesca:</strong> Ogni gruppo prende una carta \"Obiettivo Vago\" 🎯.<br><br><strong>2. Traduci:</strong> Cosa significa *davvero* questo obiettivo per voi? Cosa deve cambiare?<br><br><strong>3. Progetta:</strong> Usate il framework \"SMARTER\" per definire un KPI finale, specifico e misurabile.",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Modalità Combinata",
+      "icona": "🔗",
+      "tipo": "Istruzioni",
+      "testo": "<strong>Obiettivo:</strong> Dall'obiettivo vago al KPI perfetto in due step.<br><br><strong>STEP 1 - Design (10 min):</strong> Pesca obiettivo vago → Traduci in KPI concreto con SMARTER.<br><br><strong>STEP 2 - Valutazione (10 min):</strong> Usa i \"4 Cavalieri\" per valutare e migliorare il KPI appena creato.<br><br><strong>Risultato:</strong> Un KPI robusto, specifico e di alta qualità.",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Esempio di Gioco",
+      "icona": "💡",
+      "tipo": "Esempio",
+      "testo": "<strong>Carta Pescata:</strong><br>🎯 \"Vogliamo che il prodotto sia più stabile.\"<br><br><strong>Traduzione:</strong> \"Significa meno crash e meno errori critici per gli utenti.\"<br><br><strong>KPI Finale (SMARTER):</strong> \"Ridurre il crash rate per sessione dal 2% allo 0.5% entro la fine del Q3, misurato tramite il nostro tool di error tracking.\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Framework SMARTER",
+      "icona": "🧠",
+      "tipo": "Riferimento",
+      "testo": "Usa questa checklist per il tuo KPI:<br><strong>S</strong>pecific: Chiaro e ben definito?<br><strong>M</strong>easurable: Si può misurare?<br><strong>A</strong>chievable: È realistico?<br><strong>R</strong>elevant: È importante per il business?<br><strong>T</strong>ime-bound: Ha una scadenza?<br><strong>E</strong>ngaged: È coinvolgente?<br><strong>R</strong>esponsible: Chi ne risponde?",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "🧱",
+      "tipo": "Missione Tech",
+      "testo": "\"Vogliamo che il nostro prodotto sia più stabile.\"",
+      "flavor": "\"Stabile come un tavolo a tre gambe o stabile come una fortezza?\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "🎨",
+      "tipo": "Missione Product",
+      "testo": "\"Dobbiamo migliorare l'esperienza utente.\"",
+      "flavor": "\"Certo. Quale utente? Quale esperienza? In quale universo parallelo?\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "💪",
+      "tipo": "Missione Operations",
+      "testo": "\"Il nostro team deve diventare più produttivo.\"",
+      "flavor": "\"Più codice? Più feature? O più caffè?\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "🥰",
+      "tipo": "Missione Customer",
+      "testo": "\"Vogliamo aumentare la felicità dei nostri clienti.\"",
+      "flavor": "\"Stiamo vendendo software o cuccioli di cane?\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "🧪",
+      "tipo": "Missione Innovation",
+      "testo": "\"Dobbiamo essere più innovativi.\"",
+      "flavor": "\"Innovare: la parola magica che si usa quando non si sa cosa fare dopo.\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "💳",
+      "tipo": "Missione Tech",
+      "testo": "\"Dobbiamo ridurre il debito tecnico.\"",
+      "flavor": "\"Pagare i debiti è nobile. Soprattutto quando il creditore è il tuo 'te stesso' del futuro.\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "📈",
+      "tipo": "Missione Sales",
+      "testo": "\"Dobbiamo incrementare le performance commerciali.\"",
+      "flavor": "\"Performance commerciali: quando ogni numero è buono, ma nessuno è abbastanza buono.\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "📢",
+      "tipo": "Missione Marketing",
+      "testo": "\"Vogliamo migliorare l'awareness del brand.\"",
+      "flavor": "\"Awareness: tutti sanno chi siamo, nessuno sa perché dovrebbe interessargli.\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "👥",
+      "tipo": "Missione HR",
+      "testo": "\"Dobbiamo potenziare l'engagement dei dipendenti.\"",
+      "flavor": "\"Engagement: quando il caffè gratis non basta più.\"",
+      "classe": "card-obiettivo-vago"
+    },
+    {
+      "titolo": "Obiettivo Vago",
+      "icona": "🎯",
+      "emoji": "💰",
+      "tipo": "Missione Finance",
+      "testo": "\"Bisogna ottimizzare la struttura dei costi.\"",
+      "flavor": "\"Ottimizzare: quando 'tagliare' suona troppo brutale.\"",
+      "classe": "card-obiettivo-vago"
+    }
+  ]
+}

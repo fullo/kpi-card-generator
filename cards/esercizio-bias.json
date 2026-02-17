@@ -1,0 +1,179 @@
+{
+  "titolo": "Bias o Rumore? Speed Classification",
+  "sottititolo": "Riconosci errori sistematici e variabilità nelle decisioni aziendali",
+  "icona_esercizio": "🎧",
+  "carte": [
+    {
+      "titolo": "Quick Reference",
+      "icona": "📋",
+      "tipo": "Reference",
+      "testo": "<strong>1.</strong> Selezione Candidati: RUMORE<br><strong>2.</strong> Campagna Digitale: BIAS<br><strong>3.</strong> Benchmark Aziendali: BIAS<br><strong>4.</strong> Valutazioni HR: ENTRAMBI<br><strong>5.</strong> Processo Decisionale: BIAS<br><strong>6.</strong> Analisi Strategiche: BIAS<br><strong>7.</strong> Supporto Clienti: RUMORE<br><strong>8.</strong> Task Management: RUMORE<br><strong>9.</strong> Research Feedback: ENTRAMBI<br><strong>10.</strong> Executive Dashboard: ENTRAMBI<br><strong>11.</strong> Testing Sperimentale: NESSUNO<br><strong>12.</strong> Quality Assurance: NESSUNO",
+      "flavor": "\"Tutte le risposte in un colpo d'occhio - ora tocca a voi spiegare il perché!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Spiegazione Esercizio",
+      "icona": "📜",
+      "tipo": "Istruzioni",
+      "testo": "<strong>Obiettivo:</strong> Classificare scenari aziendali come Bias, Rumore, Entrambi o Nessuno.<br><br><strong>1. Leggete:</strong> Lo scenario in coppia (30 secondi).<br><br><strong>2. Discutete:</strong> È Bias (errore sistematico), Rumore (variabilità casuale), Entrambi o Nessuno?<br><br><strong>3. Classificate:</strong> Scegliete la categoria e passate al prossimo scenario.<br><br><strong>Tempo:</strong> 1 minuto per scenario!",
+      "flavor": "\"Bias, Rumore, Entrambi o Nessuno? Quella è la domanda!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Soluzioni 1-2",
+      "icona": "✅",
+      "tipo": "Soluzioni",
+      "testo": "<strong>1. Selezione Candidati:</strong> RUMORE<br>I recruiter adattano le domande ma senza criterio sistematico, creando variabilità casuale. <strong>Per sistemare:</strong> Standardizzare le domande per ruolo. <strong>Attenzione:</strong> L'adattamento sembra positivo, ma senza regole genera incoerenza.<br><br><strong>2. Campagna Digitale:</strong> BIAS<br>Valutare successo solo su metriche visibili ignora sistematicamente l'obiettivo finale. <strong>Per sistemare:</strong> Includere metriche di conversione. <strong>Insight:</strong> Le metriche facili da misurare non sempre sono quelle giuste.",
+      "flavor": "\"I primi due scenari... dove l'apparenza inganna!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Soluzioni 3-4",
+      "icona": "✅",
+      "tipo": "Soluzioni",
+      "testo": "<strong>3. Benchmark Aziendali:</strong> BIAS<br>Criteri obsoleti portano a valutazioni sistematicamente sbagliate rispetto al mercato attuale. <strong>Per sistemare:</strong> Review periodica dei criteri. <strong>Warning:</strong> La stabilità nei criteri sembra positiva ma può diventare rigidità.<br><br><strong>4. Valutazioni HR:</strong> ENTRAMBI<br>Libertà di scelta crea variabilità (rumore) + preferenze personali sistematiche (bias). <strong>Per sistemare:</strong> Griglia standardizzata con training anti-bias. <strong>Complessità:</strong> L'autonomia professionale può nascondere doppi problemi.",
+      "flavor": "\"Scenari 3-4... la complessità emerge!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Soluzioni 5-6",
+      "icona": "✅",
+      "tipo": "Soluzioni",
+      "testo": "<strong>5. Processo Decisionale:</strong> BIAS<br>Preferenza sistematica per il familiare limita l'innovazione (status quo bias). <strong>Per sistemare:</strong> Includere sempre 1-2 opzioni radicalmente diverse. <strong>Trap:</strong> L'esperienza passata sembra saggezza, ma può essere resistenza al cambiamento.<br><br><strong>6. Analisi Strategiche:</strong> BIAS<br>Confirmation bias che esclude sistematicamente evidenze contrarie. <strong>Per sistemare:</strong> Assegnare ruolo di 'avvocato del diavolo'. <strong>Insight:</strong> La coerenza decisionale può mascherare tunnel vision.",
+      "flavor": "\"Scenari 5-6... i bias strategici!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Soluzioni 7-8",
+      "icona": "✅",
+      "tipo": "Soluzioni",
+      "testo": "<strong>7. Supporto Clienti:</strong> RUMORE<br>Variabilità nelle valutazioni senza pattern sistematico, pure inconsistenza. <strong>Per sistemare:</strong> Training su criteri uniformi. <strong>Nota:</strong> Stesso input, output diversi = rumore classico.<br><br><strong>8. Task Management:</strong> RUMORE<br>Interpretazioni diverse della stessa informazione senza bias direzionale. <strong>Per sistemare:</strong> Processi di prioritizzazione condivisi. <strong>Differenza:</strong> Non c'è preferenza sistematica, solo mancanza di allineamento.",
+      "flavor": "\"Scenari 7-8... il rumore operativo!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Soluzioni 9-10",
+      "icona": "✅",
+      "tipo": "Soluzioni",
+      "testo": "<strong>9. Research Feedback:</strong> ENTRAMBI<br>Timing di raccolta casuale (rumore) + campione sistematicamente distorto verso insoddisfatti (bias). <strong>Per sistemare:</strong> Campionamento random + timing standardizzato. <strong>Inganno:</strong> Il trigger automatico sembra neutrale ma seleziona un bias.<br><br><strong>10. Executive Dashboard:</strong> ENTRAMBI<br>Variabilità nei tempi di aggiornamento (rumore) + design che enfatizza sistematicamente le metriche positive (bias visivo). <strong>Per sistemare:</strong> Automazione completa + layout neutrale. <strong>Sottile:</strong> L'automazione parziale può nascondere problemi umani residui.",
+      "flavor": "\"Scenari 9-10... la doppia trappola!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Soluzioni 11-12",
+      "icona": "✅",
+      "tipo": "Soluzioni",
+      "testo": "<strong>11. Testing Sperimentale:</strong> NESSUNO<br>Processo rigorosamente controllato con randomizzazione e gruppi bilanciati minimizza errori. <strong>Qualità:</strong> La scienza applicata correttamente riduce bias e rumore. <strong>Nota:</strong> Sembra complicato ma i controlli funzionano.<br><br><strong>12. Quality Assurance:</strong> NESSUNO<br>Automazione con checklist standardizzate elimina variabilità umana e preferenze personali. <strong>Efficacia:</strong> I processi ben progettati battono l'intuizione. <strong>Paradosso:</strong> Meno flessibilità può significare più qualità.",
+      "flavor": "\"Scenari 11-12... la perfezione nascosta!\"",
+      "classe": "spiegazione"
+    },
+    {
+      "titolo": "Selezione Candidati",
+      "icona": "1",
+      "emoji": "🎧",
+      "tipo": "Scenario HR",
+      "testo": "Durante i colloqui, i recruiter esperti adattano strategicamente le domande al background specifico del candidato per ottenere insights più profondi e personalizzati. Questa flessibilità professionale permette di esplorare competenze uniche e valutare soft skills in modo più accurato.",
+      "flavor": "\"L'esperienza conta: ogni candidato è unico, ogni colloquio è su misura.\"",
+      "classe": "card-rumore"
+    },
+    {
+      "titolo": "Campagna Digitale",
+      "icona": "2",
+      "emoji": "🎧",
+      "tipo": "Scenario Marketing",
+      "testo": "Il team marketing celebra il successo di una campagna social che ha generato 50.000 visualizzazioni e 500 click, superando tutti i benchmark interni. I dati analytics mostrano chiaramente l'engagement elevato e il team decide di replicare la strategia per il trimestre successivo.",
+      "flavor": "\"I numeri parlano chiaro: quando i KPI sono verdi, la strategia funziona.\"",
+      "classe": "card-bias"
+    },
+    {
+      "titolo": "Benchmark Aziendali",
+      "icona": "3",
+      "emoji": "🎧",
+      "tipo": "Scenario Business",
+      "testo": "L'azienda utilizza da cinque anni gli stessi criteri di performance consolidati: crescita del 15% annuo, margini del 20%, customer satisfaction >4.0. Questi standard si sono dimostrati stabili e affidabili nel tempo, fornendo continuità decisionale e confrontabilità storica.",
+      "flavor": "\"La coerenza è una virtù: standard testati dal tempo sono standard affidabili.\"",
+      "classe": "card-bias"
+    },
+    {
+      "titolo": "Valutazioni HR",
+      "icona": "4",
+      "emoji": "🎧",
+      "tipo": "Scenario HR",
+      "testo": "Nel processo di selezione, ogni senior recruiter decide autonomamente quali competenze approfondire in base alla propria esperienza professionale e intuizione. Questa libertà decisionale permette di valorizzare l'expertise individuale e di adattare il processo alle specificità del ruolo.",
+      "flavor": "\"L'arte del recruiting: quando l'esperienza incontra l'intuizione professionale.\"",
+      "classe": "card-entrambi"
+    },
+    {
+      "titolo": "Processo Decisionale",
+      "icona": "5",
+      "emoji": "🎧",
+      "tipo": "Scenario Strategy",
+      "testo": "Nel workshop strategico annuale, il leadership team valuta le nuove proposte utilizzando framework consolidati e best practices di settore. Le opzioni che mostrano similarità con strategie di successo precedenti ricevono maggiore considerazione per la loro comprovata efficacia e minore rischio.",
+      "flavor": "\"Perché reinventare la ruota? Il successo si replica, il fallimento si evita.\"",
+      "classe": "card-bias"
+    },
+    {
+      "titolo": "Analisi Strategiche",
+      "icona": "6",
+      "emoji": "🎧",
+      "tipo": "Scenario Leadership",
+      "testo": "Il board dedica tempo significativo alle analisi che supportano la roadmap aziendale già definita, validando le assunzioni strategiche con dati di mercato coerenti. Le analisi che confermano la direzione scelta vengono discusse approfonditamente per rafforzare la fiducia nella strategia.",
+      "flavor": "\"Una strategia solida si riconosce dalla coerenza dei dati che la supportano.\"",
+      "classe": "card-bias"
+    },
+    {
+      "titolo": "Supporto Clienti",
+      "icona": "7",
+      "emoji": "🎧",
+      "tipo": "Scenario Customer Service",
+      "testo": "Gli operatori del customer service utilizzano lo stesso script standardizzato per gestire reclami simili, ma ricevono valutazioni molto diverse dai clienti (da 1 a 5 stelle) per interazioni pressoché identiche. Il management sta investigando le cause di questa variabilità.",
+      "flavor": "\"Script uguale, risultati diversi: il mistero del customer service.\"",
+      "classe": "card-rumore"
+    },
+    {
+      "titolo": "Task Management",
+      "icona": "8",
+      "emoji": "🎧",
+      "tipo": "Scenario Operations",
+      "testo": "Il team riceve ogni lunedì la stessa lista di priorità settimanali con criteri chiari di urgenza e importanza. Tuttavia, membri diversi del team interpretano diversamente le priorità e lavorano su task differenti, pur consultando la stessa documentazione.",
+      "flavor": "\"Stessa mappa, percorsi diversi: l'arte dell'interpretazione creativa.\"",
+      "classe": "card-rumore"
+    },
+    {
+      "titolo": "Research Feedback",
+      "icona": "9",
+      "emoji": "🎧",
+      "tipo": "Scenario Research",
+      "testo": "Il sistema di feedback automaticamente invia survey di soddisfazione ai clienti che contattano il supporto tecnico, attivandosi istantaneamente al momento della chiusura del ticket. Questa automazione garantisce una raccolta sistematica e tempestiva delle opinioni senza dipendere dall'intervento umano.",
+      "flavor": "\"Automazione perfetta: feedback immediato senza filtri umani.\"",
+      "classe": "card-entrambi"
+    },
+    {
+      "titolo": "Executive Dashboard",
+      "icona": "10",
+      "emoji": "🎧",
+      "tipo": "Scenario Reporting",
+      "testo": "Il dashboard esecutivo si aggiorna automaticamente ogni giorno alle 9:00 con i KPI del giorno precedente, utilizzando algoritmi di data processing avanzati. Il layout evidenzia chiaramente i trend positivi in verde prominente per facilitare la lettura rapida dei risultati di business.",
+      "flavor": "\"Dati freschi e leggibili: quando la tecnologia incontra l'user experience.\"",
+      "classe": "card-entrambi"
+    },
+    {
+      "titolo": "Testing Sperimentale",
+      "icona": "11",
+      "emoji": "🎧",
+      "tipo": "Scenario Marketing",
+      "testo": "Il team marketing esegue A/B test sofisticati dividendo casualmente gli utenti in gruppi statisticamente equivalenti, con controlli rigidi sui fattori esterni e analisi di significatività statistica. Ogni test richiede settimane di preparazione per garantire validità scientifica dei risultati.",
+      "flavor": "\"La scienza è lenta ma sicura: quando la statistica incontra il marketing.\"",
+      "classe": "card-nessuno"
+    },
+    {
+      "titolo": "Quality Assurance",
+      "icona": "12",
+      "emoji": "🎧",
+      "tipo": "Scenario Development",
+      "testo": "Ogni modifica al codice passa attraverso un sistema automatizzato di review con 47 controlli predefiniti, analisi statica del codice e test automatici. Il processo sembra macchinoso e rallenta lo sviluppo, ma garantisce zero variabilità nelle valutazioni di qualità.",
+      "flavor": "\"Lento ma inesorabile: quando l'automazione incontra la perfezione.\"",
+      "classe": "card-nessuno"
+    }
+  ]
+}
