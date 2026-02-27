@@ -41,12 +41,20 @@ export class CardRenderer {
     static LONG_CONTENT_THRESHOLD = 1000;
 
     /**
-     * Calcola le CSS custom properties per il font in base alla lunghezza della description.
-     * Scala linearmente il font tra i breakpoint definiti.
+     * Calcola le CSS custom properties per font e padding in base alla lunghezza della description.
+     * Scala linearmente tra i breakpoint definiti.
      *
      * Layout carta (schermo): 420px totali, ~200px disponibili per description con heroImage.
-     * I breakpoint 0-1000 calibrano il font con heroImage visibile; oltre 1000 (long-content)
-     * heroImage/flavorText/card-type-banner vengono nascosti, liberando ~135px extra.
+     * I breakpoint 0-1000 calibrano font e padding con heroImage visibile; oltre 1000
+     * (long-content) heroImage/flavorText/card-type-banner vengono nascosti.
+     *
+     * Custom properties generate:
+     * - --card-desc-font-size (rem)       Font size a schermo
+     * - --card-desc-line-height            Line height a schermo
+     * - --card-desc-font-size-print (pt)  Font size in stampa
+     * - --card-desc-line-height-print      Line height in stampa
+     * - --card-desc-padding (rem)          Padding card-description-box a schermo
+     * - --card-desc-padding-print (mm)     Padding card-description-box in stampa
      *
      * @param {number} descLength - Lunghezza della description in caratteri
      * @returns {string} Stringa CSS inline con le custom properties
@@ -56,19 +64,19 @@ export class CardRenderer {
             return '';
         }
 
-        // Breakpoints: [chars, screenFontRem, screenLineHeight, printFontPt, printLineHeight]
+        // Breakpoints: [chars, screenFontRem, screenLH, printFontPt, printLH, paddingRem, paddingMm]
         //
-        // 0-1000:  con heroImage visibile, font scaling dinamico sufficiente
+        // 0-1000:  con heroImage visibile, font/padding scaling dinamico sufficiente
         // 1000+:   long-content attivo, heroImage/flavorText/card-type-banner nascosti
         const breakpoints = [
-            [0,    0.90, 1.40, 7.0, 1.30],  // default - fino a ~150 chars sta bene
-            [150,  0.82, 1.30, 6.5, 1.25],  // riduzione precoce per stare nel box
-            [250,  0.75, 1.25, 6.0, 1.20],  // testo medio - inizia a stringere
-            [500,  0.70, 1.20, 5.5, 1.18],  // testo medio-lungo
-            [700,  0.65, 1.15, 5.0, 1.12],  // testo lungo
-            [1000, 0.60, 1.12, 4.5, 1.10],  // soglia long-content: heroImage nascosto
-            [1500, 0.55, 1.10, 4.0, 1.08],  // testo extra lungo (con spazio extra)
-            [2000, 0.50, 1.08, 3.5, 1.05],  // massimo
+            [0,    0.90, 1.40, 7.0, 1.30, 0.75, 2.0],  // default
+            [150,  0.82, 1.30, 6.5, 1.25, 0.60, 1.8],  // riduzione precoce
+            [250,  0.75, 1.25, 6.0, 1.20, 0.50, 1.5],  // testo medio
+            [500,  0.70, 1.20, 5.5, 1.18, 0.35, 1.2],  // testo medio-lungo
+            [700,  0.65, 1.15, 5.0, 1.12, 0.25, 1.0],  // testo lungo
+            [1000, 0.60, 1.12, 4.5, 1.10, 0.20, 0.8],  // soglia long-content
+            [1500, 0.55, 1.10, 4.0, 1.08, 0.15, 0.5],  // testo extra lungo
+            [2000, 0.50, 1.08, 3.5, 1.05, 0.10, 0.3],  // massimo
         ];
 
         // Se sotto il primo breakpoint significativo, nessuna variabile necessaria
@@ -91,7 +99,7 @@ export class CardRenderer {
         // Se oltre l'ultimo breakpoint, usa i valori minimi
         if (descLength >= breakpoints[breakpoints.length - 1][0]) {
             const last = breakpoints[breakpoints.length - 1];
-            return `--card-desc-font-size: ${last[1]}rem; --card-desc-line-height: ${last[2]}; --card-desc-font-size-print: ${last[3]}pt; --card-desc-line-height-print: ${last[4]}`;
+            return `--card-desc-font-size: ${last[1]}rem; --card-desc-line-height: ${last[2]}; --card-desc-font-size-print: ${last[3]}pt; --card-desc-line-height-print: ${last[4]}; --card-desc-padding: ${last[5]}rem; --card-desc-padding-print: ${last[6]}mm`;
         }
 
         // Interpolazione lineare tra lower e upper
@@ -100,8 +108,10 @@ export class CardRenderer {
         const screenLH = +(lower[2] + (upper[2] - lower[2]) * ratio).toFixed(3);
         const printFont = +(lower[3] + (upper[3] - lower[3]) * ratio).toFixed(2);
         const printLH = +(lower[4] + (upper[4] - lower[4]) * ratio).toFixed(3);
+        const padding = +(lower[5] + (upper[5] - lower[5]) * ratio).toFixed(3);
+        const paddingPrint = +(lower[6] + (upper[6] - lower[6]) * ratio).toFixed(2);
 
-        return `--card-desc-font-size: ${screenFont}rem; --card-desc-line-height: ${screenLH}; --card-desc-font-size-print: ${printFont}pt; --card-desc-line-height-print: ${printLH}`;
+        return `--card-desc-font-size: ${screenFont}rem; --card-desc-line-height: ${screenLH}; --card-desc-font-size-print: ${printFont}pt; --card-desc-line-height-print: ${printLH}; --card-desc-padding: ${padding}rem; --card-desc-padding-print: ${paddingPrint}mm`;
     }
 
     /**

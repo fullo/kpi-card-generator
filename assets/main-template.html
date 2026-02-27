@@ -99,7 +99,7 @@
         
         .card-description-box {
             margin-top: 0.5rem;
-            padding: 0.75rem;
+            padding: var(--card-desc-padding, 0.75rem);
             background-color: #f9fafb;
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
@@ -379,7 +379,7 @@
 
             .card-description-box {
                 margin-top: 2mm !important;
-                padding: 2mm !important;
+                padding: var(--card-desc-padding-print, 2mm) !important;
                 overflow: hidden !important;
                 min-height: 0 !important;
             }
