@@ -117,13 +117,13 @@
             overflow: hidden;
         }
         
-        .card-flavor-text { 
-            font-size: 0.75rem; 
-            font-style: italic; 
-            color: #4b5563; 
-            margin-top: 0.35rem; 
-            padding-top: 0.35rem; 
-            border-top: 1px dashed #d1d5db; 
+        .card-flavor-text {
+            font-size: 0.75rem;
+            font-style: italic;
+            color: #4b5563;
+            margin-top: 0.15rem;
+            padding-top: 0.15rem;
+            border-top: 1px dashed #d1d5db;
         }
         
         .card-back { 
@@ -392,9 +392,12 @@
 
             .card-flavor-text {
                 font-size: 6pt !important;
-                margin-top: 1mm !important;
-                padding-top: 1mm !important;
+                margin-top: 0.5mm !important;
+                padding-top: 0.5mm !important;
             }
+
+            /* Nasconde flavorText in stampa per carte con description > 500 chars */
+            .hide-flavor .card-flavor-text { display: none !important; }
 
             .card-back .back-icon {
                 font-size: 36pt !important;
