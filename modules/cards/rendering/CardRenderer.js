@@ -31,21 +31,22 @@ export class CardRenderer {
 
     /**
      * Soglia di caratteri nella description oltre la quale si attiva il layout compatto:
-     * nasconde heroImage e flavorText per recuperare ~130px di spazio verticale.
+     * nasconde heroImage, flavorText e card-type-banner per recuperare spazio verticale.
      *
-     * Con heroImage visibile (90px + margine) lo spazio per la description è solo ~200px
-     * a schermo (~25mm in stampa). A 0.9rem con line-height 1.4, ogni riga è ~20px e
-     * contiene ~22 caratteri: 10 righe × 22 chars ≈ 220 chars è il massimo leggibile
-     * senza overflow. Soglia conservativa a 350 per includere margine di tolleranza.
+     * Sotto i 1000 caratteri il sistema di font scaling dinamico (calculateCardCssVars)
+     * è sufficiente a contenere il testo senza nascondere elementi strutturali.
+     * Oltre i 1000 caratteri servono misure aggiuntive: nascondere heroImage (~90px),
+     * card-type-banner (~25px) e flavorText (~20px) per recuperare ~135px di spazio.
      */
-    static LONG_CONTENT_THRESHOLD = 350;
+    static LONG_CONTENT_THRESHOLD = 1000;
 
     /**
      * Calcola le CSS custom properties per il font in base alla lunghezza della description.
      * Scala linearmente il font tra i breakpoint definiti.
      *
-     * Layout carta (schermo): 420px totali, ~200px disponibili per description con heroImage,
-     * ~330px senza heroImage (long-content). I breakpoint sono calibrati su questi vincoli.
+     * Layout carta (schermo): 420px totali, ~200px disponibili per description con heroImage.
+     * I breakpoint 0-1000 calibrano il font con heroImage visibile; oltre 1000 (long-content)
+     * heroImage/flavorText/card-type-banner vengono nascosti, liberando ~135px extra.
      *
      * @param {number} descLength - Lunghezza della description in caratteri
      * @returns {string} Stringa CSS inline con le custom properties
@@ -57,17 +58,16 @@ export class CardRenderer {
 
         // Breakpoints: [chars, screenFontRem, screenLineHeight, printFontPt, printLineHeight]
         //
-        // 0-350:   con heroImage visibile, ~200px disponibili a schermo
-        // 350+:    senza heroImage (long-content), ~330px disponibili a schermo
+        // 0-1000:  con heroImage visibile, font scaling dinamico sufficiente
+        // 1000+:   long-content attivo, heroImage/flavorText/card-type-banner nascosti
         const breakpoints = [
             [0,    0.90, 1.40, 7.0, 1.30],  // default - fino a ~150 chars sta bene
             [150,  0.82, 1.30, 6.5, 1.25],  // riduzione precoce per stare nel box
             [250,  0.75, 1.25, 6.0, 1.20],  // testo medio - inizia a stringere
-            [350,  0.70, 1.20, 5.5, 1.18],  // soglia long-content: heroImage nascosto
-            [500,  0.68, 1.18, 5.2, 1.15],  // con più spazio (no heroImage)
+            [500,  0.70, 1.20, 5.5, 1.18],  // testo medio-lungo
             [700,  0.65, 1.15, 5.0, 1.12],  // testo lungo
-            [1000, 0.60, 1.12, 4.5, 1.10],  // testo molto lungo
-            [1500, 0.55, 1.10, 4.0, 1.08],  // testo extra lungo
+            [1000, 0.60, 1.12, 4.5, 1.10],  // soglia long-content: heroImage nascosto
+            [1500, 0.55, 1.10, 4.0, 1.08],  // testo extra lungo (con spazio extra)
             [2000, 0.50, 1.08, 3.5, 1.05],  // massimo
         ];
 

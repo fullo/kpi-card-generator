@@ -4,7 +4,7 @@ import { CardRenderer } from '../../modules/cards/rendering/CardRenderer.js';
 describe('CardRenderer - Long Content Detection', () => {
 
     let renderer;
-    const THRESHOLD = CardRenderer.LONG_CONTENT_THRESHOLD; // 350
+    const THRESHOLD = CardRenderer.LONG_CONTENT_THRESHOLD; // 1000
 
     beforeEach(() => {
         CardRenderer.clearCache();
@@ -14,7 +14,7 @@ describe('CardRenderer - Long Content Detection', () => {
     });
 
     test('dovrebbe avere la costante LONG_CONTENT_THRESHOLD definita', () => {
-        expect(CardRenderer.LONG_CONTENT_THRESHOLD).toBe(350);
+        expect(CardRenderer.LONG_CONTENT_THRESHOLD).toBe(1000);
     });
 
     test('dovrebbe aggiungere classe long-content per description >= soglia', () => {
@@ -240,14 +240,14 @@ describe('CardRenderer - Dynamic CSS Custom Properties', () => {
     });
 
     test('dovrebbe produrre valori intermedi per interpolazione lineare', () => {
-        // Test a metà tra il breakpoint 350 e 700
-        const result = CardRenderer.calculateCardCssVars(525);
+        // Test a metà tra il breakpoint 500 e 700
+        const result = CardRenderer.calculateCardCssVars(600);
 
         const match = result.match(/--card-desc-font-size:\s*([\d.]+)rem/);
         expect(match).not.toBeNull();
         const fontSize = parseFloat(match[1]);
 
-        // Dovrebbe essere tra 0.70 (a 350) e 0.65 (a 700) - interpolato
+        // Dovrebbe essere tra 0.70 (a 500) e 0.65 (a 700) - interpolato
         expect(fontSize).toBeGreaterThanOrEqual(0.65);
         expect(fontSize).toBeLessThanOrEqual(0.70);
     });
