@@ -59,6 +59,7 @@ export class CLIInterface {
             .description('Generatore di carte da gioco per workshop KPI con architettura modulare');
 
         this.setupGenerateCommand();
+        this.setupBatchCommand();
         this.setupStylesCommand();
         this.setupValidateCommand();
         this.setupOptimizeCommand();
@@ -88,6 +89,32 @@ export class CLIInterface {
             .option('-v, --verbose', 'Output verboso per debugging')
             .action(async (options) => {
                 await this.handleGenerateCommand(options);
+            });
+    }
+
+    /**
+     * Configura il comando 'batch' per generazione multipla da directory
+     */
+    setupBatchCommand() {
+        this.program
+            .command('batch')
+            .description('Genera carte da tutti i file JSON in una directory')
+            .requiredOption('-d, --directory <dir>', 'Directory contenente i file JSON di input')
+            .option('-o, --output <dir>', 'Directory di output per i PDF (default: stessa directory dei JSON)')
+            .option('-b, --browser [dir]', 'Genera anche file HTML (opzionalmente in una directory specifica)')
+            .option('-t, --template <file>', `Percorso del file template per le singole carte (default: ${this.config.defaultTemplate})`)
+            .option('-f, --flip <mode>', 'Modalità stampa fronte-retro: short/portrait o long/landscape', 'short')
+            .option('--cards-per-page <number>', 'Numero di carte per pagina', '8')
+            .option('--cards-per-row <number>', 'Numero di carte per riga', '4')
+            .option('--validate', 'Valida il JSON prima della generazione', true)
+            .option('--no-validate', 'Salta la validazione del JSON')
+            .option('--no-char-limits', 'Bypassa i controlli di lunghezza caratteri')
+            .option('--apply-styles', 'Applica stili personalizzati se presenti')
+            .option('--progress', 'Mostra barra di progresso', this.config.enableProgress)
+            .option('--no-progress', 'Nasconde la barra di progresso')
+            .option('-v, --verbose', 'Output verboso per debugging')
+            .action(async (options) => {
+                await this.handleBatchCommand(options);
             });
     }
 
@@ -160,7 +187,7 @@ export class CLIInterface {
     async handleGenerateCommand(options) {
         try {
             this.log('🚀 Avvio generazione carte...', 'info');
-            
+
             // Validazione argomenti
             const validationResult = this.validateGenerateOptions(options);
             if (!validationResult.isValid) {
@@ -168,90 +195,32 @@ export class CLIInterface {
                 process.exit(1);
             }
 
-            // Parsing parametri numerici
-            const cardsPerPage = parseInt(options.cardsPerPage);
-            const cardsPerRow = parseInt(options.cardsPerRow);
-
-            // Caricamento e validazione JSON
-            // Commander.js mappa --no-char-limits come charLimits: false
-            const validationOptions = {
-                bypassCharacterLimits: options.charLimits === false
-            };
-            const jsonData = await this.loadAndValidateJSON(options.input, options.validate, validationOptions);
-            
-            if (options.verbose) {
-                this.log(`📊 Cards loaded: ${jsonData.cards.length}`, 'info');
-            }
-
             // Setup renderer
             await this.initializeRenderer(options.template || this.config.defaultTemplate);
 
-            // Generazione layout
-            if (options.verbose) {
-                this.log('🔄 Calcolo layout delle carte...', 'info');
+            // Genera il deck singolo
+            const result = await this._generateSingleDeck({
+                inputPath: options.input,
+                options,
+                pdfOutputPath: options.output || null,
+                htmlOutputPath: options.browser || null
+            });
+
+            if (!result.success) {
+                throw new Error(result.error);
             }
 
-            const pages = CardPaginator.createPaginatedLayouts(
-                jsonData.cards,
-                cardsPerPage,
-                cardsPerRow,
-                options.flip,
-                (fronts, cardsPerRow, printMode) => LayoutCalculator.calculateMirrorLayout(fronts, cardsPerRow, printMode)
-            );
-
-            // Informazioni modalità stampa
-            const modeInfo = LayoutCalculator.getModeInfo(options.flip);
-            this.log(`🖨️  Modalità stampa: ${modeInfo.mode.toUpperCase()} (capovolgi sul lato ${modeInfo.flipSide})`, 'info');
-
-            // Generazione CSS personalizzato se richiesto
-            let customCSS = '';
-            if (options.applyStyles) {
-                try {
-                    if (options.verbose) {
-                        this.log('🎨 Caricamento stili personalizzati...', 'info');
-                    }
-                    customCSS = await this.styleCustomizer.generateCSSForDeck(jsonData, options.input);
-                    if (customCSS && customCSS.trim() !== '' && !customCSS.includes('Nessuna configurazione')) {
-                        this.log('✅ Stili personalizzati applicati', 'info');
-                    } else if (options.verbose) {
-                        this.log('ℹ️  Nessuno stile personalizzato trovato', 'info');
-                    }
-                } catch (error) {
-                    if (options.verbose) {
-                        this.log(`⚠️  Errore caricamento stili: ${error.message}`, 'warn');
-                    }
-                    customCSS = '';
-                }
-            }
-
-            // Generazione HTML
-            if (options.verbose) {
-                this.log('🎨 Generazione HTML...', 'info');
-            }
-
-            const htmlContent = await this.renderer.renderComplete(
-                pages, 
-                jsonData, 
-                modeInfo.mode, 
-                modeInfo.description,
-                customCSS
-            );
-
-            // Output HTML se richiesto
+            // Log output generati
             if (options.browser) {
-                await this.saveHTMLOutput(htmlContent, options.browser);
                 this.log(`✅ File HTML generato: ${path.resolve(options.browser)}`, 'success');
             }
-
-            // Output PDF se richiesto
             if (options.output) {
-                await this.generatePDFOutput(htmlContent, options.output, options.progress);
                 this.log(`✅ File PDF generato: ${path.resolve(options.output)}`, 'success');
             }
 
             // Statistiche finali
-            this.logGenerationStats(pages, jsonData.cards.length);
-            
+            this.logGenerationStats(result.pages, result.totalCards);
+
         } catch (error) {
             this.log(`❌ Errore durante la generazione: ${error.message}`, 'error');
             if (options.verbose) {
@@ -259,6 +228,306 @@ export class CLIInterface {
             }
             process.exit(1);
         }
+    }
+
+    /**
+     * Genera output (HTML e/o PDF) da un singolo file JSON.
+     * Metodo interno condiviso tra generate e batch.
+     * Prerequisito: this.renderer deve essere già inizializzato.
+     *
+     * @param {Object} params - Parametri di generazione
+     * @param {string} params.inputPath - Percorso del file JSON di input
+     * @param {Object} params.options - Opzioni del comando (flip, cardsPerPage, cardsPerRow, etc.)
+     * @param {string|null} params.pdfOutputPath - Percorso output PDF (null = skip PDF)
+     * @param {string|null} params.htmlOutputPath - Percorso output HTML (null = skip HTML)
+     * @returns {Promise<{success: boolean, totalCards: number, pagesCount: number, pages: Array, error?: string}>}
+     */
+    async _generateSingleDeck({ inputPath, options, pdfOutputPath, htmlOutputPath }) {
+        try {
+            const cardsPerPage = parseInt(options.cardsPerPage);
+            const cardsPerRow = parseInt(options.cardsPerRow);
+
+            // Caricamento e validazione JSON
+            const validationOptions = {
+                bypassCharacterLimits: options.charLimits === false
+            };
+            const jsonData = await this.loadAndValidateJSON(inputPath, options.validate, validationOptions);
+
+            if (options.verbose) {
+                this.log(`  📊 Cards loaded: ${jsonData.cards.length}`, 'info');
+            }
+
+            // Generazione layout
+            if (options.verbose) {
+                this.log('  🔄 Calcolo layout delle carte...', 'info');
+            }
+
+            const pages = CardPaginator.createPaginatedLayouts(
+                jsonData.cards,
+                cardsPerPage,
+                cardsPerRow,
+                options.flip,
+                (fronts, cpr, printMode) => LayoutCalculator.calculateMirrorLayout(fronts, cpr, printMode)
+            );
+
+            // Informazioni modalità stampa
+            const modeInfo = LayoutCalculator.getModeInfo(options.flip);
+            if (options.verbose) {
+                this.log(`  🖨️  Modalità stampa: ${modeInfo.mode.toUpperCase()} (capovolgi sul lato ${modeInfo.flipSide})`, 'info');
+            }
+
+            // Generazione CSS personalizzato se richiesto
+            let customCSS = '';
+            if (options.applyStyles) {
+                try {
+                    if (options.verbose) {
+                        this.log('  🎨 Caricamento stili personalizzati...', 'info');
+                    }
+                    customCSS = await this.styleCustomizer.generateCSSForDeck(jsonData, inputPath);
+                    if (customCSS && customCSS.trim() !== '' && !customCSS.includes('Nessuna configurazione')) {
+                        if (options.verbose) {
+                            this.log('  ✅ Stili personalizzati applicati', 'info');
+                        }
+                    } else {
+                        customCSS = '';
+                    }
+                } catch (error) {
+                    if (options.verbose) {
+                        this.log(`  ⚠️  Errore caricamento stili: ${error.message}`, 'warn');
+                    }
+                    customCSS = '';
+                }
+            }
+
+            // Generazione HTML
+            if (options.verbose) {
+                this.log('  🎨 Generazione HTML...', 'info');
+            }
+
+            const htmlContent = await this.renderer.renderComplete(
+                pages,
+                jsonData,
+                modeInfo.mode,
+                modeInfo.description,
+                customCSS
+            );
+
+            // Output HTML se richiesto
+            if (htmlOutputPath) {
+                await this.saveHTMLOutput(htmlContent, htmlOutputPath);
+            }
+
+            // Output PDF se richiesto
+            if (pdfOutputPath) {
+                await this.generatePDFOutput(htmlContent, pdfOutputPath, options.progress);
+            }
+
+            return {
+                success: true,
+                totalCards: jsonData.cards.length,
+                pagesCount: pages.length,
+                pages
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                totalCards: 0,
+                pagesCount: 0,
+                pages: [],
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * Gestisce il comando batch
+     * @param {Object} options - Opzioni del comando
+     */
+    async handleBatchCommand(options) {
+        try {
+            this.log('📦 Avvio generazione batch...', 'info');
+
+            // Validazione argomenti
+            const validationResult = this.validateBatchOptions(options);
+            if (!validationResult.isValid) {
+                this.logErrors(validationResult.errors);
+                process.exit(1);
+            }
+
+            // Risolvi directory
+            const inputDir = path.resolve(options.directory);
+            const outputDir = options.output ? path.resolve(options.output) : null;
+
+            // Scansiona file JSON
+            const jsonFiles = await this._scanJsonFiles(inputDir);
+            if (jsonFiles.length === 0) {
+                this.log(`⚠️  Nessun file JSON trovato nella directory: ${inputDir}`, 'warn');
+                process.exit(0);
+            }
+
+            this.log(`📂 Trovati ${jsonFiles.length} file JSON da processare`, 'info');
+
+            // Crea directory output se necessario
+            if (outputDir) {
+                await fs.mkdir(outputDir, { recursive: true });
+            }
+            if (options.browser && typeof options.browser === 'string') {
+                await fs.mkdir(path.resolve(options.browser), { recursive: true });
+            }
+
+            // Inizializza renderer UNA SOLA VOLTA
+            await this.initializeRenderer(options.template || this.config.defaultTemplate);
+
+            // Processa ogni file
+            const results = { succeeded: [], failed: [] };
+
+            for (let i = 0; i < jsonFiles.length; i++) {
+                const jsonFile = jsonFiles[i];
+                const baseName = path.basename(jsonFile, '.json');
+                const jsonDir = path.dirname(jsonFile);
+
+                this.log(`\n📄 [${i + 1}/${jsonFiles.length}] Processando: ${baseName}.json`, 'info');
+
+                // Determina percorsi output
+                const pdfDir = outputDir || jsonDir;
+                const pdfOutputPath = path.join(pdfDir, `${baseName}.pdf`);
+
+                let htmlOutputPath = null;
+                if (options.browser) {
+                    const htmlDir = typeof options.browser === 'string'
+                        ? path.resolve(options.browser)
+                        : jsonDir;
+                    htmlOutputPath = path.join(htmlDir, `${baseName}.html`);
+                }
+
+                try {
+                    const result = await this._generateSingleDeck({
+                        inputPath: jsonFile,
+                        options,
+                        pdfOutputPath,
+                        htmlOutputPath
+                    });
+
+                    if (result.success) {
+                        results.succeeded.push({
+                            file: baseName,
+                            totalCards: result.totalCards,
+                            pagesCount: result.pagesCount
+                        });
+                        this.log(`  ✅ ${baseName}: ${result.totalCards} carte, ${result.pagesCount} fogli`, 'success');
+                    } else {
+                        results.failed.push({ file: baseName, error: result.error });
+                        this.log(`  ❌ ${baseName}: ${result.error}`, 'error');
+                    }
+                } catch (error) {
+                    results.failed.push({ file: baseName, error: error.message });
+                    this.log(`  ❌ ${baseName}: ${error.message}`, 'error');
+                    if (options.verbose) {
+                        console.error(error.stack);
+                    }
+                }
+            }
+
+            // Riepilogo
+            this._logBatchSummary(results, jsonFiles.length);
+
+            // Exit code: 0 se tutto ok, 1 se qualcosa fallisce
+            if (results.failed.length > 0) {
+                process.exit(1);
+            }
+
+        } catch (error) {
+            this.log(`❌ Errore durante la generazione batch: ${error.message}`, 'error');
+            if (options.verbose) {
+                console.error(error.stack);
+            }
+            process.exit(1);
+        }
+    }
+
+    /**
+     * Valida le opzioni del comando batch
+     * @param {Object} options - Opzioni da validare
+     * @returns {{isValid: boolean, errors: Array<string>}} Risultato validazione
+     */
+    validateBatchOptions(options) {
+        const errors = [];
+
+        // Valida modalità di stampa
+        if (!LayoutCalculator.isValidMode(options.flip)) {
+            errors.push(`Modalità di stampa non valida: '${options.flip}'. Usa short/portrait o long/landscape`);
+        }
+
+        // Valida parametri numerici
+        const cardsPerPage = parseInt(options.cardsPerPage);
+        const cardsPerRow = parseInt(options.cardsPerRow);
+
+        if (isNaN(cardsPerPage) || cardsPerPage <= 0) {
+            errors.push(`cards-per-page deve essere un numero positivo, ricevuto: ${options.cardsPerPage}`);
+        }
+
+        if (isNaN(cardsPerRow) || cardsPerRow <= 0) {
+            errors.push(`cards-per-row deve essere un numero positivo, ricevuto: ${options.cardsPerRow}`);
+        }
+
+        if (!isNaN(cardsPerPage) && !isNaN(cardsPerRow)) {
+            if (!CardPaginator.validatePaginationParams(cardsPerPage, cardsPerRow)) {
+                errors.push(`Configurazione paginazione non valida: ${cardsPerPage} carte per pagina, ${cardsPerRow} per riga`);
+            }
+        }
+
+        return {
+            isValid: errors.length === 0,
+            errors
+        };
+    }
+
+    /**
+     * Scansiona una directory per file JSON
+     * @param {string} directory - Percorso della directory
+     * @returns {Promise<Array<string>>} Lista di percorsi assoluti dei file JSON ordinati alfabeticamente
+     */
+    async _scanJsonFiles(directory) {
+        try {
+            await fs.access(directory);
+        } catch {
+            throw new Error(`Directory non trovata: ${directory}`);
+        }
+
+        const entries = await fs.readdir(directory, { withFileTypes: true });
+        const jsonFiles = entries
+            .filter(entry => entry.isFile() && entry.name.endsWith('.json'))
+            .map(entry => path.join(directory, entry.name))
+            .sort();
+
+        return jsonFiles;
+    }
+
+    /**
+     * Logga il riepilogo della generazione batch
+     * @param {Object} results - { succeeded: [...], failed: [...] }
+     * @param {number} totalFiles - Numero totale di file processati
+     */
+    _logBatchSummary(results, totalFiles) {
+        console.log('\n' + '═'.repeat(50));
+        this.log('📊 RIEPILOGO GENERAZIONE BATCH:', 'info');
+        console.log(`   • Totale file: ${totalFiles}`);
+        console.log(`   • Completati: ${results.succeeded.length}`);
+        console.log(`   • Falliti: ${results.failed.length}`);
+
+        if (results.succeeded.length > 0) {
+            const totalCards = results.succeeded.reduce((sum, r) => sum + r.totalCards, 0);
+            console.log(`   • Carte totali generate: ${totalCards}`);
+        }
+
+        if (results.failed.length > 0) {
+            console.log('\n   ❌ FILE CON ERRORI:');
+            results.failed.forEach(f => {
+                console.log(`      • ${f.file}: ${f.error}`);
+            });
+        }
+        console.log('═'.repeat(50));
     }
 
     /**
