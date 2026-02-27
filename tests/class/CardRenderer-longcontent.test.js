@@ -159,6 +159,8 @@ describe('CardRenderer - Dynamic CSS Custom Properties', () => {
         expect(result).toContain('--card-desc-line-height:');
         expect(result).toContain('--card-desc-font-size-print:');
         expect(result).toContain('--card-desc-line-height-print:');
+        expect(result).toContain('--card-desc-padding:');
+        expect(result).toContain('--card-desc-padding-print:');
     });
 
     test('calculateCardCssVars dovrebbe scalare il font progressivamente', () => {
@@ -184,6 +186,25 @@ describe('CardRenderer - Dynamic CSS Custom Properties', () => {
         }
         expect(mediumFont).toBeGreaterThan(longFont);
         expect(longFont).toBeGreaterThan(veryLongFont);
+    });
+
+    test('calculateCardCssVars dovrebbe scalare il padding progressivamente', () => {
+        const extractPadding = (str) => {
+            const match = str.match(/--card-desc-padding:\s*([\d.]+)rem/);
+            return match ? parseFloat(match[1]) : null;
+        };
+
+        const short = extractPadding(CardRenderer.calculateCardCssVars(100));
+        const medium = extractPadding(CardRenderer.calculateCardCssVars(500));
+        const long = extractPadding(CardRenderer.calculateCardCssVars(1000));
+        const veryLong = extractPadding(CardRenderer.calculateCardCssVars(1800));
+
+        // Padding decresce con la lunghezza del testo
+        if (short !== null && medium !== null) {
+            expect(short).toBeGreaterThan(medium);
+        }
+        expect(medium).toBeGreaterThan(long);
+        expect(long).toBeGreaterThan(veryLong);
     });
 
     test('calculateCardCssVars dovrebbe avere un limite minimo al massimo breakpoint', () => {
