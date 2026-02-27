@@ -30,14 +30,22 @@ export class CardRenderer {
     };
 
     /**
-     * Soglia di caratteri nella description oltre la quale si attiva il layout compatto
-     * (nasconde heroImage e flavorText, riduce il font del ~20%)
+     * Soglia di caratteri nella description oltre la quale si attiva il layout compatto:
+     * nasconde heroImage e flavorText per recuperare ~130px di spazio verticale.
+     *
+     * Con heroImage visibile (90px + margine) lo spazio per la description è solo ~200px
+     * a schermo (~25mm in stampa). A 0.9rem con line-height 1.4, ogni riga è ~20px e
+     * contiene ~22 caratteri: 10 righe × 22 chars ≈ 220 chars è il massimo leggibile
+     * senza overflow. Soglia conservativa a 350 per includere margine di tolleranza.
      */
-    static LONG_CONTENT_THRESHOLD = 1000;
+    static LONG_CONTENT_THRESHOLD = 350;
 
     /**
      * Calcola le CSS custom properties per il font in base alla lunghezza della description.
      * Scala linearmente il font tra i breakpoint definiti.
+     *
+     * Layout carta (schermo): 420px totali, ~200px disponibili per description con heroImage,
+     * ~330px senza heroImage (long-content). I breakpoint sono calibrati su questi vincoli.
      *
      * @param {number} descLength - Lunghezza della description in caratteri
      * @returns {string} Stringa CSS inline con le custom properties
@@ -48,15 +56,19 @@ export class CardRenderer {
         }
 
         // Breakpoints: [chars, screenFontRem, screenLineHeight, printFontPt, printLineHeight]
+        //
+        // 0-350:   con heroImage visibile, ~200px disponibili a schermo
+        // 350+:    senza heroImage (long-content), ~330px disponibili a schermo
         const breakpoints = [
-            [0,    0.90, 1.40, 7.0, 1.30],  // default
-            [200,  0.85, 1.35, 6.8, 1.28],  // testo medio-corto
-            [400,  0.80, 1.30, 6.5, 1.25],  // testo medio
-            [600,  0.75, 1.25, 6.0, 1.22],  // testo medio-lungo
-            [800,  0.72, 1.22, 5.6, 1.18],  // testo lungo
-            [1000, 0.68, 1.18, 5.2, 1.15],  // testo molto lungo (soglia long-content)
-            [1500, 0.62, 1.15, 4.8, 1.12],  // testo extra lungo
-            [2000, 0.58, 1.12, 4.5, 1.10],  // massimo
+            [0,    0.90, 1.40, 7.0, 1.30],  // default - fino a ~150 chars sta bene
+            [150,  0.82, 1.30, 6.5, 1.25],  // riduzione precoce per stare nel box
+            [250,  0.75, 1.25, 6.0, 1.20],  // testo medio - inizia a stringere
+            [350,  0.70, 1.20, 5.5, 1.18],  // soglia long-content: heroImage nascosto
+            [500,  0.68, 1.18, 5.2, 1.15],  // con più spazio (no heroImage)
+            [700,  0.65, 1.15, 5.0, 1.12],  // testo lungo
+            [1000, 0.60, 1.12, 4.5, 1.10],  // testo molto lungo
+            [1500, 0.55, 1.10, 4.0, 1.08],  // testo extra lungo
+            [2000, 0.50, 1.08, 3.5, 1.05],  // massimo
         ];
 
         // Se sotto il primo breakpoint significativo, nessuna variabile necessaria

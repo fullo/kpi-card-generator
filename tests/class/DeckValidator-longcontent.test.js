@@ -5,7 +5,7 @@ import { CardRenderer } from '../../modules/cards/rendering/CardRenderer.js';
 describe('DeckValidator - Long Content Warnings', () => {
 
     let validator;
-    const THRESHOLD = CardRenderer.LONG_CONTENT_THRESHOLD; // 1000
+    const THRESHOLD = CardRenderer.LONG_CONTENT_THRESHOLD; // 350
 
     beforeEach(() => {
         validator = new DeckValidator();
@@ -55,7 +55,7 @@ describe('DeckValidator - Long Content Warnings', () => {
         });
 
         test('dovrebbe usare la soglia definita in CardRenderer', () => {
-            expect(CardRenderer.LONG_CONTENT_THRESHOLD).toBe(1000);
+            expect(CardRenderer.LONG_CONTENT_THRESHOLD).toBe(350);
 
             const cardAtThreshold = {
                 title: 'At Threshold',

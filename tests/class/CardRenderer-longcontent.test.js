@@ -4,7 +4,7 @@ import { CardRenderer } from '../../modules/cards/rendering/CardRenderer.js';
 describe('CardRenderer - Long Content Detection', () => {
 
     let renderer;
-    const THRESHOLD = CardRenderer.LONG_CONTENT_THRESHOLD; // 1000
+    const THRESHOLD = CardRenderer.LONG_CONTENT_THRESHOLD; // 350
 
     beforeEach(() => {
         CardRenderer.clearCache();
@@ -14,7 +14,7 @@ describe('CardRenderer - Long Content Detection', () => {
     });
 
     test('dovrebbe avere la costante LONG_CONTENT_THRESHOLD definita', () => {
-        expect(CardRenderer.LONG_CONTENT_THRESHOLD).toBe(1000);
+        expect(CardRenderer.LONG_CONTENT_THRESHOLD).toBe(350);
     });
 
     test('dovrebbe aggiungere classe long-content per description >= soglia', () => {
@@ -215,12 +215,13 @@ describe('CardRenderer - Dynamic CSS Custom Properties', () => {
 
         const result = renderer.renderCard(card, true);
 
-        // Per testi corti, il font è interpolato vicino al default (0.9rem)
+        // Per testi corti (10 chars), il font è interpolato vicino al default (0.9rem)
         expect(result).toContain('style="');
         const match = result.match(/--card-desc-font-size:\s*([\d.]+)rem/);
         if (match) {
             const fontSize = parseFloat(match[1]);
-            expect(fontSize).toBeGreaterThanOrEqual(0.89);
+            // 10 chars è molto vicino a 0 nel breakpoint [0, 0.90] -> [150, 0.82]
+            expect(fontSize).toBeGreaterThanOrEqual(0.88);
             expect(fontSize).toBeLessThanOrEqual(0.90);
         }
     });
@@ -239,16 +240,16 @@ describe('CardRenderer - Dynamic CSS Custom Properties', () => {
     });
 
     test('dovrebbe produrre valori intermedi per interpolazione lineare', () => {
-        // Test a metà tra il breakpoint 400 e 600
-        const result = CardRenderer.calculateCardCssVars(500);
+        // Test a metà tra il breakpoint 350 e 700
+        const result = CardRenderer.calculateCardCssVars(525);
 
         const match = result.match(/--card-desc-font-size:\s*([\d.]+)rem/);
         expect(match).not.toBeNull();
         const fontSize = parseFloat(match[1]);
 
-        // Dovrebbe essere tra 0.75 (a 600) e 0.80 (a 400)
-        expect(fontSize).toBeGreaterThanOrEqual(0.75);
-        expect(fontSize).toBeLessThanOrEqual(0.80);
+        // Dovrebbe essere tra 0.70 (a 350) e 0.65 (a 700) - interpolato
+        expect(fontSize).toBeGreaterThanOrEqual(0.65);
+        expect(fontSize).toBeLessThanOrEqual(0.70);
     });
 
     test('dovrebbe avere valori coerenti tra print e screen', () => {
