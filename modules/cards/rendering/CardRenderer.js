@@ -41,6 +41,13 @@ export class CardRenderer {
     static LONG_CONTENT_THRESHOLD = 1000;
 
     /**
+     * Soglia di caratteri nella description oltre la quale il flavorText viene
+     * nascosto in stampa (classe hide-flavor). Lo spazio recuperato viene
+     * dedicato interamente al main-text.
+     */
+    static FLAVOR_HIDE_THRESHOLD = 500;
+
+    /**
      * Calcola le CSS custom properties per font e padding in base alla lunghezza della description.
      * Scala linearmente tra i breakpoint definiti.
      *
@@ -324,6 +331,11 @@ export class CardRenderer {
             // Calcola CSS custom properties dinamiche per il font
             const cssVars = CardRenderer.calculateCardCssVars(descLength);
             data = { ...data, cardCssVars: cssVars };
+
+            // Nasconde flavorText in stampa per description medio-lunghe (>= 500 chars)
+            if (descLength >= CardRenderer.FLAVOR_HIDE_THRESHOLD) {
+                data.styleClass = `${data.styleClass || ''} hide-flavor`.trim();
+            }
 
             // Rileva carte con contenuto lungo e aggiunge classe CSS per layout compatto
             if (descLength >= CardRenderer.LONG_CONTENT_THRESHOLD) {

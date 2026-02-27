@@ -112,7 +112,9 @@ describe('CardRenderer - Long Content Detection', () => {
 
         const result = renderer.renderCard(card, true);
 
-        expect(result).toContain('card-evento long-content');
+        expect(result).toContain('card-evento');
+        expect(result).toContain('long-content');
+        expect(result).toContain('hide-flavor');
     });
 
     test('dovrebbe funzionare con description contenente HTML markup', () => {
@@ -128,6 +130,77 @@ describe('CardRenderer - Long Content Detection', () => {
 
         // 27 + (THRESHOLD - 10) > THRESHOLD chars raw
         expect(result).toContain('long-content');
+    });
+});
+
+describe('CardRenderer - Flavor Text Hide in Print', () => {
+
+    let renderer;
+    const FLAVOR_THRESHOLD = CardRenderer.FLAVOR_HIDE_THRESHOLD; // 500
+
+    beforeEach(() => {
+        CardRenderer.clearCache();
+        renderer = new CardRenderer();
+        renderer.frontTemplate = '<div class="playing-card {{styleClass}}" style="{{cardCssVars}}"><div class="card-image-area">{{heroImage}}</div><p class="main-text">{{description}}</p><div class="card-flavor-text">{{flavorText}}</div></div>';
+        renderer.backTemplate = '<div class="playing-card {{styleClass}}">{{cardBackIcon}}</div>';
+    });
+
+    test('dovrebbe avere la costante FLAVOR_HIDE_THRESHOLD definita a 500', () => {
+        expect(CardRenderer.FLAVOR_HIDE_THRESHOLD).toBe(500);
+    });
+
+    test('dovrebbe aggiungere classe hide-flavor per description >= 500 chars', () => {
+        const card = {
+            title: 'Medium Card',
+            styleClass: 'card-kpi',
+            description: 'A'.repeat(FLAVOR_THRESHOLD),
+            flavorText: 'Some flavor'
+        };
+
+        const result = renderer.renderCard(card, true);
+
+        expect(result).toContain('hide-flavor');
+        expect(result).not.toContain('long-content');
+    });
+
+    test('NON dovrebbe aggiungere hide-flavor per description < 500 chars', () => {
+        const card = {
+            title: 'Short Card',
+            styleClass: 'card-kpi',
+            description: 'A'.repeat(FLAVOR_THRESHOLD - 1),
+            flavorText: 'Some flavor'
+        };
+
+        const result = renderer.renderCard(card, true);
+
+        expect(result).not.toContain('hide-flavor');
+    });
+
+    test('dovrebbe avere sia hide-flavor che long-content per description >= 1000 chars', () => {
+        const card = {
+            title: 'Long Card',
+            styleClass: 'card-kpi',
+            description: 'A'.repeat(1000),
+            flavorText: 'Some flavor'
+        };
+
+        const result = renderer.renderCard(card, true);
+
+        expect(result).toContain('hide-flavor');
+        expect(result).toContain('long-content');
+    });
+
+    test('NON dovrebbe aggiungere hide-flavor per il retro della carta', () => {
+        const card = {
+            title: 'Card',
+            styleClass: 'card-kpi',
+            description: 'A'.repeat(FLAVOR_THRESHOLD + 100)
+        };
+        const exerciseData = { cardBackIcon: '⭐' };
+
+        const result = renderer.renderCard(card, false, exerciseData);
+
+        expect(result).not.toContain('hide-flavor');
     });
 });
 
