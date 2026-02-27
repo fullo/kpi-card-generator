@@ -30,6 +30,81 @@ export class CardRenderer {
     };
 
     /**
+     * Soglia di caratteri nella description oltre la quale si attiva il layout compatto:
+     * nasconde heroImage e flavorText per recuperare ~130px di spazio verticale.
+     *
+     * Con heroImage visibile (90px + margine) lo spazio per la description è solo ~200px
+     * a schermo (~25mm in stampa). A 0.9rem con line-height 1.4, ogni riga è ~20px e
+     * contiene ~22 caratteri: 10 righe × 22 chars ≈ 220 chars è il massimo leggibile
+     * senza overflow. Soglia conservativa a 350 per includere margine di tolleranza.
+     */
+    static LONG_CONTENT_THRESHOLD = 350;
+
+    /**
+     * Calcola le CSS custom properties per il font in base alla lunghezza della description.
+     * Scala linearmente il font tra i breakpoint definiti.
+     *
+     * Layout carta (schermo): 420px totali, ~200px disponibili per description con heroImage,
+     * ~330px senza heroImage (long-content). I breakpoint sono calibrati su questi vincoli.
+     *
+     * @param {number} descLength - Lunghezza della description in caratteri
+     * @returns {string} Stringa CSS inline con le custom properties
+     */
+    static calculateCardCssVars(descLength) {
+        if (!descLength || descLength <= 0) {
+            return '';
+        }
+
+        // Breakpoints: [chars, screenFontRem, screenLineHeight, printFontPt, printLineHeight]
+        //
+        // 0-350:   con heroImage visibile, ~200px disponibili a schermo
+        // 350+:    senza heroImage (long-content), ~330px disponibili a schermo
+        const breakpoints = [
+            [0,    0.90, 1.40, 7.0, 1.30],  // default - fino a ~150 chars sta bene
+            [150,  0.82, 1.30, 6.5, 1.25],  // riduzione precoce per stare nel box
+            [250,  0.75, 1.25, 6.0, 1.20],  // testo medio - inizia a stringere
+            [350,  0.70, 1.20, 5.5, 1.18],  // soglia long-content: heroImage nascosto
+            [500,  0.68, 1.18, 5.2, 1.15],  // con più spazio (no heroImage)
+            [700,  0.65, 1.15, 5.0, 1.12],  // testo lungo
+            [1000, 0.60, 1.12, 4.5, 1.10],  // testo molto lungo
+            [1500, 0.55, 1.10, 4.0, 1.08],  // testo extra lungo
+            [2000, 0.50, 1.08, 3.5, 1.05],  // massimo
+        ];
+
+        // Se sotto il primo breakpoint significativo, nessuna variabile necessaria
+        if (descLength <= breakpoints[0][0]) {
+            return '';
+        }
+
+        // Trova il segmento di interpolazione
+        let lower = breakpoints[0];
+        let upper = breakpoints[breakpoints.length - 1];
+
+        for (let i = 0; i < breakpoints.length - 1; i++) {
+            if (descLength >= breakpoints[i][0] && descLength < breakpoints[i + 1][0]) {
+                lower = breakpoints[i];
+                upper = breakpoints[i + 1];
+                break;
+            }
+        }
+
+        // Se oltre l'ultimo breakpoint, usa i valori minimi
+        if (descLength >= breakpoints[breakpoints.length - 1][0]) {
+            const last = breakpoints[breakpoints.length - 1];
+            return `--card-desc-font-size: ${last[1]}rem; --card-desc-line-height: ${last[2]}; --card-desc-font-size-print: ${last[3]}pt; --card-desc-line-height-print: ${last[4]}`;
+        }
+
+        // Interpolazione lineare tra lower e upper
+        const ratio = (descLength - lower[0]) / (upper[0] - lower[0]);
+        const screenFont = +(lower[1] + (upper[1] - lower[1]) * ratio).toFixed(3);
+        const screenLH = +(lower[2] + (upper[2] - lower[2]) * ratio).toFixed(3);
+        const printFont = +(lower[3] + (upper[3] - lower[3]) * ratio).toFixed(2);
+        const printLH = +(lower[4] + (upper[4] - lower[4]) * ratio).toFixed(3);
+
+        return `--card-desc-font-size: ${screenFont}rem; --card-desc-line-height: ${screenLH}; --card-desc-font-size-print: ${printFont}pt; --card-desc-line-height-print: ${printLH}`;
+    }
+
+    /**
      * Tag HTML permessi per il markup nelle carte
      */
     static ALLOWED_HTML_TAGS = [
@@ -231,8 +306,23 @@ export class CardRenderer {
         }
 
         const template = isFront ? this.frontTemplate : this.backTemplate;
-        const data = isFront ? card : { ...exerciseData, styleClass: card.styleClass || '' };
-        
+        let data = isFront ? card : { ...exerciseData, styleClass: card.styleClass || '' };
+
+        if (isFront) {
+            const descLength = card.description ? card.description.length : 0;
+
+            // Calcola CSS custom properties dinamiche per il font
+            const cssVars = CardRenderer.calculateCardCssVars(descLength);
+            data = { ...data, cardCssVars: cssVars };
+
+            // Rileva carte con contenuto lungo e aggiunge classe CSS per layout compatto
+            if (descLength >= CardRenderer.LONG_CONTENT_THRESHOLD) {
+                data.styleClass = `${data.styleClass || ''} long-content`.trim();
+            }
+        } else {
+            data = { ...data, cardCssVars: '' };
+        }
+
         try {
             return this.constructor.replacePlaceholders(template, data, false, this.config.allowHtmlMarkup);
         } catch (error) {

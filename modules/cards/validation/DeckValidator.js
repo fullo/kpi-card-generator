@@ -63,6 +63,7 @@ export class DeckValidator {
      */
     static validateDeckQuick(deck) {
         const errors = [];
+        const warnings = [];
 
         // Validate deck title (required)
         if (!deck.title || typeof deck.title !== 'string' || deck.title.trim().length === 0) {
@@ -115,20 +116,30 @@ export class DeckValidator {
         // Validate cards array
         if (deck.cards && Array.isArray(deck.cards)) {
             deck.cards.forEach((card, index) => {
-                const cardErrors = this.validateCardQuick(card);
-                cardErrors.errors.forEach(error => {
+                const cardResult = this.validateCardQuick(card);
+                cardResult.errors.forEach(error => {
                     errors.push({
                         field: `cards.${index}.${error.field}`,
                         message: error.message,
                         value: error.value
                     });
                 });
+                if (cardResult.warnings) {
+                    cardResult.warnings.forEach(warning => {
+                        warnings.push({
+                            field: `cards.${index}.${warning.field}`,
+                            message: warning.message,
+                            value: warning.value
+                        });
+                    });
+                }
             });
         }
 
         return {
             isValid: errors.length === 0,
-            errors: errors
+            errors: errors,
+            warnings: warnings
         };
     }
 
@@ -139,6 +150,7 @@ export class DeckValidator {
      */
     static validateCardQuick(card) {
         const errors = [];
+        const warnings = [];
 
         // Validate card title (not required but if present, check length)
         if (card.title && card.title.length > 200) {
@@ -198,9 +210,19 @@ export class DeckValidator {
             });
         }
 
+        // Warning per description lunga: layout compatto verrà attivato
+        if (card.description && card.description.length >= CardRenderer.LONG_CONTENT_THRESHOLD) {
+            warnings.push({
+                field: 'description',
+                message: `Description exceeds ${CardRenderer.LONG_CONTENT_THRESHOLD} characters - heroImage and flavorText will be hidden and font reduced by ~20% for better layout`,
+                value: card.description.length
+            });
+        }
+
         return {
             isValid: errors.length === 0,
-            errors: errors
+            errors: errors,
+            warnings: warnings
         };
     }
 
@@ -409,6 +431,11 @@ export class DeckValidator {
             if (!this.constructor.isValidEmoji(card.heroImage)) {
                 warnings.push(`Carta ${cardIndex + 1}: heroImage '${card.heroImage}' non è un emoji Unicode valido`);
             }
+        }
+
+        // Warning per description lunga: layout compatto verrà attivato
+        if (card.description && card.description.length >= CardRenderer.LONG_CONTENT_THRESHOLD) {
+            warnings.push(`Carta ${cardIndex + 1}: la description supera i ${CardRenderer.LONG_CONTENT_THRESHOLD} caratteri - heroImage e flavorText verranno nascosti e il font ridotto del ~20% per migliorare l'impaginazione`);
         }
 
         // Controlla combinazioni di campi per contenuto minimo
