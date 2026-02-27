@@ -155,6 +155,7 @@ pdf/
 !tests/data/*.json
 !tests/scripts/*.sh
 !tests/*.md
+!modules/export/pdf/
 
 # API uploaded file
 api/data/decks/

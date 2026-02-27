@@ -47,6 +47,71 @@ node cli/generate-cards.js generate \
 | `--apply-styles` | Apply custom CSS styles | `false` |
 | `--verbose` | Detailed output | `false` |
 
+### 📦 `batch` - Batch generation from directory
+
+```bash
+# Generate PDFs in the same directory as JSON files
+node cli/generate-cards.js batch -d /path/to/json-files
+
+# Generate PDFs in a specific output directory
+node cli/generate-cards.js batch -d /path/to/json-files -o /path/to/pdf-output
+
+# Generate both PDF and HTML
+node cli/generate-cards.js batch -d /path/to/json-files -o /path/to/pdf -b /path/to/html
+
+# With all options
+node cli/generate-cards.js batch \
+  -d /path/to/json-files \
+  -o /path/to/output \
+  -f landscape \
+  --cards-per-page 6 \
+  --cards-per-row 3 \
+  --apply-styles \
+  --verbose
+```
+
+**Key Options:**
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-d, --directory` | Input directory with JSON files | Required |
+| `-o, --output` | Output directory for PDFs | Same as input directory |
+| `-b, --browser [dir]` | Also generate HTML files | - |
+| `-f, --flip` | Print mode: `short`/`portrait` or `long`/`landscape` | `short` |
+| `--cards-per-page` | Cards per page (4, 6, 8, 9, 12) | `8` |
+| `--cards-per-row` | Cards per row (2, 3, 4) | `4` |
+| `--no-char-limits` | Bypass 500-character limit | `false` |
+| `--apply-styles` | Apply custom CSS styles | `false` |
+| `--verbose` | Detailed output | `false` |
+
+**Behavior:**
+- Scans the input directory for all `.json` files
+- Generates one PDF (and optionally HTML) per JSON file
+- Output files use the same base name as input (e.g. `mazzo.json` → `mazzo.pdf`)
+- If `-o` is not specified, PDFs are created in the same directory as the JSON files
+- Continues processing remaining files if one fails
+- Prints a summary at the end with success/failure counts
+
+**Output Example:**
+```
+📦 Avvio generazione batch...
+📂 Trovati 3 file JSON da processare
+
+📄 [1/3] Processando: deck-a.json
+  ✅ deck-a: 10 carte, 2 fogli
+📄 [2/3] Processando: deck-b.json
+  ✅ deck-b: 6 carte, 1 fogli
+📄 [3/3] Processando: deck-c.json
+  ❌ deck-c: JSON non valido
+
+══════════════════════════════════════════════════
+📊 RIEPILOGO GENERAZIONE BATCH:
+   • Totale file: 3
+   • Completati: 2
+   • Falliti: 1
+   • Carte totali generate: 16
+══════════════════════════════════════════════════
+```
+
 ### ✅ `validate` - Validate JSON without generation
 
 ```bash
@@ -135,6 +200,20 @@ node cli/generate-cards.js generate \
   -f landscape \
   --cards-per-page 8 \
   --apply-styles
+```
+
+### Batch Processing
+```bash
+# 1. Validate all decks in a folder
+for f in /path/to/decks/*.json; do
+  node cli/generate-cards.js validate -i "$f"
+done
+
+# 2. Generate all PDFs at once
+node cli/generate-cards.js batch -d /path/to/decks -o /path/to/output
+
+# 3. Generate with landscape mode and custom styles
+node cli/generate-cards.js batch -d /path/to/decks -o /path/to/output -f landscape --apply-styles
 ```
 
 ### Development Workflow
