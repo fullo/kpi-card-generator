@@ -214,7 +214,7 @@ export class DeckValidator {
         if (card.description && card.description.length >= CardRenderer.LONG_CONTENT_THRESHOLD) {
             warnings.push({
                 field: 'description',
-                message: `Description exceeds ${CardRenderer.LONG_CONTENT_THRESHOLD} characters - heroImage and flavorText will be hidden and font reduced by ~20% for better layout`,
+                message: `Description exceeds ${CardRenderer.LONG_CONTENT_THRESHOLD} characters - heroImage, card-type-banner and flavorText will be hidden and font reduced by ~20% for better layout`,
                 value: card.description.length
             });
         }
@@ -435,7 +435,7 @@ export class DeckValidator {
 
         // Warning per description lunga: layout compatto verrà attivato
         if (card.description && card.description.length >= CardRenderer.LONG_CONTENT_THRESHOLD) {
-            warnings.push(`Carta ${cardIndex + 1}: la description supera i ${CardRenderer.LONG_CONTENT_THRESHOLD} caratteri - heroImage e flavorText verranno nascosti e il font ridotto del ~20% per migliorare l'impaginazione`);
+            warnings.push(`Carta ${cardIndex + 1}: la description supera i ${CardRenderer.LONG_CONTENT_THRESHOLD} caratteri - heroImage, card-type-banner e flavorText verranno nascosti e il font ridotto del ~20% per migliorare l'impaginazione`);
         }
 
         // Controlla combinazioni di campi per contenuto minimo
